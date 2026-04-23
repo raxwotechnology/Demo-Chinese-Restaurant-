@@ -66,6 +66,8 @@ const CashierLanding = () => {
       setCart([...cart, { ...menu, quantity: 1 }]);
     }
     setMenus(menus.map(m => m._id === menu._id ? { ...m, currentQty: m.currentQty - 1 } : m));
+    // Auto-collapse identification to prioritize ledger space
+    if (isIdentityExpanded) setIsIdentityExpanded(false);
   };
 
   const updateQty = (id, delta) => {
@@ -123,10 +125,10 @@ const CashierLanding = () => {
             <div className="orient-card mb-4 p-3 d-flex gap-3 align-items-center bg-white shadow-sm border-0">
                 <div className="position-relative flex-grow-1">
                     <FaSearch className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                    <input type="text" className="premium-input ps-5 border-0 bg-app" placeholder="Search catalog..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                    <input type="text" className="premium-input ps-5" placeholder="Search culinary catalog..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
-                <select className="premium-input w-auto fw-800 border-0 bg-app" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-                    <option value="">All Departments</option>
+                <select className="premium-input w-auto fw-800" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+                    <option value="">All Collections</option>
                     {categories.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
             </div>
@@ -171,17 +173,17 @@ const CashierLanding = () => {
                                 <label className="stat-label mb-2 d-block">Contact Protocol</label>
                                 <div className="position-relative">
                                     <FaPhone className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={10} />
-                                    <input type="text" className="premium-input ps-5 bg-app border-0" placeholder="Contact Number" value={customer.phone} onChange={(e) => setCustomer({...customer, phone: e.target.value})} />
+                                    <input type="text" className="premium-input ps-5" placeholder="Contact Number" value={customer.phone} onChange={(e) => setCustomer({...customer, phone: e.target.value})} />
                                 </div>
                             </div>
                             <div>
                                 <label className="stat-label mb-2 d-block">Legal Name</label>
-                                <input type="text" className="premium-input bg-app border-0" placeholder="Full Identity Name" value={customer.name} onChange={(e) => setCustomer({...customer, name: e.target.value})} />
+                                <input type="text" className="premium-input" placeholder="Full Identity Name" value={customer.name} onChange={(e) => setCustomer({...customer, name: e.target.value})} />
                             </div>
                             <div className="row g-2">
                                 <div className="col-6">
                                     <label className="stat-label mb-2 d-block">Fulfillment</label>
-                                    <select className="premium-input bg-app border-0 fw-700" value={customer.orderType} onChange={(e) => setCustomer({...customer, orderType: e.target.value})}>
+                                    <select className="premium-input fw-700" value={customer.orderType} onChange={(e) => setCustomer({...customer, orderType: e.target.value})}>
                                         <option value="takeaway">Takeaway</option>
                                         <option value="table">Dine-In</option>
                                     </select>
@@ -189,7 +191,7 @@ const CashierLanding = () => {
                                 {customer.orderType === 'table' && (
                                     <div className="col-6">
                                         <label className="stat-label mb-2 d-block">Asset ID</label>
-                                        <input type="text" className="premium-input bg-app border-0" placeholder="Table #" value={customer.tableNo} onChange={(e) => setCustomer({...customer, tableNo: e.target.value})} />
+                                        <input type="text" className="premium-input" placeholder="Table #" value={customer.tableNo} onChange={(e) => setCustomer({...customer, tableNo: e.target.value})} />
                                     </div>
                                 )}
                             </div>
