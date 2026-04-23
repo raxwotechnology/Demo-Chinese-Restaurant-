@@ -141,7 +141,7 @@ const RoleLayout = () => {
         <div className="orient-sidebar-footer">
           <button className="orient-logout-link" onClick={logout}>
             <FaSignOutAlt className="orient-icon" />
-            {sidebarOpen && <span>Logout</span>}
+            {sidebarOpen && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
@@ -154,7 +154,7 @@ const RoleLayout = () => {
               {sidebarOpen ? <FaIndent /> : <FaOutdent />}
             </button>
             <div className="orient-breadcrumb d-none d-md-block">
-               System Portal / <span className="orient-text-gold">{user?.role}</span>
+               Management System / <span className="orient-text-gold">{user?.role}</span>
             </div>
           </div>
 
@@ -186,99 +186,6 @@ const RoleLayout = () => {
         </main>
       </div>
 
-      <style>{`
-        .orient-menu-divider {
-            padding: 15px 18px 5px;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--orient-gold);
-            opacity: 0.5;
-            font-weight: 700;
-            display: ${sidebarOpen ? 'block' : 'none'};
-        }
-        .orient-sidebar-footer { padding: 10px; border-top: 1px solid var(--orient-border); }
-        .orient-logout-link {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: transparent;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .orient-logout-link:hover { background: rgba(239, 68, 68, 0.1); }
-        .orient-toggle-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--orient-border);
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 34px;
-            height: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .orient-toggle-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--orient-gold); }
-        .orient-text-gold { color: var(--orient-gold); font-weight: 700; text-transform: uppercase; }
-        .orient-user-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--orient-border);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-        .orient-user-btn:hover { background: rgba(255,255,255,0.06); }
-        .orient-user-dropdown {
-            position: absolute;
-            top: 50px;
-            right: 0px;
-            background: var(--orient-navy);
-            border: 1px solid var(--orient-border);
-            border-radius: 12px;
-            padding: 8px;
-            min-width: 200px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            z-index: 1001;
-        }
-        .dropdown-header { padding: 10px; border-bottom: 1px solid var(--orient-border); margin-bottom: 5px; }
-        .dropdown-header strong { display: block; font-size: 0.9rem; color: #fff; }
-        .dropdown-header span { font-size: 0.75rem; color: var(--orient-text-muted); }
-        .dropdown-item {
-            width: 100%;
-            padding: 10px;
-            background: transparent;
-            border: none;
-            color: #fff;
-            text-align: left;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-        .dropdown-item:hover { background: rgba(255,255,255,0.05); }
-        .orient-close-btn { background: transparent; border: none; color: #fff; font-size: 1.2rem; }
-        
-        .orient-sidebar.collapsed .orient-menu-item { justify-content: center; }
-        .orient-sidebar.collapsed .orient-link { justify-content: center; padding: 12px; }
-      `}</style>
     </div>
   );
 };

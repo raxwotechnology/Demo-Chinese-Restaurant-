@@ -188,10 +188,6 @@ const OtherExpenses = () => {
         </div>
       </div>
 
-      <style>{`
-        .bg-red-glow { background: rgba(220, 38, 38, 0.1); }
-        .border-white-05 { border-color: rgba(255,255,255,0.05) !important; }
-      `}</style>
     </div>
   );
 };

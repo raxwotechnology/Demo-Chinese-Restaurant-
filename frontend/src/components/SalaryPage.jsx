@@ -213,11 +213,6 @@ const SalaryPage = () => {
         </div>
       </div>
 
-      <style>{`
-        .bg-white-02 { background: rgba(255,255,255,0.02); }
-        .border-white-05 { border-color: rgba(255,255,255,0.05) !important; }
-        .bg-gold-glow { background: rgba(255, 183, 3, 0.1); }
-      `}</style>
     </div>
   );
 };

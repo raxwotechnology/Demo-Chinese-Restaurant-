@@ -154,11 +154,6 @@ const AttendanceDashboard = () => {
         </div>
       </div>
 
-      <style>{`
-        .bg-gold-glow { background: rgba(255, 183, 3, 0.1); }
-        .border-white-05 { border-color: rgba(255,255,255,0.05) !important; }
-        .bg-white-05 { background: rgba(255,255,255,0.05); }
-      `}</style>
     </div>
   );
 };

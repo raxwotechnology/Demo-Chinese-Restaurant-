@@ -144,12 +144,6 @@ const AdminEmployees = () => {
         </div>
       </div>
 
-      <style>{`
-        .bg-blue-glow { background: rgba(0, 180, 216, 0.2); color: #00B4D8; }
-        .bg-gold-glow { background: rgba(255, 183, 3, 0.2); color: #FFB703; }
-        .bg-white-05 { background: rgba(255,255,255,0.05); }
-        .border-white-05 { border-color: rgba(255,255,255,0.05) !important; }
-      `}</style>
     </div>
   );
 };

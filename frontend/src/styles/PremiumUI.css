@@ -1,212 +1,236 @@
 :root {
-  --orient-navy: #023047;
-  --orient-navy-dark: #011c2a;
-  --orient-gold: #ffb703;
-  --orient-gold-soft: rgba(255, 183, 3, 0.8);
-  --orient-red: #d90429;
-  --orient-red-dark: #b90424;
-  --orient-white: #ffffff;
-  --orient-text-main: #f8f9fa;
-  --orient-text-muted: rgba(248, 249, 250, 0.6);
-  --orient-glass: rgba(2, 48, 71, 0.7);
-  --orient-glass-light: rgba(255, 255, 255, 0.05);
-  --orient-border: rgba(255, 255, 255, 0.1);
-  --orient-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  /* --- Professional Light Theme Palette --- */
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-sidebar: #ffffff;
   
-  /* Reduced Font Sizes & Spacing for Compact Professionalism */
-  --font-size-base: 14px;
-  --spacing-compact: 16px;
-  --card-padding: 20px;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+  
+  --primary: #2563eb; /* Royal Blue */
+  --primary-soft: rgba(37, 99, 235, 0.1);
+  --success: #10b981; /* Emerald */
+  --success-soft: rgba(16, 185, 129, 0.1);
+  --warning: #f59e0b; /* Amber */
+  --warning-soft: rgba(245, 158, 11, 0.1);
+  --danger: #ef4444; /* Rose */
+  --danger-soft: rgba(239, 68, 68, 0.1);
+  --accent: #6366f1; /* Indigo */
+  
+  --border-light: #e2e8f0;
+  --border-focus: #2563eb;
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* --- Precision Spacing --- */
+  --font-size-base: 13px;
+  --spacing-compact: 12px;
+  --card-padding: 16px;
+  --card-radius: 12px;
 }
 
 * {
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Poppins', sans-serif;
 }
 
 body {
-  margin: 0;
-  background-color: var(--orient-navy-dark);
-  color: var(--orient-text-main);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   font-size: var(--font-size-base);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* --- Layout Containers --- */
-.premium-container {
-  padding: var(--spacing-compact);
-  max-width: 1600px;
-  margin: 0 auto;
-}
-
-/* --- Professional Cards (Compact) --- */
-.premium-card, .orient-card {
-  background: var(--orient-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--orient-border);
-  border-radius: 12px;
+/* --- Professional Surface Cards --- */
+.orient-card, .premium-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--card-radius);
   padding: var(--card-padding);
-  box-shadow: var(--orient-shadow);
-  margin-bottom: var(--spacing-compact);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .orient-card:hover {
-  border-color: rgba(255, 183, 3, 0.3);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--primary-soft);
 }
 
-/* --- Typography --- */
+.orient-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* --- Typography (International Style) --- */
 .premium-title {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  color: var(--orient-white);
-  letter-spacing: -0.5px;
+  color: var(--text-main);
+  letter-spacing: -0.025em;
   margin-bottom: 4px;
 }
 
 .premium-subtitle {
-  font-size: 0.85rem;
-  color: var(--orient-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-/* --- Flat Professional Buttons (No Glow) --- */
+/* --- Refined Professional Buttons --- */
 .btn-premium {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
   border: 1px solid transparent;
-  outline: none;
+  white-space: nowrap;
 }
 
 .btn-premium-primary {
-  background: transparent;
-  color: var(--orient-white);
-  border-color: var(--orient-border);
+  background: var(--bg-main);
+  border-color: var(--border-light);
+  color: var(--text-main);
 }
 
 .btn-premium-primary:hover {
-  background: var(--orient-glass-light);
-  border-color: var(--orient-white);
+  background: var(--border-light);
 }
 
 .btn-premium-secondary {
-  background: var(--orient-gold);
-  color: var(--orient-navy);
-  border: none;
+  background: var(--primary);
+  color: var(--text-inverse);
 }
 
 .btn-premium-secondary:hover {
-  background: var(--orient-gold-soft);
-  transform: translateY(-1px);
+  background: #1d4ed8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .btn-premium-accent {
-  background: var(--orient-red);
-  color: var(--orient-white);
+  background: var(--success-soft);
+  color: var(--success);
+  border-color: transparent;
 }
 
 .btn-premium-accent:hover {
-  background: var(--orient-red-dark);
+  background: var(--success);
+  color: #fff;
 }
 
-/* Remove all box-shadow glows */
-.btn-premium:focus {
-  box-shadow: none !important;
-}
-
-/* --- Professional Compact Tables --- */
+/* --- Modern Data Tables (Compact) --- */
 .premium-table-container {
   overflow-x: auto;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-surface);
 }
 
 .premium-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
 }
 
 .premium-table th {
-  background: rgba(0, 0, 0, 0.2);
-  color: var(--orient-gold);
+  background: #f1f5f9;
+  color: var(--text-main);
   text-align: left;
-  padding: 12px 16px;
-  font-weight: 800;
-  text-transform: uppercase;
+  padding: 10px 16px;
   font-size: 0.75rem;
-  letter-spacing: 1px;
-  border-bottom: 2px solid var(--orient-border);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .premium-table td {
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--orient-border);
-  color: var(--orient-text-main);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-main);
+  font-size: 0.85rem;
+}
+
+.premium-table tr:last-child td {
+  border-bottom: none;
 }
 
 .premium-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: #f8fafc;
 }
 
-/* --- Compact Inputs --- */
+/* --- Modern Inputs --- */
 .premium-input {
   width: 100%;
   padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--orient-border);
+  background: #ffffff;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
-  color: var(--orient-white);
+  color: var(--text-main);
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .premium-input:focus {
   outline: none;
-  border-color: var(--orient-gold);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
-/* --- Badges (Compact) --- */
+/* --- Badges --- */
 .badge-premium {
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
-.badge-success { background: rgba(0, 255, 127, 0.1); color: #00FF7F; border: 1px solid rgba(0, 255, 127, 0.2); }
-.badge-danger { background: rgba(217, 4, 41, 0.1); color: #D90429; border: 1px solid rgba(217, 4, 41, 0.2); }
-.badge-primary { background: rgba(0, 180, 216, 0.1); color: #00B4D8; border: 1px solid rgba(0, 180, 216, 0.2); }
+.badge-primary { background: var(--primary-soft); color: var(--primary); }
+.badge-success { background: var(--success-soft); color: var(--success); }
+.badge-warning { background: var(--warning-soft); color: var(--warning); }
+.badge-danger { background: var(--danger-soft); color: var(--danger); }
 
-/* --- Mobile Responsiveness --- */
-@media (max-width: 768px) {
-  .premium-title { font-size: 1.5rem; }
-  .premium-container { padding: 10px; }
-  .premium-card, .orient-card { padding: 15px; }
-  
-  /* Tables on mobile */
-  .premium-table { font-size: 0.8rem; }
-  .premium-table th, .premium-table td { padding: 8px 10px; }
-  
-  /* Form Grids */
-  .row.g-4 { --bs-gutter-x: 10px; --bs-gutter-y: 10px; }
+/* --- Glow Icons (Soft Refined) --- */
+.orient-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* --- Utilities --- */
-.orient-text-muted { color: var(--orient-text-muted) !important; }
-.animate-fade-in { animation: fadeIn 0.4s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.bg-blue-glow { background: var(--primary-soft); color: var(--primary); }
+.bg-gold-glow { background: var(--warning-soft); color: var(--warning); }
+.bg-red-glow { background: var(--danger-soft); color: var(--danger); }
+.bg-green-glow { background: var(--success-soft); color: var(--success); }
+
+/* --- Global Animations --- */
+.animate-fade-in {
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 768px) {
+  .orient-page-content { padding: 16px; }
+  .premium-title { font-size: 1.4rem; }
+}

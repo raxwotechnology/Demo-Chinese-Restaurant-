@@ -249,11 +249,8 @@ const MenuManagement = () => {
       )}
 
       <style>{`
-        .menu-image-wrap { height: 200px; position: relative; background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; }
-        .category-badge { position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 5px 12px; border-radius: 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--orient-gold); }
-        .bg-blue-glow { background: rgba(0, 180, 216, 0.2); color: #00B4D8; }
-        .bg-gold-glow { background: rgba(255, 183, 3, 0.2); color: #FFB703; }
-        .text-gold { color: var(--orient-gold); }
+        .menu-image-wrap { height: 180px; position: relative; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+        .category-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--orient-gold); }
       `}</style>
     </div>
   );
