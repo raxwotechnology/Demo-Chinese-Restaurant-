@@ -25,7 +25,8 @@ import {
   DollarSign,
   Users,
   Activity,
-  Layers
+  Layers,
+  ChevronRight
 } from "lucide-react";
 import "../styles/PremiumUI.css";
 
@@ -186,72 +187,69 @@ const AdminDashboard = () => {
   };
 
   const statCards = [
-    { label: "Revenue", value: summary.totalIncome, icon: Wallet, color: "blue", sub: "Gross Earnings" },
-    { label: "Net Profit", value: summary.netProfit, icon: TrendingUp, color: "green", sub: "Final Margin" },
-    { label: "Expenditure", value: summary.totalCost, icon: TrendingDown, color: "red", sub: "Operational Cost" },
-    { label: "Total Orders", value: summary.totalOrders, icon: ShoppingCart, color: "gold", sub: "Volume", isCurrency: false }
+    { label: "Gross Revenue", value: summary.totalIncome, icon: Wallet, color: "blue", sub: "Direct Inflow" },
+    { label: "Operating Profit", value: summary.netProfit, icon: TrendingUp, color: "green", sub: "Net Valuation" },
+    { label: "Fixed Expenditure", value: summary.totalCost, icon: TrendingDown, color: "red", sub: "Operational Cost" },
+    { label: "Volume Index", value: summary.totalOrders, icon: ShoppingCart, color: "gold", sub: "Transactions", isCurrency: false }
   ];
 
   if (loading) {
       return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg-white">
           <div className="text-center">
-            <div className="spinner-border text-primary mb-3" role="status"></div>
-            <div className="text-muted fw-bold">Synchronizing Data...</div>
+            <div className="spinner-border text-primary mb-3"></div>
+            <div className="fw-900 text-main">Syncing Business Intelligence...</div>
           </div>
         </div>
       );
   }
 
   return (
-    <div className="admin-dashboard-container animate-fade-in p-2">
+    <div className="admin-dashboard-container animate-in p-2">
       {/* Platinum Header */}
       <div className="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title">Executive Dashboard</h1>
-          <p className="premium-subtitle">Strategic overview of business operations & growth metrics</p>
+          <h1 className="premium-title">Executive Overview</h1>
+          <p className="premium-subtitle">Strategic monitoring of organizational health and fiscal growth</p>
         </div>
         
-        <div className="orient-card p-2 d-flex align-items-center gap-3 bg-white">
-            <div className="bg-blue-glow p-2 rounded-3"><Filter size={18} /></div>
+        <div className="orient-card p-2 d-flex align-items-center gap-3 bg-white border-0 shadow-sm">
+            <div className="bg-blue-glow p-2 rounded-circle"><Filter size={16} /></div>
             <select 
-                className="premium-input py-1 px-2 border-0 bg-transparent fw-bold" 
+                className="premium-input py-1 px-2 border-0 bg-transparent fw-800" 
                 value={filterType} 
                 onChange={(e) => setFilterType(e.target.value)}
-                style={{ minWidth: '160px', fontSize: '0.85rem' }}
+                style={{ minWidth: '180px', fontSize: '0.85rem' }}
             >
-                <option value="today">Today's Performance</option>
-                <option value="thisWeek">Weekly Overview</option>
-                <option value="thisMonth">Monthly Analysis</option>
-                <option value="custom">Custom Timeframe</option>
+                <option value="today">Today's metrics</option>
+                <option value="thisWeek">Weekly cycle</option>
+                <option value="thisMonth">Monthly cycle</option>
+                <option value="custom">Custom interval</option>
             </select>
             {filterType === "custom" && (
-                <div className="d-flex gap-2 align-items-center">
-                    <input type="date" className="premium-input py-1 px-2" value={customStart} onChange={(e) => setCustomStart(e.target.value)} />
-                    <input type="date" className="premium-input py-1 px-2" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)} />
+                <div className="d-flex gap-2 align-items-center border-start ps-3">
+                    <input type="date" className="premium-input py-1 px-2 border-0 bg-app" value={customStart} onChange={(e) => setCustomStart(e.target.value)} />
+                    <input type="date" className="premium-input py-1 px-2 border-0 bg-app" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)} />
                 </div>
             )}
         </div>
       </div>
 
-      {/* Main Stats Grid */}
+      {/* Primary KPI Grid */}
       <div className="row g-4 mb-5">
         {statCards.map((stat, idx) => (
           <div className="col-xl-3 col-md-6" key={idx}>
-            <div className="orient-card orient-stat-card">
-              <div className={`orient-stat-icon bg-${stat.color}-glow`}>
-                <stat.icon size={26} />
+            <div className="orient-card stat-widget h-100 border-0 shadow-platinum">
+              <div className={`stat-icon bg-${stat.color}-glow`}>
+                <stat.icon size={24} />
               </div>
               <div className="flex-grow-1">
-                <div className="orient-stat-label">{stat.label}</div>
-                <div className="orient-stat-value">
+                <div className="stat-label">{stat.label}</div>
+                <div className="stat-value">
                   {stat.isCurrency !== false && symbol}
                   {stat.isCurrency !== false ? formatCurrency(stat.value) : stat.value}
                 </div>
-                <div className="small text-muted fw-500 mt-1">{stat.sub}</div>
-              </div>
-              <div className="opacity-10">
-                <stat.icon size={48} />
+                <div className="tiny text-muted fw-700 mt-1">{stat.sub}</div>
               </div>
             </div>
           </div>
@@ -260,33 +258,33 @@ const AdminDashboard = () => {
 
       <div className="row g-4">
         <div className="col-lg-8">
-          <div className="orient-card h-100">
+          <div className="orient-card h-100 border-0 shadow-platinum">
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <div className="d-flex align-items-center gap-3">
-                    <div className="bg-blue-glow p-2 rounded-3"><Activity size={20} /></div>
-                    <h5 className="mb-0 fw-bold">Revenue by Order Channel</h5>
+                    <div className="bg-blue-glow p-2 rounded-circle"><Activity size={20} /></div>
+                    <h5 className="mb-0 fw-900 text-main">Stream: Channel Analytics</h5>
                 </div>
-                <div className="badge-premium badge-primary">Real-time Stream</div>
+                <span className="badge badge-blue">Real-time Data</span>
             </div>
-            <div style={{ height: '380px' }}>
+            <div style={{ height: '400px' }}>
               <Bar 
                 options={chartOptions} 
                 data={{
-                  labels: ["Dine-In Service", "Takeaway Orders", "Home Delivery"],
+                  labels: ["Dining Room", "Takeaway Desk", "Delivery Fleet"],
                   datasets: [
                     {
-                      label: 'Order Volume',
+                      label: 'Transaction Count',
                       data: [summary.orderTypeSummary.dineIn.count, summary.orderTypeSummary.takeaway.count, summary.orderTypeSummary.delivery.count],
                       backgroundColor: '#2563eb',
                       borderRadius: 12,
-                      barThickness: 32,
+                      barThickness: 40,
                     },
                     {
-                      label: 'Total Revenue',
+                      label: 'Value Valuation',
                       data: [summary.orderTypeSummary.dineIn.total, summary.orderTypeSummary.takeaway.total, summary.orderTypeSummary.delivery.total],
                       backgroundColor: '#10b981',
                       borderRadius: 12,
-                      barThickness: 32,
+                      barThickness: 40,
                     }
                   ]
                 }} 
@@ -296,32 +294,32 @@ const AdminDashboard = () => {
         </div>
         
         <div className="col-lg-4">
-          <div className="orient-card h-100">
+          <div className="orient-card h-100 border-0 shadow-platinum">
             <div className="d-flex align-items-center gap-3 mb-5">
-                <div className="bg-red-glow p-2 rounded-3"><Layers size={20} /></div>
-                <h5 className="mb-0 fw-bold">Expenditure Allocation</h5>
+                <div className="bg-red-glow p-2 rounded-circle"><Layers size={20} /></div>
+                <h5 className="mb-0 fw-900 text-main">Capital Allocation</h5>
             </div>
-            <div style={{ height: '300px' }}>
+            <div style={{ height: '320px' }}>
               <Doughnut 
                 options={{ 
                     ...chartOptions, 
                     scales: { x: { display: false }, y: { display: false } },
-                    cutout: '75%'
+                    cutout: '80%'
                 }} 
                 data={{
-                  labels: ["Suppliers", "Fixed Bills", "Staff Payroll", "Operations"],
+                  labels: ["Suppliers", "Bills", "Payroll", "Ops"],
                   datasets: [{
                     data: [summary.totalSupplierExpenses, summary.totalBills, summary.totalSalaries, summary.totalOtherExpenses],
                     backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
                     borderWidth: 0,
-                    hoverOffset: 20
+                    hoverOffset: 25
                   }]
                 }}
               />
             </div>
-            <div className="mt-5 p-3 rounded-4 bg-light">
+            <div className="mt-5 p-4 rounded-4 bg-app">
                 <div className="d-flex justify-content-between align-items-center">
-                    <span className="text-muted fw-bold small">TOTAL MONTHLY OUTFLOW</span>
+                    <span className="text-muted fw-800 tiny">TOTAL OUTFLOW</span>
                     <span className="fw-900 text-danger h5 mb-0">{symbol}{formatCurrency(summary.totalCost)}</span>
                 </div>
             </div>
@@ -331,23 +329,23 @@ const AdminDashboard = () => {
 
       <div className="row g-4 mt-1 mb-5">
         <div className="col-md-6">
-            <div className="orient-card">
+            <div className="orient-card border-0 shadow-platinum">
                 <div className="d-flex align-items-center gap-3 mb-5">
-                    <div className="bg-blue-glow p-2 rounded-3"><CreditCard size={20} /></div>
-                    <h5 className="mb-0 fw-bold">Payment Methods Summary</h5>
+                    <div className="bg-blue-glow p-2 rounded-circle"><CreditCard size={20} /></div>
+                    <h5 className="mb-0 fw-900 text-main">Settlement Channels</h5>
                 </div>
                 <div className="d-flex flex-column gap-3">
                     {[
-                        { label: 'Cash Collections', val: summary.paymentBreakdown.cash, color: '#2563eb', icon: DollarSign, bg: 'blue' },
-                        { label: 'Card Transactions', val: summary.paymentBreakdown.card, color: '#10b981', icon: CreditCard, bg: 'green' },
+                        { label: 'Physical Cash', val: summary.paymentBreakdown.cash, color: '#2563eb', icon: DollarSign, bg: 'blue' },
+                        { label: 'Electronic Terminals', val: summary.paymentBreakdown.card, color: '#10b981', icon: CreditCard, bg: 'green' },
                         { label: 'Bank Transfers', val: summary.paymentBreakdown.bank, color: '#f59e0b', icon: Wallet, bg: 'gold' }
                     ].map((item, i) => (
-                        <div key={i} className="d-flex align-items-center justify-content-between p-3 rounded-4 hover-lift" style={{ background: '#f8fafc' }}>
+                        <div key={i} className="d-flex align-items-center justify-content-between p-3 rounded-4 hover-lift bg-app">
                             <div className="d-flex align-items-center gap-3">
-                                <div className={`bg-${item.bg}-glow p-2 rounded-circle`}><item.icon size={18} /></div>
-                                <span className="fw-bold small">{item.label}</span>
+                                <div className={`bg-${item.bg}-glow p-2 rounded-circle`}><item.icon size={14} /></div>
+                                <span className="fw-800 small">{item.label}</span>
                             </div>
-                            <span className="fw-900">{symbol}{formatCurrency(item.val)}</span>
+                            <span className="fw-900 text-main">{symbol}{formatCurrency(item.val)}</span>
                         </div>
                     ))}
                 </div>
@@ -355,16 +353,16 @@ const AdminDashboard = () => {
         </div>
 
         <div className="col-md-6">
-            <div className="orient-card">
+            <div className="orient-card border-0 shadow-platinum h-100">
                 <div className="d-flex align-items-center gap-3 mb-5">
-                    <div className="bg-gold-glow p-2 rounded-3"><Users size={20} /></div>
-                    <h5 className="mb-0 fw-bold">Elite Performance: Top Menu Items</h5>
+                    <div className="bg-gold-glow p-2 rounded-circle"><Activity size={20} /></div>
+                    <h5 className="mb-0 fw-900 text-main">Culinary Top Performers</h5>
                 </div>
-                <div className="premium-table-container">
+                <div className="table-container border-0">
                     <table className="premium-table">
                         <thead>
                             <tr>
-                                <th>CULINARY ITEM</th>
+                                <th>ASSET NAME</th>
                                 <th>VOLUME</th>
                                 <th>REVENUE</th>
                             </tr>
@@ -372,13 +370,13 @@ const AdminDashboard = () => {
                         <tbody>
                             {summary.topMenus.length > 0 ? summary.topMenus.map((item, i) => (
                                 <tr key={i}>
-                                    <td className="fw-bold">{item.name}</td>
-                                    <td><span className="badge-premium badge-primary">{item.count} Sold</span></td>
+                                    <td className="fw-800 text-main">{item.name}</td>
+                                    <td><span className="badge badge-blue">{item.count} Sold</span></td>
                                     <td className="fw-900 text-primary">{symbol}{formatCurrency(item.total)}</td>
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan="3" className="text-center text-muted py-5">No performance data recorded for this timeframe.</td>
+                                    <td colSpan="3" className="text-center py-5 text-muted opacity-50">No culinary performance data found.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -388,12 +386,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <style>{`
-        .fw-900 { font-weight: 900; }
-        .fw-500 { font-weight: 500; }
-        .hover-lift { transition: transform 0.2s; }
-        .hover-lift:hover { transform: translateX(5px); }
-      `}</style>
+
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
   FaFirstOrder, FaMotorcycle, FaUserClock, FaCashRegister, FaBookReader, FaCoins, FaWallet, FaPrint, FaUserTag, FaDatabase,
   FaChevronDown, FaTimes, FaIndent, FaOutdent
 } from "react-icons/fa";
-import "../styles/OrientPremium.css";
+import "../styles/PremiumUI.css";
 import NotificationCenter from "./NotificationCenter";
 
 const RoleLayout = () => {
@@ -45,15 +45,14 @@ const RoleLayout = () => {
   const createMenuItem = (to, label, Icon) => {
     const isActive = location.pathname === to;
     return (
-      <li className="orient-menu-item" key={to}>
+      <li className="menu-item" key={to}>
         <Link 
           to={to} 
-          className={`orient-link ${isActive ? "active" : ""}`} 
+          className={`menu-link ${isActive ? "active" : ""}`} 
           onClick={() => isMobile && setSidebarOpen(false)}
-          title={!sidebarOpen ? label : ""}
         >
-          <Icon className="orient-icon" />
-          {sidebarOpen && <span className="orient-label">{label}</span>}
+          <Icon />
+          {sidebarOpen && <span>{label}</span>}
         </Link>
       </li>
     );
@@ -64,31 +63,30 @@ const RoleLayout = () => {
       case "admin":
         return (
           <>
-            {createMenuItem("/admin", "Dashboard", FaTachometerAlt)}
-            <div className="orient-menu-divider">Management</div>
-            {createMenuItem("/cashier", "POS Terminal", FaCashRegister)}
+            {createMenuItem("/admin", "Executive Desk", FaTachometerAlt)}
+            <div className="menu-divider">POS & Operations</div>
+            {createMenuItem("/cashier", "Terminal POS", FaCashRegister)}
             {createMenuItem("/kitchen", "Live Kitchen", FaUtensils)}
-            {createMenuItem("/kitchen/menu", "Menu Items", FaClipboardList)}
-            {createMenuItem("/cashier/orders", "Order History", FaHistory)}
-            {createMenuItem("/admin/customers", "Customers", FaUserTag)}
+            {createMenuItem("/kitchen/menu", "Inventory", FaClipboardList)}
+            {createMenuItem("/cashier/orders", "Order Vault", FaHistory)}
+            {createMenuItem("/admin/customers", "Loyalty Base", FaUserTag)}
             
-            <div className="orient-menu-divider">Operations</div>
-            {createMenuItem("/admin/employees", "Staff Management", FaUserTie)}
-            {createMenuItem("/kitchen/attendance/add", "Live Attendance", FaUserClock)}
-            {createMenuItem("/admin/attendance", "Attendance Logs", FaCalendarCheck)}
-            {createMenuItem("/admin/suppliers", "Suppliers", FaTruck)}
+            <div className="menu-divider">Human Resources</div>
+            {createMenuItem("/admin/employees", "Staff Directory", FaUserTie)}
+            {createMenuItem("/kitchen/attendance/add", "Check-In Terminal", FaUserClock)}
+            {createMenuItem("/admin/attendance", "Attendance Audit", FaCalendarCheck)}
             
-            <div className="orient-menu-divider">Finance</div>
-            {createMenuItem("/admin/expenses", "Supplier Bills", FaMoneyBillWave)}
-            {createMenuItem("/cashier/other-income", "Other Income", FaCoins)}
-            {createMenuItem("/cashier/other-expences", "Operational Exp", FaWallet)}
+            <div className="menu-divider">Finances & Supply</div>
+            {createMenuItem("/admin/suppliers", "Supply Chain", FaTruck)}
+            {createMenuItem("/admin/expenses", "Vendor Bills", FaMoneyBillWave)}
+            {createMenuItem("/cashier/other-income", "Misc Inflow", FaCoins)}
+            {createMenuItem("/cashier/other-expences", "Operational Out", FaWallet)}
             {createMenuItem("/admin/salaries", "Payroll", FaMoneyCheckAlt)}
-            {createMenuItem("/admin/report", "Financial Reports", FaChartBar)}
+            {createMenuItem("/admin/report", "Fiscal Reports", FaChartBar)}
             
-            <div className="orient-menu-divider">Settings</div>
+            <div className="menu-divider">Core Systems</div>
             {createMenuItem("/printer-settings", "Printers", FaPrint)}
-            {createMenuItem("/admin/service-charge", "Service Charge", FaPercentage)}
-            {createMenuItem("/admin/delivery-charges", "Delivery", FaTruckLoading)}
+            {createMenuItem("/admin/service-charge", "Tax/Charges", FaPercentage)}
             {createMenuItem("/admin/users", "User Access", FaUsers)}
             {createMenuItem("/admin/db-Status", "System Health", FaDatabase)}
           </>
@@ -98,21 +96,10 @@ const RoleLayout = () => {
           <>
             {createMenuItem("/cashier", "POS Terminal", FaCashRegister)}
             {createMenuItem("/kitchen", "Live Orders", FaUtensils)}
-            {createMenuItem("/cashier/orders", "History", FaHistory)}
-            {createMenuItem("/cashier/today", "Daily Report", FaBookOpen)}
-            {createMenuItem("/kitchen/menu", "Menu Preview", FaClipboardList)}
-            {createMenuItem("/cashier/other-income", "Income Entry", FaCoins)}
-            {createMenuItem("/cashier/other-expences", "Expense Entry", FaWallet)}
-            {createMenuItem("/kitchen/attendance/add", "Clock In/Out", FaUserClock)}
-          </>
-        );
-      case "kitchen":
-        return (
-          <>
-            {createMenuItem("/kitchen", "Active Orders", FaUtensils)}
-            {createMenuItem("/kitchen/history", "Served History", FaHistory)}
-            {createMenuItem("/kitchen/menu", "Availability", FaClipboardList)}
-            {createMenuItem("/kitchen/kitchen-requestsForm", "Requests", FaClipboardList)}
+            {createMenuItem("/cashier/orders", "Order History", FaHistory)}
+            {createMenuItem("/cashier/today", "EOD Report", FaBookOpen)}
+            {createMenuItem("/cashier/other-income", "Income Log", FaCoins)}
+            {createMenuItem("/cashier/other-expences", "Expense Log", FaWallet)}
             {createMenuItem("/kitchen/attendance/add", "Attendance", FaUserClock)}
           </>
         );
@@ -126,10 +113,10 @@ const RoleLayout = () => {
       {/* Sidebar */}
       <aside className={`orient-sidebar ${!sidebarOpen ? "collapsed" : ""} ${isMobile && sidebarOpen ? "mobile-open" : ""}`}>
         <div className="orient-sidebar-header">
-          <img src="/logo.jpg" alt="Logo" className="orient-logo" />
-          {sidebarOpen && <h1 className="orient-title">Royal Orient</h1>}
+          <img src="/logo.jpg" alt="Logo" className="sidebar-logo" />
+          {sidebarOpen && <h1 className="sidebar-title">Royal Orient</h1>}
           {isMobile && sidebarOpen && (
-            <button className="orient-close-btn" onClick={() => setSidebarOpen(false)}>
+            <button className="btn-premium btn-ghost p-1 ms-auto" onClick={() => setSidebarOpen(false)}>
               <FaTimes />
             </button>
           )}
@@ -138,53 +125,52 @@ const RoleLayout = () => {
           {renderSidebarMenu()}
         </ul>
         
-        <div className="orient-sidebar-footer">
-          <button className="orient-logout-link" onClick={logout}>
-            <FaSignOutAlt className="orient-icon" />
-            {sidebarOpen && <span>Sign Out</span>}
+        <div className="sidebar-footer">
+          <button className="menu-link w-100 border-0 bg-transparent text-danger" onClick={logout}>
+            <FaSignOutAlt />
+            {sidebarOpen && <span>Sign Out System</span>}
           </button>
         </div>
       </aside>
 
-      {/* Main Area */}
+      {/* Main Content Area */}
       <div className="orient-main">
-        <header className="orient-navbar">
-          <div className="orient-nav-left">
-            <button className="orient-toggle-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        <header className="orient-header">
+          <div className="header-left">
+            <button className="btn-premium btn-ghost" onClick={() => setSidebarOpen(!sidebarOpen)}>
               {sidebarOpen ? <FaIndent /> : <FaOutdent />}
             </button>
-            <div className="orient-breadcrumb d-none d-md-block">
-               Management System / <span className="orient-text-gold">{user?.role}</span>
+            <div className="nav-breadcrumb d-none d-md-block">
+               Cloud Management / <span className="breadcrumb-active">{user?.role} portal</span>
             </div>
           </div>
 
-          <div className="orient-nav-right">
+          <div className="header-right">
             <NotificationCenter />
-            <div className="orient-user-profile" ref={dropdownRef}>
-              <button className="orient-user-btn" onClick={() => setUserDropdown(!userDropdown)}>
-                <FaUserCircle className="orient-icon" />
+            <div className="user-profile-btn" ref={dropdownRef} onClick={() => setUserDropdown(!userDropdown)}>
+                <FaUserCircle size={18} className="text-primary" />
                 <span className="d-none d-sm-inline">{user?.name || user?.role}</span>
-                <FaChevronDown className={`chevron ${userDropdown ? "rotate" : ""}`} />
-              </button>
-              {userDropdown && (
-                <div className="orient-user-dropdown animate-fade-in">
-                  <div className="dropdown-header">
-                    <strong>{user?.name || "System User"}</strong>
-                    <span>{user?.email}</span>
-                  </div>
-                  <button className="dropdown-item text-danger" onClick={logout}>
-                    <FaSignOutAlt /> Logout
-                  </button>
-                </div>
-              )}
+                <FaChevronDown size={10} className={`ms-2 ${userDropdown ? "rotate-180" : ""}`} />
             </div>
+            {userDropdown && (
+                <div className="user-dropdown">
+                    <div className="dropdown-header">
+                        <div className="fw-900 text-main">{user?.name || "System User"}</div>
+                        <div className="text-muted tiny">{user?.email || "verified_personnel"}</div>
+                    </div>
+                    <button className="dropdown-item text-danger" onClick={logout}>
+                        <FaSignOutAlt /> Exit Management
+                    </button>
+                </div>
+            )}
           </div>
         </header>
 
-        <main className="orient-page-content">
+        <main className="orient-content">
           <Outlet />
         </main>
       </div>
+
 
     </div>
   );

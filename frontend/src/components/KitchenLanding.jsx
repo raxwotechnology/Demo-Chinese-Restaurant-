@@ -170,15 +170,7 @@ const KitchenLanding = () => {
         )}
       </div>
 
-      <style>{`
-        .bg-blue-glow { background: var(--primary-light); color: var(--primary); }
-        .bg-green-glow { background: var(--success-light); color: var(--success); }
-        .bg-red-glow { background: var(--danger-light); color: var(--danger); }
-        .bg-gold-glow { background: var(--warning-light); color: var(--warning); }
-        .fw-800 { font-weight: 800; }
-        .fw-900 { font-weight: 900; }
-        .border-dashed { border-style: dashed !important; }
-      `}</style>
+
     </div>
   );
 };
