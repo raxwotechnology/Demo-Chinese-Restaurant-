@@ -1,25 +1,25 @@
 :root {
-  /* --- Master Platinum Light Palette --- */
-  --bg-app: #f8fafc;        /* Softest Slate */
-  --bg-sidebar: #ffffff;
+  /* --- Royal Luxury Palette --- */
+  --bg-app: #f1f5f9;         /* Pearl Slate Background */
+  --bg-sidebar: #0f172a;     /* Deep Midnight Blue */
   --bg-surface: #ffffff;
-  --bg-header: rgba(255, 255, 255, 0.8);
+  --bg-header: rgba(255, 255, 255, 0.9);
   
-  --primary: #2563eb;        /* Refined Professional Palette */
+  --primary: #2563eb;        /* Royal Blue */
   --primary-light: #eff6ff;
   --primary-glow: rgba(37, 99, 235, 0.15);
+  
+  --accent-gold: #b45309;    /* Premium Gold */
+  --accent-gold-light: #fffbeb;
+  
   --success: #10b981;
   --success-light: #ecfdf5;
-  --success-glow: rgba(16, 185, 129, 0.15);
   --warning: #f59e0b;
-  --warning-light: #fffbeb;
-  --warning-glow: rgba(245, 158, 11, 0.15);
   --danger: #ef4444;
-  --danger-light: #fef2f2;
-  --danger-glow: rgba(239, 68, 68, 0.15);
   
   --text-main: #0f172a;
   --text-muted: #64748b;
+  --text-on-dark: #f8fafc;
   --border-light: #e2e8f0;
   
   /* High-Fidelity Shadows */
@@ -97,15 +97,16 @@ body {
 
 .orient-sidebar {
   width: var(--sidebar-width);
-  background: #ffffff;
-  border-right: 1px solid var(--border-light);
+  background: var(--bg-sidebar);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: fixed;
   height: 100vh;
   z-index: 1000;
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.02);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+  color: var(--text-on-dark);
 }
 
 .orient-sidebar.collapsed { width: 80px; }
@@ -113,9 +114,11 @@ body {
 .orient-main {
   flex: 1;
   margin-left: var(--sidebar-width);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  background: var(--bg-app);
+  min-height: 100vh;
 }
 
 .orient-sidebar.collapsed + .orient-main { margin-left: 80px; }
@@ -351,10 +354,11 @@ body {
 
 .catalog-grid { 
   display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-  gap: 12px; 
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+  gap: 16px; 
   overflow-y: auto; 
-  padding: 4px; 
+  padding: 8px;
+  background: transparent;
 }
 
 .catalog-card { 
@@ -550,9 +554,10 @@ body {
   height: var(--header-height);
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   gap: 12px;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-logo {
@@ -565,8 +570,8 @@ body {
 
 .sidebar-title {
   font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--text-main);
+  font-weight: 900;
+  color: #fff;
   letter-spacing: -0.5px;
   white-space: nowrap;
 }
@@ -574,17 +579,49 @@ body {
 /* Sidebar Navigation */
 .orient-menu {
   list-style: none;
-  padding: 16px 12px;
+  padding: 12px;
   flex: 1;
   overflow-y: auto;
 }
 
-.menu-divider {
-  font-size: 0.65rem;
-  font-weight: 900;
+.menu-item { margin-bottom: 4px; }
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
   color: #94a3b8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.menu-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.menu-link.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.menu-link svg {
+  font-size: 1.1rem;
+  min-width: 20px;
+}
+
+.menu-divider {
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.2);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  padding: 16px 16px 8px;
 }
 
 .sidebar-footer {

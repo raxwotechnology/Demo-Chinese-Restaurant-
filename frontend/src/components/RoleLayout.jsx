@@ -126,7 +126,7 @@ const RoleLayout = () => {
         </ul>
         
         <div className="sidebar-footer">
-          <button className="menu-link w-100 border-0 bg-transparent text-danger" onClick={logout}>
+          <button className="menu-link w-100 border-0 bg-transparent text-on-dark opacity-75" onClick={logout}>
             <FaSignOutAlt />
             {sidebarOpen && <span>Sign Out System</span>}
           </button>
