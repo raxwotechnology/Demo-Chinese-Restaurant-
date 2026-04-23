@@ -8,7 +8,9 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  PointElement,
+  LineElement,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
 import {
@@ -16,14 +18,14 @@ import {
   CreditCard,
   Truck,
   Percent,
-  Gift,
-  Wrench,
   Wallet,
-  TrendingDown,
   TrendingUp,
-  AlertTriangle,
+  TrendingDown,
   Filter,
-  DollarSign
+  DollarSign,
+  Users,
+  Activity,
+  Layers
 } from "lucide-react";
 import "../styles/PremiumUI.css";
 
@@ -32,6 +34,8 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
@@ -146,62 +150,84 @@ const AdminDashboard = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'bottom',
-        labels: { color: '#F1FAEE', padding: 20, font: { size: 12, family: 'Poppins' } }
+        position: 'top',
+        align: 'end',
+        labels: { 
+          color: '#64748b', 
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 20, 
+          font: { size: 12, weight: '600', family: 'Inter' } 
+        }
       },
       tooltip: {
-        backgroundColor: '#023047',
-        titleFont: { family: 'Poppins' },
-        bodyFont: { family: 'Poppins' },
-        borderColor: 'rgba(255,255,255,0.1)',
-        borderWidth: 1
+        backgroundColor: '#ffffff',
+        titleColor: '#0f172a',
+        bodyColor: '#64748b',
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 },
+        padding: 12,
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        cornerRadius: 12,
+        displayColors: true,
       }
     },
     scales: {
-      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.6)' } },
-      x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.6)' } }
+      y: { 
+        grid: { color: '#f1f5f9', drawBorder: false }, 
+        ticks: { color: '#94a3b8', font: { size: 11 } } 
+      },
+      x: { 
+        grid: { display: false }, 
+        ticks: { color: '#94a3b8', font: { size: 11 } } 
+      }
     }
   };
 
   const statCards = [
-    { label: "Gross Income", value: summary.totalIncome, icon: Wallet, color: "#00B4D8", sub: "Combined Revenue" },
-    { label: "Net Profit", value: summary.netProfit, icon: TrendingUp, color: "#00FF7F", sub: "After All Expenses" },
-    { label: "Operational Cost", value: summary.totalCost, icon: TrendingDown, color: "#D90429", sub: "Total Expenditure" },
-    { label: "Total Orders", value: summary.totalOrders, icon: ShoppingCart, color: "#FFB703", sub: "Dine-in & Takeaway", isCurrency: false }
+    { label: "Revenue", value: summary.totalIncome, icon: Wallet, color: "blue", sub: "Gross Earnings" },
+    { label: "Net Profit", value: summary.netProfit, icon: TrendingUp, color: "green", sub: "Final Margin" },
+    { label: "Expenditure", value: summary.totalCost, icon: TrendingDown, color: "red", sub: "Operational Cost" },
+    { label: "Total Orders", value: summary.totalOrders, icon: ShoppingCart, color: "gold", sub: "Volume", isCurrency: false }
   ];
 
   if (loading) {
-      return <div className="d-flex justify-content-center align-items-center vh-100">
-          <div className="spinner-border text-gold" role="status"></div>
-      </div>;
+      return (
+        <div className="d-flex justify-content-center align-items-center vh-100 bg-white">
+          <div className="text-center">
+            <div className="spinner-border text-primary mb-3" role="status"></div>
+            <div className="text-muted fw-bold">Synchronizing Data...</div>
+          </div>
+        </div>
+      );
   }
 
   return (
-    <div className="admin-dashboard-container animate-fade-in">
-      {/* Header Section */}
-      <div className="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
+    <div className="admin-dashboard-container animate-fade-in p-2">
+      {/* Platinum Header */}
+      <div className="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title mb-1">Executive Overview</h1>
-          <p className="premium-subtitle mb-0">Real-time performance analytics & financial tracking</p>
+          <h1 className="premium-title">Executive Dashboard</h1>
+          <p className="premium-subtitle">Strategic overview of business operations & growth metrics</p>
         </div>
         
-        <div className="premium-card p-3 d-flex align-items-center gap-3">
-            <Filter size={18} className="text-gold" />
+        <div className="orient-card p-2 d-flex align-items-center gap-3 bg-white">
+            <div className="bg-blue-glow p-2 rounded-3"><Filter size={18} /></div>
             <select 
-                className="premium-input py-1 px-2 border-0 bg-transparent" 
+                className="premium-input py-1 px-2 border-0 bg-transparent fw-bold" 
                 value={filterType} 
                 onChange={(e) => setFilterType(e.target.value)}
-                style={{ minWidth: '150px' }}
+                style={{ minWidth: '160px', fontSize: '0.85rem' }}
             >
-                <option value="today">Today</option>
-                <option value="thisWeek">This Week</option>
-                <option value="thisMonth">This Month</option>
-                <option value="custom">Custom Range</option>
+                <option value="today">Today's Performance</option>
+                <option value="thisWeek">Weekly Overview</option>
+                <option value="thisMonth">Monthly Analysis</option>
+                <option value="custom">Custom Timeframe</option>
             </select>
             {filterType === "custom" && (
                 <div className="d-flex gap-2 align-items-center">
                     <input type="date" className="premium-input py-1 px-2" value={customStart} onChange={(e) => setCustomStart(e.target.value)} />
-                    <span>-</span>
                     <input type="date" className="premium-input py-1 px-2" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)} />
                 </div>
             )}
@@ -209,51 +235,58 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Stats Grid */}
-      <div className="row g-4 mb-4">
+      <div className="row g-4 mb-5">
         {statCards.map((stat, idx) => (
           <div className="col-xl-3 col-md-6" key={idx}>
             <div className="orient-card orient-stat-card">
-              <div className="orient-stat-icon" style={{ backgroundColor: `${stat.color}20`, color: stat.color }}>
-                <stat.icon size={28} />
+              <div className={`orient-stat-icon bg-${stat.color}-glow`}>
+                <stat.icon size={26} />
               </div>
-              <div>
+              <div className="flex-grow-1">
                 <div className="orient-stat-label">{stat.label}</div>
                 <div className="orient-stat-value">
                   {stat.isCurrency !== false && symbol}
                   {stat.isCurrency !== false ? formatCurrency(stat.value) : stat.value}
                 </div>
-                <div className="orient-stat-label" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{stat.sub}</div>
+                <div className="small text-muted fw-500 mt-1">{stat.sub}</div>
+              </div>
+              <div className="opacity-10">
+                <stat.icon size={48} />
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Charts Section */}
-      <div className="row g-4 mb-4">
+      <div className="row g-4">
         <div className="col-lg-8">
           <div className="orient-card h-100">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h5 className="mb-0 text-white">Revenue by Order Type</h5>
-                <div className="badge-premium badge-warning">Live Data</div>
+            <div className="d-flex justify-content-between align-items-center mb-5">
+                <div className="d-flex align-items-center gap-3">
+                    <div className="bg-blue-glow p-2 rounded-3"><Activity size={20} /></div>
+                    <h5 className="mb-0 fw-bold">Revenue by Order Channel</h5>
+                </div>
+                <div className="badge-premium badge-primary">Real-time Stream</div>
             </div>
-            <div style={{ height: '350px' }}>
+            <div style={{ height: '380px' }}>
               <Bar 
                 options={chartOptions} 
                 data={{
-                  labels: ["Dine-In", "Takeaway", "Delivery"],
+                  labels: ["Dine-In Service", "Takeaway Orders", "Home Delivery"],
                   datasets: [
                     {
-                      label: 'Order Count',
+                      label: 'Order Volume',
                       data: [summary.orderTypeSummary.dineIn.count, summary.orderTypeSummary.takeaway.count, summary.orderTypeSummary.delivery.count],
-                      backgroundColor: '#00B4D8',
-                      borderRadius: 10
+                      backgroundColor: '#2563eb',
+                      borderRadius: 12,
+                      barThickness: 32,
                     },
                     {
-                      label: 'Revenue',
+                      label: 'Total Revenue',
                       data: [summary.orderTypeSummary.dineIn.total, summary.orderTypeSummary.takeaway.total, summary.orderTypeSummary.delivery.total],
-                      backgroundColor: '#D90429',
-                      borderRadius: 10
+                      backgroundColor: '#10b981',
+                      borderRadius: 12,
+                      barThickness: 32,
                     }
                   ]
                 }} 
@@ -264,47 +297,57 @@ const AdminDashboard = () => {
         
         <div className="col-lg-4">
           <div className="orient-card h-100">
-            <h5 className="mb-4 text-white">Expense Breakdown</h5>
+            <div className="d-flex align-items-center gap-3 mb-5">
+                <div className="bg-red-glow p-2 rounded-3"><Layers size={20} /></div>
+                <h5 className="mb-0 fw-bold">Expenditure Allocation</h5>
+            </div>
             <div style={{ height: '300px' }}>
               <Doughnut 
-                options={{ ...chartOptions, scales: { x: { display: false }, y: { display: false } } }} 
+                options={{ 
+                    ...chartOptions, 
+                    scales: { x: { display: false }, y: { display: false } },
+                    cutout: '75%'
+                }} 
                 data={{
-                  labels: ["Suppliers", "Bills", "Salaries", "Others"],
+                  labels: ["Suppliers", "Fixed Bills", "Staff Payroll", "Operations"],
                   datasets: [{
                     data: [summary.totalSupplierExpenses, summary.totalBills, summary.totalSalaries, summary.totalOtherExpenses],
-                    backgroundColor: ['#D90429', '#00B4D8', '#FFB703', '#800000'],
-                    borderWidth: 0
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 0,
+                    hoverOffset: 20
                   }]
                 }}
               />
             </div>
-            <div className="mt-4">
-                <div className="d-flex justify-content-between mb-2">
-                    <span className="orient-text-muted">Total Cost</span>
-                    <span className="fw-bold text-danger">{symbol}{formatCurrency(summary.totalCost)}</span>
+            <div className="mt-5 p-3 rounded-4 bg-light">
+                <div className="d-flex justify-content-between align-items-center">
+                    <span className="text-muted fw-bold small">TOTAL MONTHLY OUTFLOW</span>
+                    <span className="fw-900 text-danger h5 mb-0">{symbol}{formatCurrency(summary.totalCost)}</span>
                 </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Detailed Insights */}
-      <div className="row g-4 mb-5">
+      <div className="row g-4 mt-1 mb-5">
         <div className="col-md-6">
             <div className="orient-card">
-                <h5 className="mb-4 text-white">Payment Methods</h5>
+                <div className="d-flex align-items-center gap-3 mb-5">
+                    <div className="bg-blue-glow p-2 rounded-3"><CreditCard size={20} /></div>
+                    <h5 className="mb-0 fw-bold">Payment Methods Summary</h5>
+                </div>
                 <div className="d-flex flex-column gap-3">
                     {[
-                        { label: 'Cash Payments', val: summary.paymentBreakdown.cash, color: '#00FF7F', icon: DollarSign },
-                        { label: 'Card Transactions', val: summary.paymentBreakdown.card, color: '#00B4D8', icon: CreditCard },
-                        { label: 'Bank Transfers', val: summary.paymentBreakdown.bank, color: '#FFB703', icon: Wallet }
+                        { label: 'Cash Collections', val: summary.paymentBreakdown.cash, color: '#2563eb', icon: DollarSign, bg: 'blue' },
+                        { label: 'Card Transactions', val: summary.paymentBreakdown.card, color: '#10b981', icon: CreditCard, bg: 'green' },
+                        { label: 'Bank Transfers', val: summary.paymentBreakdown.bank, color: '#f59e0b', icon: Wallet, bg: 'gold' }
                     ].map((item, i) => (
-                        <div key={i} className="d-flex align-items-center justify-content-between p-3 rounded-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                        <div key={i} className="d-flex align-items-center justify-content-between p-3 rounded-4 hover-lift" style={{ background: '#f8fafc' }}>
                             <div className="d-flex align-items-center gap-3">
-                                <item.icon size={20} style={{ color: item.color }} />
-                                <span>{item.label}</span>
+                                <div className={`bg-${item.bg}-glow p-2 rounded-circle`}><item.icon size={18} /></div>
+                                <span className="fw-bold small">{item.label}</span>
                             </div>
-                            <span className="fw-bold">{symbol}{formatCurrency(item.val)}</span>
+                            <span className="fw-900">{symbol}{formatCurrency(item.val)}</span>
                         </div>
                     ))}
                 </div>
@@ -313,26 +356,29 @@ const AdminDashboard = () => {
 
         <div className="col-md-6">
             <div className="orient-card">
-                <h5 className="mb-4 text-white">Best Selling Items</h5>
+                <div className="d-flex align-items-center gap-3 mb-5">
+                    <div className="bg-gold-glow p-2 rounded-3"><Users size={20} /></div>
+                    <h5 className="mb-0 fw-bold">Elite Performance: Top Menu Items</h5>
+                </div>
                 <div className="premium-table-container">
                     <table className="premium-table">
                         <thead>
                             <tr>
-                                <th>Item Name</th>
-                                <th>Qty</th>
-                                <th>Revenue</th>
+                                <th>CULINARY ITEM</th>
+                                <th>VOLUME</th>
+                                <th>REVENUE</th>
                             </tr>
                         </thead>
                         <tbody>
                             {summary.topMenus.length > 0 ? summary.topMenus.map((item, i) => (
                                 <tr key={i}>
-                                    <td>{item.name}</td>
-                                    <td className="text-gold fw-bold">{item.count}</td>
-                                    <td>{symbol}{formatCurrency(item.total)}</td>
+                                    <td className="fw-bold">{item.name}</td>
+                                    <td><span className="badge-premium badge-primary">{item.count} Sold</span></td>
+                                    <td className="fw-900 text-primary">{symbol}{formatCurrency(item.total)}</td>
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan="3" className="text-center orient-text-muted py-4">No data available for this period</td>
+                                    <td colSpan="3" className="text-center text-muted py-5">No performance data recorded for this timeframe.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -343,9 +389,10 @@ const AdminDashboard = () => {
       </div>
 
       <style>{`
-        .text-gold { color: var(--orient-gold); }
-        .orient-card h5 { font-weight: 700; letter-spacing: 0.5px; }
-        .text-white { color: #fff !important; }
+        .fw-900 { font-weight: 900; }
+        .fw-500 { font-weight: 500; }
+        .hover-lift { transition: transform 0.2s; }
+        .hover-lift:hover { transform: translateX(5px); }
       `}</style>
     </div>
   );
