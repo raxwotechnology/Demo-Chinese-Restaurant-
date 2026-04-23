@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Outfit:wght@300;400;600&display=swap');
+
+.login-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow: hidden;
+  background: url('../upload/login-bg.png') center center / cover no-repeat fixed;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Specific Kitchen Background */
+.login-wrapper.kitchen-bg {
+  background: url('../upload/Kichen_signIn.jpg') center center / cover no-repeat fixed;
+}
+
+/* Specific Admin Background */
+.login-wrapper.admin-bg {
+  background: url('../upload/admin_portal _signIn.jpg') center center / cover no-repeat fixed;
+}
+
+/* Background for Forgot Password / Reset page */
+.login-wrapper.bg-premium {
+  background: url('../upload/premium-bg.png') center center / cover no-repeat fixed;
+}
+
+.login-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.85) 100%);
+  z-index: 1;
+}
+
+.login-glass-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  padding: 50px 40px;
+  background: rgba(10, 10, 10, 0.82);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 4px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  animation: loginElegantFade 1.2s ease-out;
+}
+
+@keyframes loginElegantFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.login-card-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 35px;
+  text-align: center;
+  display: block;
+}
+
+.login-input-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.login-input-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 15px;
+  color: #D4AF37;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+.login-input-premium {
+  width: 100%;
+  padding: 14px 14px 14px 45px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.login-input-premium:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #D4AF37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.login-btn-premium {
+  width: 100%;
+  padding: 16px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.4s;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-cashier-accent {
+  background: #9b1c1c;
+  /* Crimson */
+  box-shadow: 0 10px 20px rgba(155, 28, 28, 0.3);
+}
+
+.btn-kitchen-accent {
+  background: #262626;
+  /* Charcoal */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-admin-accent {
+  background: #800000;
+  /* Deep Red */
+  box-shadow: 0 10px 20px rgba(128, 0, 0, 0.3);
+}
+
+.login-btn-premium:hover {
+  filter: brightness(1.2);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.login-btn-premium:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-footer {
+  margin-top: 35px;
+  text-align: center;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-footer p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 15px;
+}
+.link-gold {
+  color: #D4AF37;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  font-weight: 600;
+}
+
+.link-gold:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.premium-link {
+  color: #D4AF37;
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.3s;
+}
+
+.premium-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+@media (max-width: 576px) {
+  .login-glass-card {
+    padding: 35px 25px;
+  }
+
+  .login-card-title {
+    font-size: 1.8rem;
+  }
+}

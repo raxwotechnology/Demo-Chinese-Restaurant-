@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600&display=swap');
+
+.signup-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Professional Left Alignment */
+  padding: 40px 5%; /* Aggressive left push to clear background focus */
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.5s ease;
+}
+
+/* Dynamic Backgrounds */
+.signup-wrapper.cashier {
+  background: url('../upload/signup-bg.png') center center / cover no-repeat fixed;
+}
+/* Note: If you save cashier-bg.png, switch it here */
+
+.signup-wrapper.kitchen {
+  background: url('../upload/kichen_signup.jpg') center center / cover no-repeat fixed;
+}
+
+.signup-wrapper.default {
+  background: url('../upload/boutique-bg.png') center center / cover no-repeat fixed;
+}
+
+.signup-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.45) 0%, rgba(10, 10, 10, 0.9) 100%);
+  z-index: 1;
+}
+
+.signup-glass-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 480px;
+  padding: 50px 40px;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 4px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.75);
+  animation: signupElegantFade 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  color: #ffffff;
+}
+
+@keyframes signupElegantFade {
+  from { opacity: 0; transform: translateY(30px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.signup-card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: #D4AF37;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.signup-card-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 35px;
+  text-align: center;
+  display: block;
+}
+
+.premium-input-group {
+  margin-bottom: 20px;
+}
+
+.premium-input-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  color: #D4AF37;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+.premium-input {
+  width: 100%;
+  padding: 14px 14px 14px 45px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.premium-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #D4AF37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+}
+
+.signup-btn-premium {
+  width: 100%;
+  padding: 16px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.4s;
+  color: #ffffff;
+}
+
+.btn-cashier-accent {
+  background: #9b1c1c; /* Crimson */
+  box-shadow: 0 10px 20px rgba(155, 28, 28, 0.3);
+}
+
+.btn-kitchen-accent {
+  background: #9b1c1c; /* Charcoal */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.signup-btn-premium:hover {
+  filter: brightness(1.2);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.signup-error-alert {
+  background: rgba(155, 28, 28, 0.15);
+  border: 1px solid rgba(155, 28, 28, 0.3);
+  color: #ff4d4d;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.signup-footer {
+  margin-top: 35px;
+  text-align: center;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signup-footer p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 5px;
+}
+
+.login-link-premium {
+  color: #D4AF37;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+  transition: opacity 0.3s;
+}
+
+.login-link-premium:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+@media (max-width: 992px) {
+  .signup-wrapper {
+    justify-content: center;
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .signup-glass-card {
+    padding: 35px 25px;
+  }
+  .signup-card-title {
+    font-size: 1.8rem;
+  }
+}

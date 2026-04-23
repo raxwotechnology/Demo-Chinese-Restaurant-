@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Cinzel:wght@400;700;900&family=Playfair+Display:wght@400;700;900&family=Outfit:wght@300;400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a;
+}
+
+.home-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow: hidden;
+  background: url('../upload/boutique-bg.png') center center / cover no-repeat fixed;
+  font-family: 'Outfit', sans-serif;
+}
+
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+  z-index: 1;
+}
+
+.glass-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  padding: 60px 40px;
+  border-radius: 4px; /* Shaper corners for boutique feel */
+  text-align: center;
+  color: #ffffff;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid rgba(212, 175, 55, 0.3); /* Gold border tint */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  animation: elegantFade 1.5s ease-out;
+}
+
+@keyframes elegantFade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo-ring {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  padding: 3px;
+  background: #1d1c1b; /* Gold */
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #0a0a0a;
+}
+
+.home-title {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 900;
+  color: #D4AF37; /* Royal Gold */
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.home-subtitle {
+  margin: 10px 0 35px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+.login-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.premium-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.btn-icon {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* User Requested Colors */
+.btn-cashier {
+  background: #9b1c1c; /* Crimson Ref */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-kitchen {
+  background: #262626; /* Charcoal Ref */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-admin {
+  background: #800000; /* Deep Dark Red */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.premium-btn:hover {
+  filter: brightness(1.2);
+  letter-spacing: 2px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.signup-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.signup-text {
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.signup-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-signup {
+  padding: 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+
+.btn-signup:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.footer-text {
+  margin-top: 40px;
+  opacity: 0.2;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 576px) {
+  .glass-card {
+    padding: 40px 20px;
+  }
+  .home-title {
+    font-size: 2.8rem;
+  }
+  .signup-btns {
+    grid-template-columns: 1fr;
+  }
+}

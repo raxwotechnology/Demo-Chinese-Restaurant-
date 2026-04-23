@@ -1,0 +1,538 @@
+/* Brand tokens (global) */
+:root {
+  --primary-jade: 160 100% 20%;
+  --jade-light: 160 60% 45%;
+  --jade-glow: 160 100% 50%;
+  --accent-gold: 45 100% 50%;
+  --gold-glow: 45 100% 60%;
+
+  /* Default dark-glass (legacy pages outside admin / kitchen / cashier shell) */
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-main: 210 20% 98%;
+  --text-muted: 210 10% 70%;
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ——— Admin, Kitchen & Cashier shell: full light, professional ——— */
+.dashboard-alpha-root {
+  --glass-bg: rgba(255, 255, 255, 0.94);
+  --glass-border: rgba(15, 23, 42, 0.09);
+  --text-main: 222 47% 11%;
+  --text-muted: 215 16% 46%;
+  --shadow-premium: 0 18px 44px rgba(15, 23, 42, 0.08), 0 6px 16px rgba(15, 23, 42, 0.04);
+
+  /* Hex-style vars for pages that use var(--text-main) as a color value */
+  --admin-text: #0f172a;
+  --admin-text-soft: #64748b;
+  --admin-surface: #ffffff;
+  --admin-surface-muted: #f8fafc;
+
+  min-height: 100vh;
+  font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  position: relative;
+  /* Paired axes: overflow-x:hidden alone makes overflow-y compute to auto → outer scrollbar */
+  overflow: hidden;
+
+  color: hsl(var(--text-main));
+  background-color: #eef2f7 !important;
+  background-image:
+    radial-gradient(ellipse 100% 70% at 50% -12%, hsla(var(--primary-jade), 0.09), transparent 52%),
+    radial-gradient(ellipse 60% 45% at 100% 0%, hsla(var(--accent-gold), 0.07), transparent 42%),
+    radial-gradient(ellipse 50% 40% at 0% 100%, hsla(var(--primary-jade), 0.05), transparent 48%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 42%, #e8edf3 100%) !important;
+}
+
+/* Admin, kitchen & cashier roles: Poppins for the whole shell (sidebar, navbar, page content) */
+.dashboard-alpha-root.dashboard-alpha-root--poppins {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Poppins default metrics feel cramped next to Outfit — gentle body tracking */
+  letter-spacing: 0.016em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .form-control,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .form-select,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .btn,
+.dashboard-alpha-root.dashboard-alpha-root--poppins input,
+.dashboard-alpha-root.dashboard-alpha-root--poppins select,
+.dashboard-alpha-root.dashboard-alpha-root--poppins textarea {
+  font-family: inherit;
+}
+
+/* Override page-scoped tight headings (many RMS pages use negative tracking for Outfit) */
+.dashboard-alpha-root.dashboard-alpha-root--poppins .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins h1.hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins h2.hero-title {
+  letter-spacing: 0.012em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins h2.section-title {
+  letter-spacing: 0.014em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .hero-badge {
+  letter-spacing: 0.11em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .metric-value,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .mini-card-title {
+  letter-spacing: 0.022em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .alpha-sidebar .menu-label,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .alpha-sidebar .sidebar-title {
+  letter-spacing: 0.028em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .btn,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .submit-btn,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .action-btn,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .danger-btn {
+  letter-spacing: 0.022em;
+}
+
+/* Kitchen: slightly more open tracking (dense order cards + timers) */
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper {
+  letter-spacing: 0.022em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-shell-page {
+  letter-spacing: 0.022em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-request-page {
+  letter-spacing: 0.02em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-request-page .hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-request-page .section-title {
+  letter-spacing: 0.018em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .attendance-page-light.attendance-page-wrapper {
+  letter-spacing: 0.022em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper h1.hero-title {
+  letter-spacing: 0.024em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper h4.section-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .mini-label,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .mini-value,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .hero-text,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .section-subtitle {
+  letter-spacing: 0.022em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .hero-chip {
+  letter-spacing: 0.12em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .hero-side-box span {
+  letter-spacing: 0.08em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .action-btn {
+  letter-spacing: 0.03em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-page-wrapper .order-card {
+  letter-spacing: 0.02em;
+}
+
+/* Kitchen (and admin) menu management under Poppins */
+.dashboard-alpha-root.dashboard-alpha-root--poppins .menu-page-wrapper {
+  letter-spacing: 0.02em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .menu-page-wrapper .hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .menu-page-wrapper .section-title {
+  letter-spacing: 0.018em !important;
+}
+
+/* Cashier: Poppins + comfortable tracking on dense POS / reports */
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page-wrapper,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .order-history-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .takeaway-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .daily-report-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-income-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-expenses-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .driver-page,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-bills-page {
+  letter-spacing: 0.02em;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page h1.hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page h2.hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page-wrapper .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .cashier-page-wrapper h1.hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .order-history-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .takeaway-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .daily-report-page .hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .order-history-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .takeaway-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .daily-report-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-income-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-expenses-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .driver-page .section-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-bills-page .section-title {
+  letter-spacing: 0.018em !important;
+}
+
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-income-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .other-expenses-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .driver-page .hero-title,
+.dashboard-alpha-root.dashboard-alpha-root--poppins .kitchen-bills-page .hero-title {
+  letter-spacing: 0.02em !important;
+}
+
+/* Hide document scrollbar if anything still overflows (wheel scroll unchanged) */
+html:has(.dashboard-alpha-root),
+body:has(.dashboard-alpha-root) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html:has(.dashboard-alpha-root)::-webkit-scrollbar,
+body:has(.dashboard-alpha-root)::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
+
+.dashboard-alpha-root .admin-shell-bg {
+  opacity: 0.07 !important;
+  mix-blend-mode: multiply;
+}
+
+.dashboard-alpha-root > .d-flex.w-100 {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dashboard-alpha-root .page-content {
+  flex: 1 1 0;
+  min-height: 0;
+  background: transparent;
+  color: hsl(var(--text-main));
+  overflow-y: auto;
+  /* Hide scrollbar on main column; content still scrolls (wheel / touch) */
+  scrollbar-width: none !important;
+  scrollbar-color: transparent transparent !important;
+  -ms-overflow-style: none !important;
+}
+
+.dashboard-alpha-root .main-content {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Glass surfaces inside admin */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+}
+
+.glass-card {
+  background: hsla(220, 20%, 15%, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-premium);
+}
+
+.glass-card:hover {
+  background: hsla(220, 20%, 20%, 0.6);
+  transform: translateY(-4px);
+  border-color: hsla(var(--primary-jade), 0.4);
+  box-shadow: 0 15px 35px -12px hsla(var(--primary-jade), 0.3);
+}
+
+/* Admin: light cards */
+.dashboard-alpha-root .glass-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 16px 36px -12px rgba(15, 23, 42, 0.1);
+}
+
+.dashboard-alpha-root .glass-card:hover {
+  background: #ffffff;
+  border-color: hsla(var(--primary-jade), 0.22);
+  box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.12), 0 20px 40px -16px hsla(var(--primary-jade), 0.12);
+  transform: translateY(-3px);
+}
+
+/* Sidebar (light rail — .alpha-sidebar) */
+.dashboard-alpha-root .alpha-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.96) 100%) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 4px 0 24px rgba(15, 23, 42, 0.04);
+  /* Override legacy .sidebar { color: #fff } from Sidebar.css */
+  color: #334155 !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .sidebar-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .sidebar-title {
+  color: hsl(var(--text-main)) !important;
+  font-weight: 800;
+}
+
+.dashboard-alpha-root .alpha-sidebar .sidebar-menu li {
+  border-bottom-color: rgba(15, 23, 42, 0.05) !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link {
+  border-radius: 0.75rem;
+  margin: 0.25rem 0.75rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  /* Explicit hex: ensures contrast on light sidebar even if hsl(var(--text-muted)) fails in cascade */
+  color: #334155 !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link .menu-label {
+  color: inherit !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link:hover {
+  background: hsla(var(--primary-jade), 0.1) !important;
+  color: #0f172a !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link.active {
+  /* Solid fallback so label never sits white-on-white if gradient fails to paint */
+  background-color: #047857 !important;
+  background-image: linear-gradient(
+    135deg,
+    hsl(var(--primary-jade)),
+    hsla(var(--primary-jade), 0.78)
+  ) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px hsla(var(--primary-jade), 0.28);
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link.active .menu-label {
+  color: #ffffff !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-icon {
+  color: inherit;
+}
+
+.dashboard-alpha-root .alpha-sidebar .menu-link.active .menu-icon {
+  color: #ffffff !important;
+}
+
+.dashboard-alpha-root .alpha-sidebar img.sidebar-logo {
+  border: 2px solid rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08) !important;
+}
+
+/*
+ * Page roots that paint a full-viewport light gradient — under dashboard-alpha-root
+ * use the shell background instead (avoids double gradients when rail is light).
+ */
+.dashboard-alpha-root .kitchen-page-wrapper,
+.dashboard-alpha-root .cashier-page,
+.dashboard-alpha-root .daily-report-page,
+.dashboard-alpha-root .cashier-page-wrapper,
+.dashboard-alpha-root .order-history-page,
+.dashboard-alpha-root .takeaway-page,
+.dashboard-alpha-root .menu-page-wrapper,
+.dashboard-alpha-root .report-page-wrapper,
+.dashboard-alpha-root .other-income-page,
+.dashboard-alpha-root .other-expenses-page,
+.dashboard-alpha-root .driver-page,
+.dashboard-alpha-root .attendance-page-wrapper,
+.dashboard-alpha-root .attendance-dashboard-page,
+.dashboard-alpha-root .printer-page {
+  min-height: 0;
+  background: transparent;
+}
+
+/* Top bar */
+.dashboard-alpha-root .alpha-navbar {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.07) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+}
+
+.dashboard-alpha-root .top-navbar .btn-toggle,
+.dashboard-alpha-root .top-navbar .text-inherit,
+.dashboard-alpha-root .top-navbar .session-timer,
+.dashboard-alpha-root .user-toggle,
+.dashboard-alpha-root .user-role,
+.dashboard-alpha-root .notification-bell-btn {
+  color: hsl(var(--text-main)) !important;
+}
+
+.dashboard-alpha-root .top-navbar .dropdown-menu.glass-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Account trigger — clear hit target, reads as a control */
+.dashboard-alpha-root .navbar-right button.user-toggle {
+  font: inherit;
+  text-align: inherit;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem 0.35rem 0.45rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-alpha-root .navbar-right button.user-toggle:hover {
+  background: #ffffff;
+  border-color: hsla(var(--primary-jade), 0.35);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.dashboard-alpha-root .navbar-right .user-menu-chevron {
+  font-size: 0.65rem;
+  opacity: 0.55;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dashboard-alpha-root .navbar-right .user-menu-chevron.is-open {
+  transform: rotate(180deg);
+  opacity: 0.85;
+}
+
+.dashboard-alpha-root .dropdown-item {
+  color: #0f172a !important;
+}
+
+.dashboard-alpha-root .dropdown-item:hover {
+  background: #f1f5f9 !important;
+}
+
+/* Typography helpers */
+.text-gradient-jade {
+  background: linear-gradient(135deg, hsl(var(--primary-jade)) 0%, hsl(var(--jade-light)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, hsl(var(--accent-gold)) 0%, #0f172a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dashboard-alpha-root .text-muted {
+  color: hsl(var(--text-muted)) !important;
+}
+
+/* Main column: hide scrollbar in WebKit / Edge (track + thumb + corner) */
+.dashboard-alpha-root main.page-content::-webkit-scrollbar,
+.dashboard-alpha-root .page-content::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  display: none !important;
+}
+
+.dashboard-alpha-root main.page-content::-webkit-scrollbar-track,
+.dashboard-alpha-root .page-content::-webkit-scrollbar-track,
+.dashboard-alpha-root main.page-content::-webkit-scrollbar-thumb,
+.dashboard-alpha-root .page-content::-webkit-scrollbar-thumb,
+.dashboard-alpha-root main.page-content::-webkit-scrollbar-corner,
+.dashboard-alpha-root .page-content::-webkit-scrollbar-corner {
+  width: 0 !important;
+  height: 0 !important;
+  max-width: 0 !important;
+  max-height: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Scrollbar — sidebar only */
+
+.dashboard-alpha-root .sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dashboard-alpha-root .sidebar::-webkit-scrollbar-thumb {
+  background: hsla(var(--primary-jade), 0.25);
+  border-radius: 10px;
+}
+
+.dashboard-alpha-root .sidebar::-webkit-scrollbar-thumb:hover {
+  background: hsla(var(--primary-jade), 0.45);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Muted text: keep global for Bootstrap, admin overrides above */
+.text-muted {
+  color: hsl(var(--text-muted)) !important;
+}
+
+.dashboard-alpha-root,
+.dashboard-alpha-root * {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    box-shadow 0.25s ease;
+}
