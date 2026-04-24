@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -19,7 +20,7 @@ const AdminEmployees = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/employees", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/employees`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEmployees(res.data || []);
@@ -34,7 +35,7 @@ const AdminEmployees = () => {
     if (!window.confirm("Permanently remove this personnel record?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/employee/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/employee/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEmployees(employees.filter(e => e._id !== id));

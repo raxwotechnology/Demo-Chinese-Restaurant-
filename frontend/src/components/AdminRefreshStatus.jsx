@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 // components/AdminRefreshStatus.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -20,7 +21,7 @@ const AdminRefreshStatus = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/refresh-status",
+          `${API_BASE_URL}/api/auth/refresh-status`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setRefreshed(res.data.refreshed);
@@ -45,7 +46,7 @@ const AdminRefreshStatus = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/refresh-status/reset",
+        `${API_BASE_URL}/api/auth/refresh-status/reset`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

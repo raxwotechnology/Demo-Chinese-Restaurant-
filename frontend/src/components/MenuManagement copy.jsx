@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -37,7 +38,7 @@ const MenuManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/menus",
+        `${API_BASE_URL}/api/auth/menus`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -67,7 +68,7 @@ const MenuManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/menu",
+        `${API_BASE_URL}/api/auth/menu`,
         formData,
         {
           headers: {
@@ -133,7 +134,7 @@ const MenuManagement = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/menu/${editingMenu}`,
+        `${API_BASE_URL}/api/auth/menu/${editingMenu}`,
         formData,
         {
           headers: {
@@ -161,7 +162,7 @@ const MenuManagement = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/menu/${id}`,
+        `${API_BASE_URL}/api/auth/menu/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -217,7 +218,7 @@ const MenuManagement = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/menu/${restockMenu._id}`,
+        `${API_BASE_URL}/api/auth/menu/${restockMenu._id}`,
         {
           minimumQty: updatedAvailableQty,
           currentQty: updatedCurrentQty
@@ -511,7 +512,7 @@ const MenuManagement = () => {
           <div key={menu._id} className="col-md-6 col-lg-4 col-xl-3">
             <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
               <img
-                src={`https://gasmachineserestaurantapp-7aq4.onrender.com${menu.imageUrl}`}
+                src={`${API_BASE_URL}${menu.imageUrl}`}
                 alt={menu.name}
                 style={{ height: "220px", objectFit: "cover" }}
               />
@@ -692,7 +693,7 @@ const MenuManagement = () => {
                       <img
                         src={
                           editPreview ||
-                          `https://gasmachineserestaurantapp-7aq4.onrender.com${editData.imageUrl}`
+                          `${API_BASE_URL}${editData.imageUrl}`
                         }
                         alt="Preview"
                         className="img-fluid rounded-4"

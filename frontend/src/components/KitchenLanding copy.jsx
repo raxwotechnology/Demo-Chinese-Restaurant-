@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./KitchenLanding.css";
@@ -42,7 +43,7 @@ const KitchenLanding = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/orders", {
+        const res = await axios.get(`${API_BASE_URL}/api/auth/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(res.data);
@@ -70,7 +71,7 @@ const KitchenLanding = () => {
 
     try {
       await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/order/${id}/status`,
+        `${API_BASE_URL}/api/auth/order/${id}/status`,
         { status: "Ready" },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -78,7 +79,7 @@ const KitchenLanding = () => {
       );
 
       await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/notifications/send",
+        `${API_BASE_URL}/api/auth/notifications/send`,
         {
           userId: id,
           message: `Order #${id} is ready for pickup.`,

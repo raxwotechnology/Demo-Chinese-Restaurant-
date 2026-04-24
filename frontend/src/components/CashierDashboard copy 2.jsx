@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 // src/components/TodaySummary.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -39,7 +40,7 @@ const TodaySummary = () => {
       const startDate = new Date(today.setHours(0, 0, 0, 0)).toISOString();
       const endDate = new Date(today.setHours(23, 59, 59, 999)).toISOString();
 
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/summary", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/admin/summary`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { startDate, endDate }
       });

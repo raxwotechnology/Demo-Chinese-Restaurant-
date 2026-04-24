@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 // src/components/DailyReport.jsx
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -57,14 +58,14 @@ const DailyReport = () => {
     try {
       const [summaryRes, ordersRes] = await Promise.all([
         axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/summary",
+          `${API_BASE_URL}/api/auth/admin/summary`,
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { startDate, endDate }
           }
         ),
         axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/orders?limit=1000",
+          `${API_BASE_URL}/api/auth/orders?limit=1000`,
           {
             headers: { Authorization: `Bearer ${token}` },
             params: { startDate, endDate }

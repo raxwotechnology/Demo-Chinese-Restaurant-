@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import {
@@ -45,7 +46,7 @@ const DatabaseUsage = () => {
         const token = localStorage.getItem("token");
 
         const res = await axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/db-stats",
+          `${API_BASE_URL}/api/auth/admin/db-stats`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }

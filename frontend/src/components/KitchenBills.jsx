@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 // src/components/KitchenBills.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -29,7 +30,7 @@ const KitchenBills = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/bills",
+        `${API_BASE_URL}/api/auth/kitchen/bills`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -59,7 +60,7 @@ const KitchenBills = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/bill",
+        `${API_BASE_URL}/api/auth/kitchen/bill`,
         newBill,
         {
           headers: {
@@ -113,7 +114,7 @@ const KitchenBills = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/bill/${editingBill}`,
+        `${API_BASE_URL}/api/auth/kitchen/bill/${editingBill}`,
         editData,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -136,7 +137,7 @@ const KitchenBills = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/bill/${id}`,
+        `${API_BASE_URL}/api/auth/kitchen/bill/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -18,7 +19,7 @@ const ResetPassword = () => {
 
     try {
       const res = await axios.post(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/reset-password/${token}`,
+        `${API_BASE_URL}/api/auth/reset-password/${token}`,
         {
           newPassword: password
         }

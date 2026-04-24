@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -16,7 +17,7 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/verify-reset-key", { key });
+      await axios.post(`${API_BASE_URL}/api/auth/verify-reset-key`, { key });
       setStep(2);
       setLoading(false);
     } catch (err) {
@@ -29,7 +30,7 @@ const ResetPassword = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/reset-password", { email, key, newPassword });
+      await axios.post(`${API_BASE_URL}/api/auth/reset-password`, { email, key, newPassword });
       alert("Password reset successful!");
       navigate("/cashier-login");
     } catch (err) {

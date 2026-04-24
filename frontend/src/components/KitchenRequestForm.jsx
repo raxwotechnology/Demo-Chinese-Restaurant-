@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,7 +21,7 @@ const KitchenRequestForm = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/my-requests",
+          `${API_BASE_URL}/api/auth/kitchen/my-requests`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setRequests(res.data);
@@ -49,7 +50,7 @@ const KitchenRequestForm = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/request",
+        `${API_BASE_URL}/api/auth/kitchen/request`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

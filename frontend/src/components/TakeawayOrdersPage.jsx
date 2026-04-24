@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -43,7 +44,7 @@ const TakeawayOrdersPage = () => {
       if (filterStatus) params.status = filterStatus;
 
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/cashier/takeaway-orders",
+        `${API_BASE_URL}/api/auth/cashier/takeaway-orders`,
         {
           headers: { Authorization: `Bearer ${token}` },
           params
@@ -66,7 +67,7 @@ const TakeawayOrdersPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/drivers",
+        `${API_BASE_URL}/api/auth/drivers`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -94,7 +95,7 @@ const TakeawayOrdersPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/order/${editingOrderId}/delivery-status`,
+        `${API_BASE_URL}/api/auth/order/${editingOrderId}/delivery-status`,
         editData,
         {
           headers: {

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,7 +20,7 @@ const SupplierRegistration = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/suppliers", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/suppliers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuppliers(res.data || []);
@@ -40,8 +41,8 @@ const SupplierRegistration = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingId 
-        ? `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/supplier/${editingId}`
-        : "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/supplier/register";
+        ? `${API_BASE_URL}/api/auth/supplier/${editingId}`
+        : `${API_BASE_URL}/api/auth/supplier/register`;
       
       const res = await axios[editingId ? 'put' : 'post'](url, formData, {
         headers: { Authorization: `Bearer ${token}` }
@@ -62,7 +63,7 @@ const SupplierRegistration = () => {
     if (!window.confirm("Remove this vendor from directory?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/supplier/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/supplier/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuppliers(suppliers.filter(s => s._id !== id));

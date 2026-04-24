@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,7 +11,7 @@ const AdminKitchenRequests = () => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/requests", {
+        const res = await axios.get(`${API_BASE_URL}/api/auth/kitchen/requests`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRequests(res.data);
@@ -28,7 +29,7 @@ const AdminKitchenRequests = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/kitchen/request/${id}/status`,
+        `${API_BASE_URL}/api/auth/kitchen/request/${id}/status`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` }

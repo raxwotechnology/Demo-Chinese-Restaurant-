@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 // src/components/CashierSummary.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -48,7 +49,7 @@ const CashierSummary = () => {
       });
 
       const res = await axios.get(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/orders?${params.toString()}`,
+        `${API_BASE_URL}/api/auth/orders?${params.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -70,7 +71,7 @@ const CashierSummary = () => {
   const fetchOtherIncomes = async () => {
     try {
       const res = await axios.get(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/income/other/by-date?date=${dateFilter}`,
+        `${API_BASE_URL}/api/auth/income/other/by-date?date=${dateFilter}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOtherIncomes(res.data);
@@ -86,7 +87,7 @@ const CashierSummary = () => {
   const fetchOtherExpenses = async () => {
     try {
       const res = await axios.get(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/other/by-date?date=${dateFilter}`,
+        `${API_BASE_URL}/api/auth/expense/other/by-date?date=${dateFilter}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setOtherExpenses(res.data);
@@ -112,7 +113,7 @@ const CashierSummary = () => {
       const yesterdayStr = `${yyyy}-${mm}-${dd}`;
 
       const res = await axios.get(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/cashier/shift-summary/${yesterdayStr}`,
+        `${API_BASE_URL}/api/auth/cashier/shift-summary/${yesterdayStr}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -139,7 +140,7 @@ const CashierSummary = () => {
   const checkExistingSummary = async () => {
     try {
       const res = await axios.get(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/cashier/shift-summary/${dateFilter}`,
+        `${API_BASE_URL}/api/auth/cashier/shift-summary/${dateFilter}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -271,7 +272,7 @@ const CashierSummary = () => {
       };
 
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/cashier/shift-summary/submitshift",
+        `${API_BASE_URL}/api/auth/cashier/shift-summary/submitshift`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` }

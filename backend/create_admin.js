@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const User = require("./models/User");
-const bcrypt = require("bcrypt");
 
 dotenv.config();
 
@@ -13,19 +12,14 @@ const createAdmin = async () => {
     const adminEmail = "admin@example.com"; 
     const adminPassword = "admin123password"; 
 
-    const existingUser = await User.findOne({ email: adminEmail });
-    if (existingUser) {
-      console.log("User already exists!");
-      process.exit();
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(adminPassword, salt);
+    // Delete existing admin if any
+    await User.deleteOne({ email: adminEmail });
+    console.log("Existing admin deleted (if any).");
 
     const admin = new User({
       name: "Super Admin",
       email: adminEmail,
-      password: hashedPassword,
+      password: adminPassword, // Model will hash this automatically
       role: "admin",
       isActive: true
     });

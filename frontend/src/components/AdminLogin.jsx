@@ -80,7 +80,7 @@ const AdminLogin = () => {
 
       <div className="auth-split-right">
           <div className="text-center animate-in">
-              <div className="display-4 fw-900 text-white opacity-20">SECURE</div>
+              <div className="display-4 fw-900 text-white opacity-40">SECURE</div>
               <div className="h6 text-white tracking-widest mt-2">ENCRYPTED PORTAL</div>
           </div>
       </div>

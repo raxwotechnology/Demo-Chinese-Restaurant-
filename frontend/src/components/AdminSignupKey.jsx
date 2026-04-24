@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,7 +21,7 @@ const AdminSignupKey = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/signup-keys", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/signup-keys`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setKeys(res.data || []);
@@ -35,7 +36,7 @@ const AdminSignupKey = () => {
     setGenerating(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/generate-key", {}, {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/generate-key`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setKeys([...keys, res.data]);
@@ -51,7 +52,7 @@ const AdminSignupKey = () => {
     if (!window.confirm("Revoke this authority token?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/signup-key/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/signup-key/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setKeys(keys.filter((k) => k._id !== id));

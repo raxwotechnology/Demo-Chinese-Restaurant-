@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -16,7 +17,7 @@ const CurrencySettings = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/settings/currency",
+          `${API_BASE_URL}/api/auth/settings/currency`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -40,7 +41,7 @@ const CurrencySettings = () => {
       const token = localStorage.getItem("token");
 
       await axios.put(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/settings/currency",
+        `${API_BASE_URL}/api/auth/settings/currency`,
         { currency, symbol },
         {
           headers: { Authorization: `Bearer ${token}` }

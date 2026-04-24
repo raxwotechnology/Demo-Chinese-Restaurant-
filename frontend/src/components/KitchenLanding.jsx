@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -31,7 +32,7 @@ const KitchenLanding = () => {
     if (initial) setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/orders?limit=200", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/orders?limit=200`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(res.data.orders || res.data);
@@ -45,7 +46,7 @@ const KitchenLanding = () => {
   const markAsReady = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/order/${id}/status`, { status: "Ready" }, {
+      await axios.put(`${API_BASE_URL}/api/auth/order/${id}/status`, { status: "Ready" }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(prev => prev.filter(o => o._id !== id));

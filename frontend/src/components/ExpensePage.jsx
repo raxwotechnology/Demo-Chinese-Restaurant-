@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
@@ -33,8 +34,8 @@ const ExpensePage = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const [suppRes, expRes] = await Promise.all([
-        axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/suppliers", { headers }),
-        axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expenses", { headers })
+        axios.get(`${API_BASE_URL}/api/auth/suppliers`, { headers }),
+        axios.get(`${API_BASE_URL}/api/auth/expenses`, { headers })
       ]);
       setSuppliers(suppRes.data);
       setExpenses(expRes.data);
@@ -83,8 +84,8 @@ const ExpensePage = () => {
             billItems
         };
         const url = editingId 
-            ? `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/${editingId}`
-            : "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/add";
+            ? `${API_BASE_URL}/api/auth/expense/${editingId}`
+            : `${API_BASE_URL}/api/auth/expense/add`;
         
         await axios[editingId ? 'put' : 'post'](url, payload, {
             headers: { Authorization: `Bearer ${token}` }

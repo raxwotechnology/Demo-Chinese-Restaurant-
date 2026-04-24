@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { 
@@ -29,7 +30,7 @@ const CashierSummery = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/cashier/summary?date=${dateFilter}`, {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/cashier/summary?date=${dateFilter}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSummary(res.data);

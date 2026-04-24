@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -22,7 +23,7 @@ const AdminDeliveryCharge = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/delivery-charge",
+        `${API_BASE_URL}/api/auth/admin/delivery-charge`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setDeliveryCharge(res.data);
@@ -47,7 +48,7 @@ const AdminDeliveryCharge = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/delivery-charge",
+        `${API_BASE_URL}/api/auth/admin/delivery-charge`,
         deliveryCharge,
         {
           headers: {

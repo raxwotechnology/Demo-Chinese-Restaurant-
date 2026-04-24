@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaUserShield, FaTrash, FaEdit, FaPlus, FaSave, FaUserCircle, FaSyncAlt, FaKey, FaShieldAlt } from "react-icons/fa";
@@ -16,7 +17,7 @@ const AdminUsers = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/users", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data || []);
@@ -30,7 +31,7 @@ const AdminUsers = () => {
   const handleRoleChange = async (userId, newRole) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/admin/user/${userId}/role`, { role: newRole }, {
+      await axios.put(`${API_BASE_URL}/api/auth/admin/user/${userId}/role`, { role: newRole }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Security permissions updated");

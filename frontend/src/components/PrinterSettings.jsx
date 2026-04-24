@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -23,7 +24,7 @@ const PrinterSettings = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/printers",
+        `${API_BASE_URL}/api/auth/printers`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSavedPrinters(res.data);
@@ -66,7 +67,7 @@ const PrinterSettings = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/printers",
+        `${API_BASE_URL}/api/auth/printers`,
         { name: selectedPrinter },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -83,7 +84,7 @@ const PrinterSettings = () => {
     if (!window.confirm("Purge this hardware entry?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/printers/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/printers/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSavedPrinters(savedPrinters.filter((p) => p._id !== id));

@@ -99,7 +99,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 32px;
   padding: 56px;
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(37, 99, 235, 0.05);
   z-index: 10;
   animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -189,13 +189,13 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.2), 0 4px 10px -2px rgba(37, 99, 235, 0.3);
 }
 
 .auth-btn-primary:hover {
   transform: translateY(-2px);
   background: #1d4ed8;
-  box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.6);
+  box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.3), 0 8px 15px -2px rgba(37, 99, 235, 0.4);
 }
 
 .auth-footer {

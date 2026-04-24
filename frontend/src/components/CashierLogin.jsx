@@ -73,7 +73,7 @@ const CashierLogin = () => {
           </form>
 
           <div className="auth-footer">
-             <Link to="/forgot-password" inclassName="auth-link-gold small d-block mb-2">Reset Password</Link>
+             <Link to="/forgot-password" className="auth-link-gold small d-block mb-2">Reset Password</Link>
              <Link to="/" className="auth-link-gold small">Return to Home</Link>
           </div>
         </div>
@@ -81,7 +81,7 @@ const CashierLogin = () => {
 
       <div className="auth-split-right">
           <div className="text-center animate-in">
-              <div className="display-4 fw-900 text-white opacity-20">REGISTER</div>
+              <div className="display-4 fw-900 text-white opacity-40">REGISTER</div>
               <div className="h6 text-white tracking-widest mt-2">TERMINAL ACCESS</div>
           </div>
       </div>

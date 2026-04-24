@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -18,7 +19,7 @@ const DeliveryCharges = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/delivery-charges",
+        `${API_BASE_URL}/api/auth/delivery-charges`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCharges(res.data);
@@ -49,7 +50,7 @@ const DeliveryCharges = () => {
       };
 
       await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/delivery-charges",
+        `${API_BASE_URL}/api/auth/delivery-charges`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -75,7 +76,7 @@ const DeliveryCharges = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/delivery-charges/${id}`,
+        `${API_BASE_URL}/api/auth/delivery-charges/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       toast.success("Deleted successfully");

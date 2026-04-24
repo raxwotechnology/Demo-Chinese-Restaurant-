@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -33,7 +34,7 @@ const RegisterDriverPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/drivers",
+        `${API_BASE_URL}/api/auth/drivers`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -55,7 +56,7 @@ const RegisterDriverPage = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/drivers",
+        `${API_BASE_URL}/api/auth/drivers`,
         formData,
         {
           headers: {
@@ -102,7 +103,7 @@ const RegisterDriverPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/drivers/${editingDriver}`,
+        `${API_BASE_URL}/api/auth/drivers/${editingDriver}`,
         editData,
         {
           headers: {
@@ -128,7 +129,7 @@ const RegisterDriverPage = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/drivers/${id}`,
+        `${API_BASE_URL}/api/auth/drivers/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -27,7 +28,7 @@ const OtherExpenses = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/other", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/expense/other`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(res.data || []);
@@ -48,8 +49,8 @@ const OtherExpenses = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingId 
-        ? `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/other/${editingId}`
-        : "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/other";
+        ? `${API_BASE_URL}/api/auth/expense/other/${editingId}`
+        : `${API_BASE_URL}/api/auth/expense/other`;
       
       await axios[editingId ? 'put' : 'post'](url, formData, {
         headers: { Authorization: `Bearer ${token}` }
@@ -70,7 +71,7 @@ const OtherExpenses = () => {
     if (!window.confirm("Purge this expense record?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/expense/other/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/expense/other/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(expenses.filter(e => e._id !== id));

@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import Select from "react-select";
@@ -19,7 +20,7 @@ const AddAttendance = () => {
   const fetchEmployees = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/employees", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/employees`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEmployees(res.data || []);
@@ -33,7 +34,7 @@ const AddAttendance = () => {
     try {
       const today = new Date();
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/attendance/summary", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/attendance/summary`, {
         params: { _id: empId, month: today.getMonth() + 1, year: today.getFullYear() },
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -58,7 +59,7 @@ const AddAttendance = () => {
     }
     try {
       const token = localStorage.getItem("token");
-      await axios.post("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/attendance/punch", {
+      await axios.post(`${API_BASE_URL}/api/auth/attendance/punch`, {
         employeeId: selectedEmp.value,
         punchType: type
       }, {

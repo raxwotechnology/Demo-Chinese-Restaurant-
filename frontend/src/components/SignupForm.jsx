@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +16,7 @@ const SignupForm = ({ role, title }) => {
     setLoading(true); // 👈 Start loading
 
     try {
-      await axios.post("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/signup", {
+      await axios.post(`${API_BASE_URL}/api/auth/signup`, {
         name,
         email,
         password,

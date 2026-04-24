@@ -83,7 +83,7 @@ const KitchenLogin = () => {
 
       <div className="auth-split-right">
           <div className="text-center animate-in">
-              <div className="display-4 fw-900 text-white opacity-20">KITCHEN</div>
+              <div className="display-4 fw-900 text-white opacity-40">KITCHEN</div>
               <div className="h6 text-white tracking-widest mt-2">OPERATIONAL ACCESS</div>
           </div>
       </div>

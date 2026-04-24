@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -27,7 +28,7 @@ const OtherIncome = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.get("https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/income/other", {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/income/other`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIncomes(res.data || []);
@@ -48,8 +49,8 @@ const OtherIncome = () => {
     try {
       const token = localStorage.getItem("token");
       const url = editingId 
-        ? `https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/income/other/${editingId}`
-        : "https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/income/other";
+        ? `${API_BASE_URL}/api/auth/income/other/${editingId}`
+        : `${API_BASE_URL}/api/auth/income/other`;
       
       await axios[editingId ? 'put' : 'post'](url, formData, {
         headers: { Authorization: `Bearer ${token}` }
@@ -70,7 +71,7 @@ const OtherIncome = () => {
     if (!window.confirm("Purge this revenue record?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/income/other/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/income/other/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIncomes(incomes.filter(i => i._id !== id));

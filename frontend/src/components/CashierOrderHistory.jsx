@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -28,7 +29,7 @@ const CashierOrderHistory = () => {
     try {
       const token = localStorage.getItem("token");
       const params = new URLSearchParams({ ...filters, page, limit: ORDERS_PER_PAGE });
-      const res = await axios.get(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/orders?${params.toString()}`, {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/orders?${params.toString()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(res.data.orders || []);
@@ -45,7 +46,7 @@ const CashierOrderHistory = () => {
     if (!window.confirm("Permanently delete this record?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/order/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/auth/order/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(orders.filter(o => o._id !== id));

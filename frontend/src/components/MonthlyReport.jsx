@@ -1,3 +1,4 @@
+import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
@@ -39,7 +40,7 @@ const MonthlyReport = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await axios.get(`https://gasmachineserestaurantapp-7aq4.onrender.com/api/auth/report/monthly?month=${parseInt(month) + 1}&year=${parseInt(year)}`, {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/report/monthly?month=${parseInt(month) + 1}&year=${parseInt(year)}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setReportData(res.data);

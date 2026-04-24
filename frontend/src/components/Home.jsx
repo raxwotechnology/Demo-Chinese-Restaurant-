@@ -43,8 +43,8 @@ const Home = () => {
       
       <div className="auth-split-right">
           <div className="position-relative z-10 text-center animate-in">
-              <div className="display-1 fw-900 text-white opacity-10">ROYAL</div>
-              <div className="h4 fw-100 text-white tracking-widest mt-n4">ORIENT</div>
+              <div className="display-1 fw-900 text-white opacity-40" style={{ textShadow: '0 10px 30px rgba(0,0,0,0.4)', letterSpacing: '4px' }}>ROYAL</div>
+              <div className="h4 fw-900 text-white tracking-widest mt-n4" style={{ textShadow: '0 5px 15px rgba(0,0,0,0.3)' }}>ORIENT</div>
           </div>
       </div>
     </div>
