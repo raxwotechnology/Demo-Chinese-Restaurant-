@@ -31,9 +31,15 @@ app.get("/", (req, res) => {
 });
 
 // For local development
+const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () => {
+        console.log(`🚀 Server is running locally on: http://localhost:${PORT}`);
+        console.log(`📅 Started at: ${new Date().toLocaleString()}`);
+    });
+} else {
+    // This is for Vercel or other serverless platforms
+    console.log("Server initialized for Production/Serverless environment");
 }
 
 module.exports = app;

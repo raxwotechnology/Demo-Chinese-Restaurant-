@@ -1,10 +1,27 @@
-import API_BASE_URL from "../apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaFilter, FaFileExcel, FaFilePdf, FaPrint, FaTrash, FaCheckCircle, FaSearch, FaHistory } from "react-icons/fa";
+import { 
+  Search, 
+  Filter, 
+  FileSpreadsheet, 
+  FileText, 
+  Printer, 
+  Trash2, 
+  Calendar,
+  Layers,
+  ChevronLeft,
+  ChevronRight,
+  Hash,
+  User,
+  CreditCard,
+  Clock,
+  ExternalLink
+} from "lucide-react";
 import ReceiptModal from "./ReceiptModal";
+import API_BASE_URL from "../apiConfig";
 import "../styles/PremiumUI.css";
 
 const CashierOrderHistory = () => {
@@ -36,160 +53,195 @@ const CashierOrderHistory = () => {
       setTotalPages(res.data.totalPages || 0);
       setTotalCount(res.data.totalCount || 0);
     } catch (err) {
-      toast.error("Failed to load history");
+      toast.error("Archive synchronization failed");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Permanently delete this record?")) return;
+    if (!window.confirm("Purge this transaction record?")) return;
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/api/auth/order/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(orders.filter(o => o._id !== id));
-      toast.success("Record purged");
+      toast.success("Transaction purged from database");
     } catch (err) {
-      toast.error("Deletion failed");
+      toast.error("Security lockout: Deletion failed");
     }
   };
 
   return (
-    <div className="order-history-container animate-fade-in">
-      <ToastContainer theme="dark" />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="history-suite">
+      <ToastContainer theme="colored" />
       
       {/* Header */}
       <div className="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title mb-1">Archive & Records</h1>
-          <p className="premium-subtitle mb-0">Complete history of all culinary transactions</p>
+          <h1 className="text-hero">Transaction Archives</h1>
+          <p className="text-subtitle">Comprehensive ledger of all culinary operations and financial settlements</p>
         </div>
         <div className="d-flex gap-3">
-            <button className="btn-premium btn-premium-primary"><FaFileExcel /> Excel</button>
-            <button className="btn-premium btn-premium-primary"><FaFilePdf /> PDF</button>
+            <button className="btn-indigo secondary py-2 px-4"><FileSpreadsheet size={18} /> EXCEL</button>
+            <button className="btn-indigo secondary py-2 px-4"><FileText size={18} /> PDF</button>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="premium-card p-4 mb-5">
+      {/* Modern Filter Suite */}
+      <div className="bento-card mb-5 p-4">
         <div className="row g-3 align-items-end">
             <div className="col-md-3">
-                <label className="orient-stat-label">Start Date</label>
-                <input type="date" className="premium-input" value={filters.startDate} onChange={(e) => setFilters({...filters, startDate: e.target.value})} />
+                <span className="tiny-caps mb-2 d-block opacity-50">Range Start</span>
+                <div className="input-group-premium">
+                  <Calendar size={16} />
+                  <input type="date" className="premium-input-transparent" value={filters.startDate} onChange={(e) => setFilters({...filters, startDate: e.target.value})} />
+                </div>
             </div>
             <div className="col-md-3">
-                <label className="orient-stat-label">End Date</label>
-                <input type="date" className="premium-input" value={filters.endDate} onChange={(e) => setFilters({...filters, endDate: e.target.value})} />
+                <span className="tiny-caps mb-2 d-block opacity-50">Range End</span>
+                <div className="input-group-premium">
+                  <Calendar size={16} />
+                  <input type="date" className="premium-input-transparent" value={filters.endDate} onChange={(e) => setFilters({...filters, endDate: e.target.value})} />
+                </div>
             </div>
             <div className="col-md-2">
-                <label className="orient-stat-label">Status</label>
-                <select className="premium-input premium-select" value={filters.status} onChange={(e) => setFilters({...filters, status: e.target.value})}>
-                    <option value="">All</option>
+                <span className="tiny-caps mb-2 d-block opacity-50">Status</span>
+                <select className="premium-select w-100" value={filters.status} onChange={(e) => setFilters({...filters, status: e.target.value})}>
+                    <option value="">Full Cycle</option>
                     <option value="Completed">Completed</option>
                     <option value="Ready">Ready</option>
                     <option value="Pending">Pending</option>
                 </select>
             </div>
             <div className="col-md-2">
-                <label className="orient-stat-label">Type</label>
-                <select className="premium-input premium-select" value={filters.orderType} onChange={(e) => setFilters({...filters, orderType: e.target.value})}>
-                    <option value="">All Types</option>
+                <span className="tiny-caps mb-2 d-block opacity-50">Order Mode</span>
+                <select className="premium-select w-100" value={filters.orderType} onChange={(e) => setFilters({...filters, orderType: e.target.value})}>
+                    <option value="">All Channels</option>
                     <option value="table">Dine-In</option>
                     <option value="takeaway">Takeaway</option>
                 </select>
             </div>
             <div className="col-md-2">
-                <button className="btn-premium btn-premium-secondary w-100" onClick={() => fetchOrders(1)}>
-                    <FaSearch /> Apply
+                <button className="btn-indigo w-100 py-3 justify-content-center" onClick={() => fetchOrders(1)}>
+                    <Filter size={18} />
+                    <span>SYNC</span>
                 </button>
             </div>
         </div>
       </div>
 
-      {/* Table Section */}
-      <div className="orient-card p-0 overflow-hidden">
-        <div className="premium-table-container">
-            <table className="premium-table">
+      {/* Ledger Table */}
+      <div className="bento-card p-0 overflow-hidden mb-5">
+        <div className="table-responsive">
+            <table className="premium-data-table">
                 <thead>
                     <tr>
-                        <th>Invoice / Date</th>
-                        <th>Customer</th>
-                        <th>Source</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th className="text-center">Actions</th>
+                        <th>TICKET & ORIGIN</th>
+                        <th>CUSTOMER IDENT</th>
+                        <th>CHANNEL</th>
+                        <th>INVENTORY</th>
+                        <th>NET VALUE</th>
+                        <th>AUTHORIZATION</th>
+                        <th className="text-end">OPERATIONS</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <AnimatePresence mode="popLayout">
                     {loading ? (
-                        <tr><td colSpan="7" className="text-center py-5"><div className="spinner-border text-gold"></div></td></tr>
+                        <tr><td colSpan="7" className="text-center py-5"><motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="spinner-border text-indigo" /></td></tr>
                     ) : orders.length === 0 ? (
-                        <tr><td colSpan="7" className="text-center py-5 text-muted">No records found for the selected criteria.</td></tr>
-                    ) : orders.map(order => (
-                        <tr key={order._id}>
+                        <tr><td colSpan="7" className="text-center py-5"><div className="opacity-20"><Layers size={48} className="mb-2" /><p>No transaction history found</p></div></td></tr>
+                    ) : orders.map((order, i) => (
+                        <motion.tr 
+                          key={order._id}
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.03 }}
+                        >
                             <td>
-                                <div className="text-white fw-bold">#{order.invoiceNo || order._id.slice(-6)}</div>
-                                <div className="small orient-text-muted">{new Date(order.createdAt).toLocaleString()}</div>
-                            </td>
-                            <td>
-                                <div className="text-white">{order.customerName}</div>
-                                <div className="small text-gold">{order.customerPhone}</div>
-                            </td>
-                            <td>
-                                <div className="badge-premium badge-primary">
-                                    {order.tableNo ? `Table ${order.tableNo}` : 'Takeaway'}
+                                <div className="d-flex align-items-center gap-3">
+                                   <div className="stat-icon-wrapper mini"><Hash size={12} /></div>
+                                   <div>
+                                      <span className="fw-900 d-block">#{order.invoiceNo || order._id.slice(-6)}</span>
+                                      <span className="tiny-caps opacity-50">{new Date(order.createdAt).toLocaleDateString()}</span>
+                                   </div>
                                 </div>
                             </td>
                             <td>
-                                <div className="small orient-text-muted">
-                                    {order.items.slice(0, 2).map(i => i.name).join(", ")}
-                                    {order.items.length > 2 && ` +${order.items.length - 2} more`}
+                                <div className="d-flex align-items-center gap-3">
+                                   <div className="stat-icon-wrapper mini secondary"><User size={12} /></div>
+                                   <div>
+                                      <span className="fw-800 d-block">{order.customerName}</span>
+                                      <span className="small opacity-50">{order.customerPhone}</span>
+                                   </div>
                                 </div>
                             </td>
                             <td>
-                                <div className="text-gold fw-bold">{symbol}{order.totalPrice?.toFixed(2)}</div>
+                                <div className={`badge-modern ${order.tableNo && order.tableNo !== 'Takeaway' ? 'indigo' : 'info'}`}>
+                                    {order.tableNo && order.tableNo !== 'Takeaway' ? `Table ${order.tableNo}` : 'Takeaway'}
+                                </div>
                             </td>
                             <td>
-                                <div className={`badge-premium ${order.status === 'Completed' ? 'badge-success' : 'badge-warning'}`}>
+                                <div className="small fw-700 opacity-60">
+                                    {order.items.slice(0, 1).map(i => i.name).join(", ")}
+                                    {order.items.length > 1 && <span className="text-indigo"> +{order.items.length - 1} More</span>}
+                                </div>
+                            </td>
+                            <td>
+                                <div className="fw-900 text-main h6 m-0">{symbol}{order.totalPrice?.toLocaleString()}</div>
+                            </td>
+                            <td>
+                                <div className={`status-pill ${order.status.toLowerCase()}`}>
+                                    {order.status === 'Completed' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                                     {order.status}
                                 </div>
                             </td>
-                            <td className="text-center">
-                                <div className="d-flex justify-content-center gap-2">
-                                    <button className="btn-premium btn-premium-accent p-2" onClick={() => setReceiptOrder(order)}><FaPrint /></button>
-                                    {localStorage.getItem("userRole") === 'admin' && (
-                                        <button className="btn-premium btn-premium-primary p-2" onClick={() => handleDelete(order._id)}><FaTrash /></button>
-                                    )}
+                            <td className="text-end">
+                                <div className="d-flex justify-content-end gap-2">
+                                    <button className="btn-action primary" onClick={() => setReceiptOrder(order)}><Printer size={16} /></button>
+                                    <button className="btn-action danger" onClick={() => handleDelete(order._id)}><Trash2 size={16} /></button>
                                 </div>
                             </td>
-                        </tr>
+                        </motion.tr>
                     ))}
+                    </AnimatePresence>
                 </tbody>
             </table>
         </div>
-        
-        {/* Pagination */}
-        <div className="p-4 border-top border-white-05 d-flex justify-content-between align-items-center">
-            <div className="orient-text-muted small">Showing {orders.length} of {totalCount} records</div>
-            <div className="d-flex gap-2">
-                <button className="btn-premium btn-premium-primary py-1 px-3" disabled={currentPage === 1} onClick={() => paginate(currentPage - 1)}>Prev</button>
-                <span className="text-white align-self-center px-2">{currentPage} / {totalPages}</span>
-                <button className="btn-premium btn-premium-primary py-1 px-3" disabled={currentPage === totalPages} onClick={() => paginate(currentPage + 1)}>Next</button>
-            </div>
-        </div>
+      </div>
+
+      {/* Immersive Pagination */}
+      <div className="d-flex justify-content-between align-items-center bg-white p-4 rounded-4 shadow-sm border">
+          <div className="tiny-caps opacity-50">Synchronizing {orders.length} of {totalCount} Records</div>
+          <div className="pagination-suite d-flex gap-3 align-items-center">
+              <button className="btn-refresh-premium" disabled={currentPage === 1} onClick={() => fetchOrders(currentPage - 1)}><ChevronLeft size={20} /></button>
+              <div className="fw-900 text-indigo">{currentPage} <span className="opacity-20 px-2">/</span> {totalPages}</div>
+              <button className="btn-refresh-premium" disabled={currentPage === totalPages} onClick={() => fetchOrders(currentPage + 1)}><ChevronRight size={20} /></button>
+          </div>
       </div>
 
       {receiptOrder && (
-        <ReceiptModal order={receiptOrder} onClose={() => setReceiptOrder(null)} />
+        <ReceiptModal order={receiptOrder} handleClose={() => setReceiptOrder(null)} />
       )}
 
       <style>{`
-        .border-white-05 { border-color: rgba(255,255,255,0.05) !important; }
+        .history-suite { padding-bottom: 100px; }
+        .input-group-premium { background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
+        .input-group-premium:focus-within { background: white; border-color: var(--p-indigo-600); box-shadow: 0 0 0 4px var(--p-indigo-50); }
+        .premium-input-transparent { border: none; background: transparent; outline: none; font-size: 0.85rem; font-weight: 700; color: var(--text-main); flex: 1; }
+        
+        .status-pill { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; width: fit-content; }
+        .status-pill.completed { background: #f0fdf4; color: #166534; }
+        .status-pill.pending { background: #fffbeb; color: #92400e; }
+        .status-pill.ready { background: #eff6ff; color: #1e40af; }
+        
+        .btn-action { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--border-subtle); background: white; display: flex; align-items: center; justify-content: center; transition: 0.2s; color: var(--text-muted); }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--p-indigo-600); color: var(--p-indigo-600); }
+        .btn-action.danger:hover { background: #fee2e2; border-color: #ef4444; color: #ef4444; }
       `}</style>
-    </div>
+    </motion.div>
   );
 };
 

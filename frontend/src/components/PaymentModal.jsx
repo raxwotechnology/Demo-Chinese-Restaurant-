@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { FaMoneyBillWave, FaCreditCard, FaUniversity, FaTimes, FaCheckCircle, FaBackspace } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
+import { motion, AnimatePresence } from "framer-motion";
+import { CreditCard, Banknote, Landmark, X, Delete, ArrowRight, Wallet, History, AlertCircle } from "lucide-react";
+import { toast } from "react-toastify";
 import "../styles/PremiumUI.css";
 
 const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$" }) => {
   const totalAmount = orderData?.totalPrice || 0;
-  const [cash, setCash] = useState(totalAmount);
-  const [card, setCard] = useState(0);
-  const [bank, setBank] = useState(0);
+  const [cash, setCash] = useState(totalAmount.toString());
+  const [card, setCard] = useState("0");
+  const [bank, setBank] = useState("0");
   const [notes, setNotes] = useState("");
   const [activeField, setActiveField] = useState("cash");
 
   const totalPaid = parseFloat(cash || 0) + parseFloat(card || 0) + parseFloat(bank || 0);
   const changeDue = Math.max(0, totalPaid - totalAmount);
+  const isSufficient = totalPaid >= totalAmount;
 
   const handleNumPad = (val) => {
     let current = activeField === "cash" ? cash : activeField === "card" ? card : bank;
-    current = String(current);
-    
+
     if (val === "back") {
       current = current.slice(0, -1) || "0";
     } else if (val === ".") {
@@ -27,15 +27,14 @@ const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$" }) => {
       current = current === "0" ? String(val) : current + val;
     }
 
-    const num = parseFloat(current) || 0;
     if (activeField === "cash") setCash(current);
     else if (activeField === "card") setCard(current);
     else setBank(current);
   };
 
   const handleConfirm = () => {
-    if (totalPaid < totalAmount) {
-      toast.error("Insufficient payment amount!");
+    if (!isSufficient) {
+      toast.error("Insufficient payment volume");
       return;
     }
     onSubmit({
@@ -49,97 +48,199 @@ const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$" }) => {
   };
 
   return (
-    <div className="premium-modal-overlay">
-      <div className="premium-modal" style={{ maxWidth: '900px' }}>
-        <div className="d-flex justify-content-between align-items-center mb-4">
-            <h3 className="premium-title mb-0">Authorize Transaction</h3>
-            <button className="btn-premium btn-premium-primary p-2 rounded-circle" onClick={handleClose}><FaTimes /></button>
-        </div>
+    <div className="payment-modal-root">
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+          animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
+          className="payment-overlay"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="payment-card-premium"
+          >
+            {/* Header Area */}
+            <header className="payment-header">
+              <div className="header-info">
+                <div className="icon-badge"><Wallet size={20} /></div>
+                <div>
+                  <h2 className="m-0 fw-900 h4">Authorize Settlement</h2>
+                  <p className="m-0 tiny-caps opacity-50">Transaction Security Module v4.1</p>
+                </div>
+              </div>
+              <button className="close-btn-round" onClick={handleClose}><X size={20} /></button>
+            </header>
 
-        <div className="row g-4">
-            {/* Left: Inputs */}
-            <div className="col-md-6">
-                <div className="orient-card mb-4 p-4 border-gold">
-                    <div className="orient-stat-label mb-2">Order Total</div>
-                    <div className="orient-stat-value text-gold" style={{ fontSize: '2.5rem' }}>{symbol}{totalAmount.toLocaleString()}</div>
+            <div className="payment-body">
+              {/* Left Column: Summary & Methods */}
+              <div className="payment-left">
+                <div className="payable-display">
+                  <span className="tiny-caps">Account Balance Due</span>
+                  <div className="amount-hero">
+                    <span className="currency">{symbol}</span>
+                    <span className="value">{totalAmount.toLocaleString()}</span>
+                  </div>
                 </div>
 
-                <div className="d-flex flex-column gap-3 mb-4">
-                    <div className={`orient-card p-3 d-flex align-items-center gap-3 cursor-pointer ${activeField === 'cash' ? 'active-field' : ''}`} onClick={() => setActiveField('cash')}>
-                        <FaMoneyBillWave className={activeField === 'cash' ? 'text-gold' : 'text-muted'} />
-                        <div className="flex-grow-1">
-                            <div className="orient-stat-label" style={{ fontSize: '0.6rem' }}>Cash Payment</div>
-                            <div className="fw-bold">{symbol}{cash}</div>
-                        </div>
-                    </div>
-                    <div className={`orient-card p-3 d-flex align-items-center gap-3 cursor-pointer ${activeField === 'card' ? 'active-field' : ''}`} onClick={() => setActiveField('card')}>
-                        <FaCreditCard className={activeField === 'card' ? 'text-gold' : 'text-muted'} />
-                        <div className="flex-grow-1">
-                            <div className="orient-stat-label" style={{ fontSize: '0.6rem' }}>Card Transaction</div>
-                            <div className="fw-bold">{symbol}{card}</div>
-                        </div>
-                    </div>
-                    <div className={`orient-card p-3 d-flex align-items-center gap-3 cursor-pointer ${activeField === 'bank' ? 'active-field' : ''}`} onClick={() => setActiveField('bank')}>
-                        <FaUniversity className={activeField === 'bank' ? 'text-gold' : 'text-muted'} />
-                        <div className="flex-grow-1">
-                            <div className="orient-stat-label" style={{ fontSize: '0.6rem' }}>Bank Transfer</div>
-                            <div className="fw-bold">{symbol}{bank}</div>
-                        </div>
-                    </div>
+                <div className="payment-methods-grid">
+                  <PaymentMethod
+                    icon={Banknote}
+                    label="Physical Cash"
+                    value={cash}
+                    active={activeField === 'cash'}
+                    onClick={() => setActiveField('cash')}
+                    symbol={symbol}
+                  />
+                  <PaymentMethod
+                    icon={CreditCard}
+                    label="Electronic Card"
+                    value={card}
+                    active={activeField === 'card'}
+                    onClick={() => setActiveField('card')}
+                    symbol={symbol}
+                  />
+                  <PaymentMethod
+                    icon={Landmark}
+                    label="Bank Transfer"
+                    value={bank}
+                    active={activeField === 'bank'}
+                    onClick={() => setActiveField('bank')}
+                    symbol={symbol}
+                  />
                 </div>
 
-                <div className="orient-card p-3 bg-success-glow">
-                    <div className="d-flex justify-content-between">
-                        <span className="orient-stat-label">Change Due</span>
-                        <span className="fw-bold text-success">{symbol}{changeDue.toLocaleString()}</span>
+                <div className={`status-summary ${isSufficient ? 'success' : 'pending'}`}>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="tiny-caps">{isSufficient ? 'Balance to Return' : 'Missing Funds'}</span>
+                    <div className="fw-900 h5 m-0">
+                      {symbol}{isSufficient ? changeDue.toLocaleString() : (totalAmount - totalPaid).toLocaleString()}
                     </div>
+                  </div>
+                  {!isSufficient && (
+                    <div className="d-flex align-items-center gap-2 text-danger small fw-800">
+                      <AlertCircle size={14} />
+                      <span>AWAITING FULL AUTHORIZATION</span>
+                    </div>
+                  )}
                 </div>
+              </div>
+
+              {/* Right Column: Numpad & Meta */}
+              <div className="payment-right">
+                <div className="numpad-container">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, '.', 0, 'back'].map(num => (
+                    <button
+                      key={num}
+                      className={`numpad-btn ${num === 'back' ? 'back' : ''}`}
+                      onClick={() => handleNumPad(num)}
+                    >
+                      {num === 'back' ? <Delete size={26} strokeWidth={1.5} /> : num}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="meta-container mt-4">
+                  <div className="input-group-premium mb-4">
+                    <label className="tiny-caps mb-2 d-block opacity-50">Operational Remarks</label>
+                    <textarea
+                      className="pos-textarea"
+                      placeholder="Add transaction metadata..."
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                    />
+                  </div>
+
+                  <button
+                    className={`checkout-btn ${isSufficient ? 'authorized' : ''}`}
+                    onClick={handleConfirm}
+                  >
+                    <div className="btn-content">
+                      <span className="fw-900">FINALIZE TRANSACTION</span>
+                      <ArrowRight size={22} />
+                    </div>
+                  </button>
+                </div>
+              </div>
             </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
 
-            {/* Right: NumPad */}
-            <div className="col-md-6">
-                <div className="numpad-grid-premium">
-                    {[1,2,3,4,5,6,7,8,9,'.',0,'back'].map(v => (
-                        <button key={v} className="numpad-btn" onClick={() => handleNumPad(v)}>
-                            {v === 'back' ? <FaBackspace /> : v}
-                        </button>
-                    ))}
-                </div>
-                <textarea 
-                    className="premium-input mt-4" 
-                    placeholder="Transaction notes (optional)..." 
-                    rows="2"
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                />
-                <button className="btn-premium btn-premium-secondary w-100 mt-4 py-3 fs-5" onClick={handleConfirm}>
-                    <FaCheckCircle className="me-2" /> Complete Checkout
-                </button>
-            </div>
-        </div>
+      <style>{`
+        .payment-modal-root { position: fixed; inset: 0; z-index: 3000; }
+        .payment-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); display: flex; align-items: center; justify-content: center; padding: 40px; }
+        
+        .payment-card-premium { background: #fff; width: 100%; max-width: 1100px; border-radius: 40px; overflow: hidden; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.25); display: flex; flex-direction: column; max-height: 95vh; }
+        
+        .payment-header { padding: 24px 40px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+        .header-info { display: flex; align-items: center; gap: 15px; }
+        .icon-badge { width: 44px; height: 44px; background: var(--p-indigo-600); color: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .close-btn-round { border: none; background: #f8fafc; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s; color: var(--text-muted); }
 
-        <style>{`
-            .border-gold { border-color: var(--orient-gold) !important; }
-            .bg-success-glow { background: rgba(0, 255, 127, 0.1); border: 1px solid rgba(0, 255, 127, 0.2); }
-            .active-field { background: rgba(255, 183, 3, 0.1) !important; border-color: var(--orient-gold) !important; }
-            .cursor-pointer { cursor: pointer; }
-            .numpad-grid-premium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-            .numpad-btn { 
-                background: rgba(255,255,255,0.05); 
-                border: 1px solid rgba(255,255,255,0.1); 
-                color: #fff; 
-                height: 70px; 
-                border-radius: 16px; 
-                font-size: 1.5rem; 
-                font-weight: 600; 
-                transition: all 0.2s; 
-            }
-            .numpad-btn:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-            .numpad-btn:active { transform: scale(0.95); }
-        `}</style>
-      </div>
+        .payment-body { display: flex; padding: 32px 40px; gap: 40px; overflow-y: auto; }
+        .payment-left { flex: 1.2; display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+        .payment-right { flex: 1; min-width: 0; }
+
+        .payable-display { background: linear-gradient(135deg, var(--p-indigo-900) 0%, var(--p-indigo-700) 100%); padding: 32px; border-radius: 28px; color: white; }
+        .amount-hero { display: flex; align-items: baseline; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+        .amount-hero .currency { font-size: 1.5rem; font-weight: 300; opacity: 0.7; }
+        .amount-hero .value { font-size: 3.5rem; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+
+        .payment-methods-grid { display: flex; flex-direction: column; gap: 10px; }
+        .method-tile { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 20px; border: 2px solid transparent; background: #f8fafc; cursor: pointer; transition: 0.3s; }
+        .method-tile.active { background: white; border-color: var(--p-indigo-600); }
+        .method-tile .icon-wrap { width: 42px; height: 42px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        .status-summary { padding: 20px; border-radius: 20px; }
+
+        .numpad-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .numpad-btn { height: 64px; border-radius: 16px; border: 1px solid var(--border-subtle); background: white; font-size: 1.5rem; font-weight: 700; font-family: 'Outfit'; cursor: pointer; }
+
+        .checkout-btn { width: 100%; padding: 24px; border-radius: 20px; border: none; background: #e2e8f0; color: #94a3b8; cursor: not-allowed; transition: 0.3s; }
+        
+        @media (max-width: 992px) {
+          .payment-overlay { padding: 15px; }
+          .payment-card-premium { border-radius: 24px; }
+          .payment-body { flex-direction: column; padding: 24px; gap: 32px; }
+          .payment-header { padding: 16px 24px; }
+          .amount-hero .value { font-size: 2.5rem; }
+          .payable-display { padding: 24px; }
+          .numpad-btn { height: 56px; font-size: 1.25rem; }
+        }
+
+        @media (max-height: 800px) {
+          .payment-card-premium { max-height: 98vh; }
+          .payment-body { padding: 20px 24px; gap: 20px; }
+          .payable-display { padding: 20px; }
+          .amount-hero .value { font-size: 2rem; }
+          .numpad-btn { height: 50px; }
+          .method-tile { padding: 12px 16px; }
+        }
+        .checkout-btn.authorized { background: var(--p-indigo-600); color: white; cursor: pointer; box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.4); }
+        .checkout-btn.authorized:hover { background: var(--p-indigo-700); transform: translateY(-4px); }
+        .btn-content { display: flex; align-items: center; justify-content: center; gap: 16px; position: relative; z-index: 10; }
+        
+        .pos-textarea { width: 100%; padding: 20px; border-radius: 20px; border: 1px solid var(--border-subtle); background: #f8fafc; font-weight: 600; outline: none; transition: 0.2s; min-height: 100px; font-family: 'Inter'; }
+        .pos-textarea:focus { background: white; border-color: var(--p-indigo-600); }
+      `}</style>
     </div>
   );
 };
+
+const PaymentMethod = ({ icon: Icon, label, value, active, onClick, symbol }) => (
+  <motion.div
+    whileTap={{ scale: 0.98 }}
+    className={`method-tile ${active ? 'active' : ''}`}
+    onClick={onClick}
+  >
+    <div className="icon-wrap"><Icon size={22} /></div>
+    <div className="flex-grow-1">
+      <span className="tiny-caps opacity-50">{label}</span>
+      <div className="fw-900 h5 m-0">{symbol}{parseFloat(value).toLocaleString()}</div>
+    </div>
+    <div className="active-indicator"></div>
+  </motion.div>
+);
 
 export default PaymentModal;

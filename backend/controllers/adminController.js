@@ -6,15 +6,26 @@ const OtherIncome = require("../models/OtherIncome");
 const OtherExpense = require("../models/OtherExpense");
 
 exports.getAdminSummary = async (req, res) => {
-  const { startDate, endDate } = req.query;
+  const { startDate, endDate, filterType } = req.query;
 
   try {
     let query = {};
     if (startDate && endDate) {
-      query = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate)
-      };
+      query = { $gte: new Date(startDate), $lte: new Date(endDate) };
+    } else if (filterType) {
+      const now = new Date();
+      let start = new Date();
+      if (filterType === "today") {
+        start.setHours(0, 0, 0, 0);
+      } else if (filterType === "thisWeek") {
+        const day = start.getDay();
+        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+        start.setDate(diff);
+        start.setHours(0, 0, 0, 0);
+      } else if (filterType === "thisMonth") {
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+      }
+      query = { $gte: start, $lte: now };
     }
 
     // Fetch all data sources — ✅ ADDED OtherIncome & OtherExpense

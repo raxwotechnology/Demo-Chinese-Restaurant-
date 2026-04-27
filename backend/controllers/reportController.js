@@ -14,8 +14,8 @@ exports.getMonthlyReport = async (req, res) => {
   }
 
   try {
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month - 1, 31);
+    const start = new Date(year, month - 1, 1, 0, 0, 0);
+    const end = new Date(year, month, 0, 23, 59, 59);
 
     const [
       orders,

@@ -46,18 +46,6 @@ exports.signup = async (req, res) => {
 
   console.log("Received body:", req.body); // ✅ Log this
 
-  if (["cashier", "kitchen"].includes(role)) {
-    if (!signupKey) {
-      return res.status(400).json({ error: "Signup key is required" });
-    }
-
-    const validKey = await SignupKey.findOne({ key: signupKey });
-
-    if (!validKey) {
-      return res.status(400).json({ error: "Invalid signup key" });
-    }
-  }
-
   try {
     const user = new User({ name, email, password, role });
     await user.save();

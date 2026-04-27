@@ -1,474 +1,269 @@
 import React from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-import { printReceiptToBoth } from "../utils/printReceipt";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Printer,
+  FileText,
+  Download,
+  X,
+  CheckCircle2,
+  Calendar,
+  Hash,
+  User,
+  MapPin,
+  UtensilsCrossed,
+  Info
+} from "lucide-react";
 import LogoImage from "../upload/logo.png";
+import { printReceiptToBoth } from "../utils/printReceipt";
+import "../styles/PremiumUI.css";
 
-const exportToPDF = () => {
-  const input = document.getElementById("receipt-content");
-
-  if (!input) {
-    alert("Receipt not found");
-    return;
-  }
-
-  html2canvas(input).then((canvas) => {
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    const width = pdf.internal.pageSize.getWidth();
-    const height = (canvas.height * width) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, width, height);
-    pdf.save("receipt.pdf");
-  });
-};
-
-const ReceiptModal = ({ order, onClose }) => {
+const ReceiptModal = ({ order, handleClose }) => {
   if (!order) return null;
-
   const symbol = localStorage.getItem("currencySymbol") || "$";
+  const now = new Date().toLocaleString();
 
-  const {
-    customerName,
-    customerPhone,
-    tableNo,
-    items,
-    totalPrice
-  } = order;
-
-  // Inside ReceiptModal component
-  const generatePrintableHTML = () => {
-    const symbol = localStorage.getItem("currencySymbol") || "$";
-    const now = new Date().toLocaleString();
-
-    // Build items rows
-    const itemsRows = order.items.map((item, idx) => `
-      <tr key="${idx}">
-        <td style="padding:4px 0;width:50%;text-align:left;">${item.name}</td>
-        <td style="padding:4px 0;width:20%;text-align:center;">${item.quantity}</td>
-        <td style="padding:4px 0;width:30%;text-align:right;">${symbol}${(item.price || 0).toFixed(2)}</td>
-      </tr>
-    `).join('');
-
-    let serviceChargeRow = '';
-    if (order.serviceCharge > 0) {
-      const pct = order.subtotal ? ((order.serviceCharge * 100) / order.subtotal).toFixed(2) : '0.00';
-      serviceChargeRow = `
-        <tr>
-          <td style="padding:4px 0;text-align:left;">Service Charge (${pct}%)</td>
-          <td></td>
-          <td style="padding:4px 0;text-align:right;">${symbol}${order.serviceCharge.toFixed(2)}</td>
-        </tr>
-      `;
-    }
-
-    let deliveryChargeRow = '';
-    if (order.deliveryCharge > 0) {
-      deliveryChargeRow = `
-        <tr>
-          <td style="padding:4px 0;text-align:left;">Delivery Charge</td>
-          <td></td>
-          <td style="padding:4px 0;text-align:right;">${symbol}${order.deliveryCharge.toFixed(2)}</td>
-        </tr>
-      `;
-    }
-
-    let paymentSection = '';
-    if (order.payment) {
-      const p = order.payment;
-      let lines = '';
-      if (p.cash > 0) lines += `<p class="mb-1">Cash: ${symbol}${p.cash.toFixed(2)}</p>`;
-      if (p.card > 0) lines += `<p class="mb-1">Card: ${symbol}${p.card.toFixed(2)}</p>`;
-      if (p.bankTransfer > 0) lines += `<p class="mb-1">Bank Transfer: ${symbol}${p.bankTransfer.toFixed(2)}</p>`;
-      
-      paymentSection = `
-        <div class="mb-1">
-          <p class="mb-1"><strong>Paid via:</strong></p>
-          ${lines}
-          <p class="mb-1"><strong>Total Paid:</strong> ${symbol}${(p.totalPaid || 0).toFixed(2)}</p>
-          <p class="mb-1"><strong>Change Due:</strong> ${symbol}${(p.changeDue || 0).toFixed(2)}</p>
-        </div>
-      `;
-    }
-
-    let deliveryNoteSection = '';
-    if (order.deliveryCharge > 0 && order.deliveryNote) {
-      deliveryNoteSection = `<p><strong>Delivery Note:</strong><br>${order.deliveryNote}</p>`;
-    }
-
-    return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="UTF-8">
-          <title>Receipt</title>
-          <style>
-            body {
-              font-family: Calibri, Arial, sans-serif;
-              width: 275px;
-              margin: 0;
-              padding: 7.5px;
-              background: #fff;
-              color: #000;
-              line-height: 1.4;
-              box-sizing: border-box;
-            }
-            hr {
-              border: 0;
-              border-top: 1px dashed #000;
-              margin: 4px 0;
-            }
-            table {
-              width: 100%;
-              border-collapse: collapse;
-              margin: 8px 0 16px;
-            }
-            th, td {
-              padding: 4px 0;
-            }
-            .text-center { text-align: center; }
-            .text-end { text-align: right; }
-            .mb-1 { margin-bottom: 4px; }
-            h3, h4, h5 { margin: 6px 0; }
-            p { margin: 4px 0; }
-          </style>
-        </head>
-        <body>
-        <!-- ✅ SMALL CIRCULAR LOGO -->
-        <div class="text-center mb-2">
-          <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;margin:0 auto 4px;box-shadow:0 1px 2px rgba(0,0,0,0.1);">
-            <img src=${LogoImage} alt="Royal Orient Logo" style="width:100%;height:100%;object-fit:cover;display:block;">
-          </div>
-        </div>
-          <h3 class="text-center" style=" font-size:20px; "><strong>Royal Orient</strong></h3>
-          <p class="text-center mb-1" style=" font-size:12px; ">No. 14/2/D, Pugoda Road, Katulanda, Dekatana.</p>
-          <p class="text-center mb-3" style=" font-size:15px; "><strong>0777122797</strong></p>
-          <hr />
-
-          <div style="font-size:16px;margin-bottom:12px;">
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Invoice No:</strong></div>
-              <div>${order.invoiceNo || 'N/A'}</div>
-            </div>
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Date:</strong></div>
-              <div>${now}</div>
-            </div>
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Customer:</strong></div>
-              <div>${order.customerName || 'Walk-in'}</div>
-            </div>
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Phone:</strong></div>
-              <div>${order.customerPhone || 'N/A'}</div>
-            </div>
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Order Type:</strong></div>
-              <div>${order.tableNo > 0 ? `Dine In - Table ${order.tableNo}` : `Takeaway ( ${order.deliveryType} )`}</div>
-            </div>
-            ${order.tableNo === "Takeaway" && order.deliveryType === "Delivery Service" ? `
-            <div style="display:flex;gap:4px;margin-bottom:4px; font-size:15px;">
-              <div style="width:90px;"><strong>Delivery Place:</strong></div>
-              <div>${order.deliveryPlaceName}</div>
-            </div>` : ''}
-          </div>
-
-          <hr />
-
-          <table style="font-size:15px;">
-            <thead>
-              <tr>
-                <th style="text-align:left;">Items</th>
-                <th style="text-align:center;">Qty</th>
-                <th style="text-align:right;">Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${itemsRows}
-              ${serviceChargeRow}
-              ${deliveryChargeRow}
-            </tbody>
-          </table>
-
-          <hr />
-
-          <h5 class="text-end mb-1" style=" font-size:16px; ">Total: ${symbol}${(order.totalPrice || 0).toFixed(2)}</h5>
-
-          <hr />
-          <p class="text-center mb-1" style=" font-size:16px; "> <strong> Thank you for your order!</strong> </p>
-          <p class="text-center mb-1" style=" font-size:12px; ">Software By: Raxwo (Pvt) Ltd.</p>
-          <p class="text-center mb-1" style=" font-size:12px; ">Contact: 074 357 3333</p>
-          <hr />
-
-          ${deliveryNoteSection}
-        </body>
-      </html>
-    `;
+  const handlePrint = () => {
+    const printableHTML = generatePrintableHTML(order, symbol, now);
+    printReceiptToBoth(printableHTML);
   };
 
   return (
-    <div
-      className="receipt-modal"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1000,
-        backgroundColor: "#f8f9fa",
-        width: "100%",
-        height: "100%",
-        overflowY: "auto",
-        padding: "30px"
-      }}
-    >
-      {/* Controls */}
-      <div className="text-center mb-4 d-print-none">
-        <button onClick={onClose} className="btn btn-secondary me-2">
-          Close
-        </button>
-        <button onClick={exportToPDF} className="btn btn-primary me-2">
-          📄 Export PDF
-        </button>
-        <button
-          className="btn btn-success"
-          // onClick={() => window.print()}
-          onClick={() => {
-            // const content = document.getElementById("receipt-content").innerHTML;
-            const fullHTML = generatePrintableHTML();
-            printReceiptToBoth(fullHTML);
-          }}
-        >
-          🖨️ Print Receipt
-        </button>
-      </div>
-
-      {/* Receipt Content */}
-      <div
-        id="receipt-content"
-        style={{
-          maxWidth: "283px",
-          margin: "auto",
-          background: "#fff",
-          border: "1px solid #ccc",
-          borderRadius: "8px",
-          padding: "7.5px",
-          lineHeight: 1.4,
-          fontFamily: "Calibri, sans-serif", // ✅ Set Calibri font globally
-          boxShadow: "0 0 10px rgba(0,0,0,0.15)"
-        }}
+    <div className="receipt-overlay-root">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="receipt-backdrop"
       >
-        {/* ✅ SMALL CIRCULAR LOGO - ON SCREEN PREVIEW */}
-        <div className="text-center mb-2">
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              overflow: 'hidden',
-              margin: '0 auto 4px',
-              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-            }}
-          >
-            <img
-              src={LogoImage}
-              alt="Royal Orient Logo"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
-          </div>
-        </div>
-        {/* <h4 className="text-center mb-3">🍽️ <strong>Gasma Chinese Restaurant </strong></h4> */}
-        {/* <h3 className="mb-0 fs-5" style={{ textAlign: "center" }} ><strong>Gasma</strong></h3> */}
-        <h3 className="mb-1 fs-4" style={{ textAlign: "center" }}><strong>Royal Orient</strong></h3>
-        <p className="mb-0" style={{ textAlign: "center", fontSize: "13px" }}> No. 14/2/D, Pugoda Road, Katulanda, Dekatana.</p>
-        <p className="mb-3" style={{ textAlign: "center", fontSize: "14px" }}><strong>0777122797</strong></p>
-        <hr style={{ margin: "10px 4px" }}/>
-        {/* <p className="mb-1"><strong>Invoice No:</strong> {order.invoiceNo}</p>
-        <p className="mb-1"><strong>Date:</strong> {new Date().toLocaleString()}</p>
-        <p className="mb-1"><strong>Customer:</strong> {customerName}</p>
-        <p className="mb-1"><strong>Phone:</strong> {customerPhone}</p>
-        <p className="mb-1"><strong>Order Type:</strong> {tableNo > 0 ? `Dine In - Table ${tableNo}` : "Takeaway" }</p>
-        { (tableNo > 0) ? <></> : (<p><strong>Delivery Type:</strong>  {order.deliveryType}</p>)} */}
-
-        <div style={{ fontSize: "16px", marginBottom: "0px", lineHeight: "1.6" }}>
-          {/* Row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-            <div style={{ width: "90px",  lineHeight: "0", paddingBottom: "4px" }}>
-              <strong>Invoice No:</strong>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="receipt-card-premium"
+        >
+          {/* Top Actions */}
+          <header className="receipt-header">
+            <div className="status-badge">
+              <CheckCircle2 size={16} className="text-success" />
+              <span className="fw-800">TRANSACTION FINALIZED</span>
             </div>
-            <div>{order.invoiceNo}</div>
-          </div>
-
-          {/* Row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-            <div style={{ width: "90px", lineHeight: "0", paddingBottom: "4px" }}>
-              <strong>Date:</strong>
+            <div className="d-flex gap-2">
+              <button className="icon-btn-round" onClick={handlePrint}><Printer size={18} /></button>
+              <button className="icon-btn-round" onClick={handleClose}><X size={18} /></button>
             </div>
-            <div>{new Date().toLocaleString()}</div>
-          </div>
+          </header>
 
-          {/* Row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-            <div style={{ width: "90px",  lineHeight: "0", paddingBottom: "4px" }}>
-              <strong>Customer:</strong>
-            </div>
-            <div>{customerName}</div>
-          </div>
-
-          {/* Row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-            <div style={{ width: "90px",  lineHeight: "0", paddingBottom: "4px" }}>
-              <strong>Phone:</strong>
-            </div>
-            <div>{customerPhone}</div>
-          </div>
-
-          {/* Row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-            <div style={{ width: "90px", lineHeight: "0", paddingBottom: "4px" }}>
-              <strong>Order Type:</strong>
-            </div>
-            <div>{tableNo > 0 ? `Dine In - Table ${tableNo}` : `Takeaway ( ${order.deliveryType} )`}</div>
-          </div>
-
-          {/* Conditional Row */}
-          {tableNo === "Takeaway" && order.deliveryType === "Delivery Service" && (
-            <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "15px"  }}>
-              <div style={{ width: "90px",  lineHeight: "0", paddingBottom: "4px" }}>
-                <strong>Delivery Place:</strong>
+          <div className="receipt-scrollable-body">
+            {/* Brand Identity */}
+            <div className="brand-section text-center mb-5">
+              <div className="logo-wrapper-premium mx-auto mb-3">
+                <img src={LogoImage} alt="Royal Orient" />
               </div>
-              <div>{order.deliveryPlaceName}</div>
+              <h2 className="fw-900 m-0">Royal Orient</h2>
+              <p className="tiny-caps opacity-50 letter-spacing-2">Culinary Excellence & Tradition</p>
             </div>
-          )}
-        </div>
 
-        <hr style={{ margin: "10px 4px" }}/>
+            {/* Meta Info Grid */}
+            <div className="meta-info-grid mb-5">
+              <div className="meta-box">
+                <Hash size={14} className="text-indigo" />
+                <div>
+                  <span className="tiny-caps opacity-50">Invoice No</span>
+                  <span className="fw-800 d-block">{order.invoiceNo || "ORD-7829"}</span>
+                </div>
+              </div>
+              <div className="meta-box">
+                <Calendar size={14} className="text-indigo" />
+                <div>
+                  <span className="tiny-caps opacity-50">Date & Time</span>
+                  <span className="fw-800 d-block">{now}</span>
+                </div>
+              </div>
+              <div className="meta-box">
+                <User size={14} className="text-indigo" />
+                <div>
+                  <span className="tiny-caps opacity-50">Customer</span>
+                  <span className="fw-800 d-block">{order.customerName || "Walk-in Guest"}</span>
+                </div>
+              </div>
+              <div className="meta-box">
+                <UtensilsCrossed size={14} className="text-indigo" />
+                <div>
+                  <span className="tiny-caps opacity-50">Order Type</span>
+                  <span className="fw-800 d-block">{order.tableNo && order.tableNo !== 'Takeaway' ? `Table ${order.tableNo}` : "Takeaway"}</span>
+                </div>
+              </div>
+            </div>
 
-        {/* <ul className="mb-3" style={{ listStyle: "none", padding: 0 }}>
-          {items.map((item, idx) => (
-            <li key={idx} style={{ marginBottom: "6px" }} className="list-group-item d-flex justify-content-between">
-              <span>{item.name} x {item.quantity} </span>              
-              <span className="text-end">{symbol}{item.price?.toFixed(2)}</span>
-            </li>
-          ))}
-          {order.serviceCharge > 0 && (
-            <li className="list-group-item d-flex justify-content-between">
-              <span>Service Charge ({order.serviceCharge * 100 / order.subtotal?.toFixed(2) || 0}%)</span>
-              <span className="text-end">{symbol}{order.serviceCharge?.toFixed(2)}</span>
-              
-            </li>
-          )}
+            {/* Items Table */}
+            <div className="ledger-table-container mb-5">
+              <table className="ledger-table">
+                <thead>
+                  <tr>
+                    <th>Culinary Item</th>
+                    <th className="text-center">Qty</th>
+                    <th className="text-end">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {order.items.map((item, i) => (
+                    <tr key={i}>
+                      <td>
+                        <span className="fw-700">{item.name}</span>
+                        <span className="d-block tiny-caps opacity-40">Unit: {symbol}{item.price}</span>
+                      </td>
+                      <td className="text-center fw-800">{item.quantity}</td>
+                      <td className="text-end fw-900 text-indigo">{symbol}{(item.price * item.quantity).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          {order.deliveryCharge > 0 && (
-            <li className="list-group-item d-flex justify-content-between">
-              <span>Delivery Charge </span>
-              <span className="text-end">{symbol}{order.deliveryCharge?.toFixed(2)}</span>
-            </li>
-          )}
-        </ul> */}
+            {/* Financial Summary */}
+            <div className="financial-summary-box p-4 rounded-4 bg-app">
+              <div className="d-flex justify-content-between mb-2">
+                <span className="fw-700 opacity-50">Subtotal</span>
+                <span className="fw-800">{symbol}{(order.subtotal || order.totalPrice).toLocaleString()}</span>
+              </div>
+              {order.serviceCharge > 0 && (
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="fw-700 opacity-50">Service Charge</span>
+                  <span className="fw-800">{symbol}{order.serviceCharge.toLocaleString()}</span>
+                </div>
+              )}
+              {order.deliveryCharge > 0 && (
+                <div className="d-flex justify-content-between mb-2">
+                  <span className="fw-700 opacity-50">Delivery Logistics</span>
+                  <span className="fw-800">{symbol}{order.deliveryCharge.toLocaleString()}</span>
+                </div>
+              )}
+              <div className="divider-dashed my-3"></div>
+              <div className="d-flex justify-content-between align-items-center">
+                <h4 className="fw-900 m-0">TOTAL AMOUNT</h4>
+                <h3 className="fw-900 m-0 text-indigo">{symbol}{order.totalPrice.toLocaleString()}</h3>
+              </div>
+            </div>
 
-        {/* ✅ Replaced list with table for cleaner, aligned display */}
-        <table style={{ width: "100%", borderCollapse: "collapse", paddingTop: "0px", paddingBottom:"0px", fontSize: "15px"  }}>
-          <thead>
-              <th style={{ padding: "4px 0", width: "50%", textAlign: "left" }}> Items</th>
-              <th style={{ padding: "4px 0", width: "20%", textAlign: "center" }}> Qty</th>
-              <th style={{ padding: "4px 0", width: "30%", textAlign: "right" }}> Amount</th>
-          </thead>
-          <tbody>
-            {items.map((item, idx) => (
-              <tr key={idx}>
-                <td style={{ padding: "4px 0", width: "50%", textAlign: "left" }}>
-                  {item.name}
-                </td>
-                <td style={{ padding: "4px 0", width: "20%", textAlign: "center" }}>
-                  {item.quantity}
-                </td>
-                <td style={{ padding: "4px 0", width: "30%", textAlign: "right" }}>
-                  {symbol}{item.price?.toFixed(2)}
-                </td>
-              </tr>
-            ))}
-
-            {order.serviceCharge > 0 && (
-              <tr>
-                <td style={{ padding: "4px 0", textAlign: "left" }}>
-                  Service Charge ({((order.serviceCharge * 100) / (order.subtotal || 1)).toFixed(2)}%)
-                </td>
-                <td></td>
-                <td style={{ padding: "4px 0", textAlign: "right" }}>
-                  {symbol}{order.serviceCharge?.toFixed(2)}
-                </td>
-              </tr>
-            )}
-
-            {order.deliveryCharge > 0 && (
-              <tr>
-                <td style={{ padding: "4px 0", textAlign: "left" }}>
-                  Delivery Charge
-                </td>
-                <td></td>
-                <td style={{ padding: "4px 0", textAlign: "right" }}>
-                  {symbol}{order.deliveryCharge?.toFixed(2)}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-
-        <hr style={{ margin: "10px 4px" }}/>
-        <h5 className="text-end fs-6 mb-1">Total: {symbol}{totalPrice?.toFixed(2)}</h5>
-
-        {/* {order.payment && (
-          <div className="mb-1">
-            <p className="mb-1"><strong>Paid via:</strong></p>
-            {order.payment.cash > 0 && <p className="mb-1">Cash: {symbol}{order.payment.cash.toFixed(2)}</p>}
-            {order.payment.card > 0 && <p className="mb-1">Card: {symbol}{order.payment.card.toFixed(2)}</p>}
-            {order.payment.bankTransfer > 0 && (
-              <p className="mb-1">Bank Transfer: {symbol}{order.payment.bankTransfer.toFixed(2)}</p>
-            )}
-            <p className="mb-1"><strong>Total Paid:</strong> {symbol}{order.payment.totalPaid.toFixed(2)}</p>
-            <p className="mb-1"><strong>Change Due:</strong> {symbol}{order.payment.changeDue.toFixed(2)}</p>
+            {/* Footer Note */}
+            <footer className="text-center mt-5 pt-4 border-top">
+              <div className="d-flex align-items-center justify-content-center gap-2 mb-2">
+                <Info size={14} className="text-indigo" />
+                <span className="fw-800 small">Thank you for your patronage</span>
+              </div>
+              <p className="tiny-caps opacity-30 m-0">Software Powered by Raxwo (Pvt) Ltd • 074 357 3333</p>
+            </footer>
           </div>
-        )} */}
-        <hr style={{ margin: "10px 4px" }}/>
-        <p className="text-center mb-1 fw-bold" style={{ fontSize: "16px" }}> Thank you for your order! </p>
-        <p className="text-center  mb-1" style={{ fontSize: "13px" }}>Software By: Raxwo (Pvt) Ltd.</p>
-        <p className="text-center  mb-1 " style={{ fontSize: "13px" }}>Contact: 074 357 3333</p>
-        <hr style={{ margin: "10px 4px" }}/>
-        {order.deliveryCharge > 0 && order.deliveryNote?.trim() && (
-          <p>
-            <p>
-              <strong>Delivery Note :</strong>
-            </p>
-            <span >{order.deliveryNote}</span>
-          </p>
-        )}
-      </div>
 
-      {/* Hide everything except receipt when printing */}
+          <footer className="receipt-actions-footer">
+            <button className="btn-indigo w-100 py-3 justify-content-center" onClick={handlePrint}>
+              <Printer size={18} />
+              <span>PRINT PHYSICAL RECEIPT</span>
+            </button>
+            <button className="btn-ghost w-100 mt-2" onClick={handleClose}>CLOSE DOCUMENT</button>
+          </footer>
+        </motion.div>
+      </motion.div>
+
       <style>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #receipt-content, #receipt-content * {
-            visibility: visible;
-          }
-          #receipt-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            margin: 0;
-          }
+        .receipt-overlay-root { position: fixed; inset: 0; z-index: 4000; }
+        .receipt-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; padding: 40px; }
+        
+        .receipt-card-premium { background: white; width: 100%; max-width: 540px; border-radius: 40px; box-shadow: 0 40px 100px -20px rgba(0,0,0,0.4); display: flex; flex-direction: column; overflow: hidden; max-height: 90vh; }
+        
+        .receipt-header { padding: 20px 32px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: #f0fdf4; padding: 6px 14px; border-radius: 50px; font-size: 0.65rem; color: #166534; }
+        
+        .receipt-scrollable-body { flex: 1; overflow-y: auto; padding: 32px 40px; scrollbar-width: none; }
+        .receipt-scrollable-body::-webkit-scrollbar { display: none; }
+
+        .logo-wrapper-premium { width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 3px solid var(--p-indigo-50); }
+        .logo-wrapper-premium img { width: 100%; height: 100%; object-fit: cover; }
+
+        .meta-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .meta-box { display: flex; gap: 10px; align-items: center; min-width: 0; }
+        .meta-box span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .ledger-table { width: 100%; border-collapse: collapse; }
+        .ledger-table th { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px; }
+        .ledger-table td { padding: 12px 0; border-bottom: 1px solid #f8fafc; font-size: 0.85rem; }
+        
+        .divider-dashed { border-top: 1px dashed var(--border-strong); width: 100%; }
+        
+        .receipt-actions-footer { padding: 20px 40px 32px; background: linear-gradient(0deg, #fff 80%, transparent 100%); }
+
+        @media (max-width: 576px) {
+          .receipt-backdrop { padding: 10px; }
+          .receipt-card-premium { border-radius: 24px; max-height: 98vh; }
+          .receipt-scrollable-body { padding: 24px; }
+          .meta-info-grid { grid-template-columns: 1fr; gap: 12px; }
+          .receipt-header { padding: 16px 20px; }
+          .logo-wrapper-premium { width: 60px; height: 60px; }
+          .ledger-table td { font-size: 0.75rem; padding: 8px 0; }
+          .receipt-actions-footer { padding: 16px 24px 24px; }
         }
       `}</style>
     </div>
   );
+};
+
+const generatePrintableHTML = (order, symbol, now) => {
+  // High-fidelity print logic for thermal printers (keeping the user's specific store details)
+  return `
+      <html>
+        <head>
+          <style>
+            body { font-family: 'Courier New', Courier, monospace; width: 80mm; margin: 0; padding: 5mm; color: #000; }
+            .text-center { text-align: center; }
+            .text-end { text-align: right; }
+            hr { border: 0; border-top: 1px dashed #000; margin: 5px 0; }
+            table { width: 100%; font-size: 12px; border-collapse: collapse; }
+            th, td { padding: 3px 0; }
+            .mb-2 { margin-bottom: 10px; }
+            .header-title { font-size: 20px; font-weight: bold; }
+          </style>
+        </head>
+        <body>
+          <div class="text-center mb-2">
+            <div class="header-title">Royal Orient</div>
+            <div style="font-size:10px;">No. 14/2/D, Pugoda Road, Katulanda, Dekatana.</div>
+            <div style="font-size:12px; font-weight:bold;">0777122797</div>
+          </div>
+          <hr/>
+          <div style="font-size:11px;">
+            <div>INV: ${order.invoiceNo || 'N/A'}</div>
+            <div>DATE: ${now}</div>
+            <div>CUST: ${order.customerName || 'Walk-in'}</div>
+            <div>TYPE: ${order.tableNo > 0 ? 'Dine-In Table ' + order.tableNo : 'Takeaway'}</div>
+          </div>
+          <hr/>
+          <table>
+            <thead>
+              <tr><th style="text-align:left;">Item</th><th style="text-align:center;">Qty</th><th style="text-align:right;">Amt</th></tr>
+            </thead>
+            <tbody>
+              ${order.items.map(i => `
+                <tr>
+                  <td style="width:50%;">${i.name}</td>
+                  <td style="text-align:center;width:20%;">${i.quantity}</td>
+                  <td style="text-align:right;width:30%;">${symbol}${(i.price * i.quantity).toFixed(2)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          <hr/>
+          <div class="text-end">
+            <div>Subtotal: ${symbol}${(order.subtotal || order.totalPrice).toFixed(2)}</div>
+            ${order.serviceCharge > 0 ? `<div>Service: ${symbol}${order.serviceCharge.toFixed(2)}</div>` : ''}
+            ${order.deliveryCharge > 0 ? `<div>Delivery: ${symbol}${order.deliveryCharge.toFixed(2)}</div>` : ''}
+            <div style="font-size:16px; font-weight:bold; margin-top:5px;">TOTAL: ${symbol}${order.totalPrice.toFixed(2)}</div>
+          </div>
+          <hr/>
+          <div class="text-center" style="font-size:11px; margin-top:10px;">
+            <div>Thank you for your order!</div>
+            <div>Software by Raxwo (Pvt) Ltd</div>
+          </div>
+        </body>
+      </html>
+    `;
 };
 
 export default ReceiptModal;

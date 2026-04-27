@@ -1,19 +1,22 @@
-import API_BASE_URL from "../apiConfig";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  FaUtensils,
-  FaClock,
-  FaCheckCircle,
-  FaFire,
-  FaSyncAlt,
-  FaUserAlt,
-  FaShoppingBag,
-  FaHistory,
-  FaChevronRight
-} from "react-icons/fa";
+import { 
+  ChefHat, 
+  Clock, 
+  CheckCircle2, 
+  Flame, 
+  RefreshCw, 
+  User, 
+  Timer, 
+  AlertCircle,
+  Hash,
+  ChevronRight,
+  ClipboardList
+} from "lucide-react";
+import API_BASE_URL from "../apiConfig";
 import "../styles/PremiumUI.css";
 
 const KitchenLanding = () => {
@@ -23,8 +26,8 @@ const KitchenLanding = () => {
 
   useEffect(() => {
     fetchOrders(true);
-    const interval = setInterval(() => fetchOrders(false), 30000);
-    const timer = setInterval(() => setCurrentTime(Date.now()), 1000);
+    const interval = setInterval(() => fetchOrders(false), 20000);
+    const timer = setInterval(() => setCurrentTime(Date.now()), 30000);
     return () => { clearInterval(interval); clearInterval(timer); };
   }, []);
 
@@ -37,7 +40,7 @@ const KitchenLanding = () => {
       });
       setOrders(res.data.orders || res.data);
     } catch (err) {
-      console.error("Failed to fetch orders:", err);
+      console.error("KDS Sync Error:", err);
     } finally {
       if (initial) setLoading(false);
     }
@@ -50,129 +53,157 @@ const KitchenLanding = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(prev => prev.filter(o => o._id !== id));
-      toast.success("Order dispatched to pickup!");
+      toast.success("Culinary Masterpiece Ready!");
     } catch (err) {
-      toast.error("Failed to update status");
+      toast.error("Dispatch Failed");
     }
   };
 
   const liveOrders = orders.filter(o => ["Pending", "Processing"].includes(o.status));
 
-  if (loading) return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-white">
-        <div className="text-center">
-            <div className="spinner-border text-primary mb-3"></div>
-            <div className="text-muted fw-bold">Syncing Kitchen Display...</div>
-        </div>
+  if (loading && orders.length === 0) return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="spinner-border text-indigo" />
     </div>
   );
 
   return (
-    <div className="kitchen-dashboard animate-fade-in p-2">
-      <ToastContainer theme="light" />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="kitchen-suite">
+      <ToastContainer theme="colored" />
       
-      {/* Platinum Header */}
+      {/* KDS Header */}
       <div className="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title">Kitchen Operations</h1>
-          <p className="premium-subtitle">Live prep queue and order fulfillment</p>
+          <h1 className="text-hero">Kitchen Command Center</h1>
+          <p className="text-subtitle">Real-time KDS monitoring and culinary workflow orchestration</p>
         </div>
-        <div className="d-flex gap-3">
-            <div className="orient-card py-2 px-4 d-flex align-items-center gap-3 bg-white">
-                <div className="bg-red-glow p-2 rounded-circle"><FaFire size={14} /></div>
-                <span className="fw-800">{liveOrders.length} Active Orders</span>
+        <div className="d-flex gap-3 align-items-center">
+            <div className="bento-card kpi-mini secondary">
+                <Flame size={18} className="text-danger" />
+                <span className="fw-900">{liveOrders.length} ACTIVE TICKETS</span>
             </div>
-            <button className="btn-premium btn-premium-primary" onClick={() => fetchOrders(true)}>
-                <FaSyncAlt /> Sync Dashboard
+            <button className="btn-refresh-premium" onClick={() => fetchOrders(true)} disabled={loading}>
+                <RefreshCw size={20} className={loading ? "animate-spin-soft" : ""} />
             </button>
         </div>
       </div>
 
-      {/* Stats Summary Widgets */}
+      {/* KDS Analytics */}
       <div className="row g-4 mb-5">
         {[
-            { label: "Pending Prep", val: liveOrders.filter(o => o.status === 'Pending').length, icon: FaClock, color: 'blue' },
-            { label: "In Progress", val: liveOrders.filter(o => o.status === 'Processing').length, icon: FaUtensils, color: 'green' },
-            { label: "Recently Ready", val: orders.filter(o => o.status === 'Ready').length, icon: FaCheckCircle, color: 'gold' }
+            { label: "Awaiting Prep", val: liveOrders.filter(o => o.status === 'Pending').length, icon: Clock, color: 'var(--warning)' },
+            { label: "On The Fire", val: liveOrders.filter(o => o.status === 'Processing').length, icon: ChefHat, color: 'var(--p-indigo-600)' },
+            { label: "Dispatch Ready", val: orders.filter(o => o.status === 'Ready').length, icon: CheckCircle2, color: 'var(--success)' }
         ].map((stat, i) => (
             <div className="col-md-4" key={i}>
-                <div className="orient-card orient-stat-card py-3">
-                    <div className={`orient-stat-icon bg-${stat.color}-glow`}><stat.icon size={20} /></div>
+                <div className="bento-card d-flex align-items-center gap-3">
+                    <div className="stat-icon-wrapper" style={{ background: `${stat.color}15`, color: stat.color }}><stat.icon size={22} /></div>
                     <div>
-                        <div className="orient-stat-label">{stat.label}</div>
-                        <div className="orient-stat-value" style={{ fontSize: '1.4rem' }}>{stat.val}</div>
+                        <span className="tiny-caps">{stat.label}</span>
+                        <h4 className="fw-900 m-0">{stat.val}</h4>
                     </div>
                 </div>
             </div>
         ))}
       </div>
 
-      {/* Orders Grid */}
+      {/* Ticket Grid */}
       <div className="row g-4">
-        {liveOrders.length === 0 ? (
-            <div className="col-12 text-center py-5">
-                <div className="orient-card py-5 bg-white">
-                    <FaHistory size={64} className="text-muted mb-3 opacity-10" />
-                    <h4 className="fw-900 text-main">Kitchen Queue Empty</h4>
-                    <p className="text-muted">No active orders awaiting preparation.</p>
-                </div>
-            </div>
-        ) : (
-            liveOrders.map(order => {
-                const createdAt = new Date(order.createdAt);
-                const elapsedMin = Math.floor((currentTime - createdAt.getTime()) / 60000);
-                const isLate = elapsedMin > 20;
+        <AnimatePresence mode="popLayout">
+          {liveOrders.length === 0 ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="col-12 text-center py-5">
+                  <div className="bento-card py-5 bg-white border-dashed">
+                      <ClipboardList size={64} className="opacity-10 mb-3" />
+                      <h4 className="fw-900 opacity-40">Queue Clear</h4>
+                      <p className="text-subtitle">All orders have been dispatched.</p>
+                  </div>
+              </motion.div>
+          ) : (
+              liveOrders.map((order, i) => {
+                  const createdAt = new Date(order.createdAt);
+                  const elapsedMin = Math.floor((currentTime - createdAt.getTime()) / 60000);
+                  const isLate = elapsedMin > 15;
+                  const isCritical = elapsedMin > 25;
 
-                return (
-                    <div className="col-xl-4 col-lg-6" key={order._id}>
-                        <div className={`orient-card h-100 d-flex flex-column p-0 overflow-hidden bg-white shadow-platinum ${isLate ? 'border-danger' : ''}`}>
-                            <div className="p-3 border-bottom d-flex justify-content-between align-items-center" style={{ background: isLate ? 'var(--danger-light)' : 'var(--bg-main)' }}>
-                                <div>
-                                    <span className="orient-stat-label d-block" style={{ fontSize: '0.6rem' }}>TICKET ID</span>
-                                    <span className="text-main fw-900">#{order.invoiceNo || order._id.slice(-6)}</span>
-                                </div>
-                                <div className={`badge-premium ${isLate ? 'badge-danger' : order.status === 'Pending' ? 'badge-warning' : 'badge-primary'}`}>
-                                    {order.status} • {elapsedMin}m
-                                </div>
-                            </div>
-                            
-                            <div className="p-4 flex-grow-1">
-                                <div className="d-flex align-items-center gap-3 mb-4">
-                                    <div className="bg-blue-glow p-2 rounded-3"><FaUserAlt size={14} /></div>
-                                    <div className="text-main fw-800">{order.customerName}</div>
-                                    <div className="ms-auto text-primary fw-bold small">{order.tableNo ? `Table ${order.tableNo}` : 'Takeaway'}</div>
-                                </div>
+                  return (
+                      <motion.div 
+                        layout
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="col-xl-4 col-lg-6" 
+                        key={order._id}
+                      >
+                          <div className={`bento-card kds-ticket p-0 overflow-hidden ${isCritical ? 'critical-pulse' : isLate ? 'border-danger' : ''}`}>
+                              <header className={`p-3 d-flex justify-content-between align-items-center ${isCritical ? 'bg-danger text-white' : 'bg-light border-bottom'}`}>
+                                  <div className="d-flex align-items-center gap-2">
+                                      <Hash size={14} className="opacity-50" />
+                                      <span className="fw-900">{order.invoiceNo || order._id.slice(-6)}</span>
+                                  </div>
+                                  <div className={`badge-modern ${isCritical ? 'bg-white text-danger' : isLate ? 'danger' : 'info'}`}>
+                                      <Timer size={12} className="me-1" />
+                                      {elapsedMin}M ELAPSED
+                                  </div>
+                              </header>
+                              
+                              <div className="p-4">
+                                  <div className="d-flex align-items-center gap-3 mb-4">
+                                      <div className="stat-icon-wrapper mini"><User size={14} /></div>
+                                      <div>
+                                        <span className="fw-800 d-block">{order.customerName}</span>
+                                        <span className="tiny-caps indigo">{order.tableNo ? `Table ${order.tableNo}` : 'Takeaway Order'}</span>
+                                      </div>
+                                  </div>
 
-                                <div className="d-flex flex-column gap-2 mb-4">
-                                    {order.items.map((item, idx) => (
-                                        <div key={idx} className="d-flex justify-content-between align-items-center p-2 rounded-3 bg-light border">
-                                            <span className="text-main small fw-bold">{item.name}</span>
-                                            <span className="badge-premium badge-primary" style={{ fontSize: '0.7rem' }}>x{item.quantity}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                                  <div className="kitchen-items-list gap-2 d-flex flex-column mb-4">
+                                      {order.items.map((item, idx) => (
+                                          <div key={idx} className="d-flex justify-content-between align-items-center p-2 rounded-3 bg-app border">
+                                              <span className="fw-700 small text-main">{item.name}</span>
+                                              <span className="badge-modern indigo py-1 px-2">x{item.quantity}</span>
+                                          </div>
+                                      ))}
+                                  </div>
 
-                                {order.notes && (
-                                    <div className="p-3 rounded-4 bg-danger-light small text-danger border-dashed border-danger">
-                                        <strong>Chef's Note:</strong> {order.notes}
-                                    </div>
-                                )}
-                            </div>
+                                  {order.notes && (
+                                      <div className="p-3 rounded-3 bg-danger-light text-danger border border-danger border-dashed mb-3">
+                                          <div className="d-flex align-items-center gap-2 mb-1">
+                                            <AlertCircle size={14} />
+                                            <span className="tiny-caps text-danger">CHEF NOTES</span>
+                                          </div>
+                                          <p className="m-0 small fw-700">{order.notes}</p>
+                                      </div>
+                                  )}
+                              </div>
 
-                            <div className="p-3 bg-light border-top mt-auto">
-                                <button className="btn-premium btn-premium-secondary w-100 py-3 rounded-4 shadow-sm" onClick={() => markAsReady(order._id)}>
-                                    <FaCheckCircle className="me-2" /> Mark as Prepared <FaChevronRight className="ms-auto opacity-50" size={10} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })
-        )}
+                              <footer className="p-3 border-top bg-light">
+                                  <button className="btn-indigo w-100 py-3 justify-content-between" onClick={() => markAsReady(order._id)}>
+                                      <span className="fw-800">MARK AS PREPARED</span>
+                                      <ChevronRight size={18} />
+                                  </button>
+                              </footer>
+                          </div>
+                      </motion.div>
+                  );
+              })
+          )}
+        </AnimatePresence>
       </div>
 
-
-    </div>
+      <style>{`
+        .kitchen-suite { min-height: 100vh; padding-bottom: 80px; }
+        .kds-ticket { transition: all 0.3s; border: 1px solid var(--border-subtle); background: white; }
+        .kds-ticket:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .critical-pulse { border: 2px solid var(--danger) !important; animation: ticket-pulse 2s infinite; }
+        @keyframes ticket-pulse {
+          0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+          70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .stat-icon-wrapper.mini { width: 32px; height: 32px; border-radius: 10px; }
+        .kitchen-items-list { max-height: 250px; overflow-y: auto; }
+      `}</style>
+    </motion.div>
   );
 };
 
