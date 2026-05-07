@@ -32,10 +32,10 @@ const Signup = () => {
 
   return (
     <div className="immersive-login-root">
-      <div className="login-side-visual d-none d-lg-flex" style={{ background: '#0f172a' }}>
+      <div className="login-side-visual d-none d-lg-flex bg-immersive-indigo">
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="visual-content-box">
           <div className="brand-badge-indigo mb-4">ENROLLMENT</div>
-          <h1 className="giant-title mb-4" style={{ fontSize: '5rem' }}>JOIN THE<br />ORIENT</h1>
+          <h1 className="giant-title mb-4">JOIN THE<br />ORIENT</h1>
           <p className="vision-text-modern mx-auto" style={{ maxWidth: '460px' }}>
             Start your journey with the world's most advanced restaurant management system.
           </p>
@@ -45,7 +45,7 @@ const Signup = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="ultra-glass-card">
           <div className="floating-icon-box mb-4"><Sparkles size={32} /></div>
           <div className="text-center mb-5">
-            <h2 className="text-hero" style={{ fontSize: '2rem' }}>Create Account</h2>
+            <h2 className="text-hero">Create Account</h2>
             <p className="text-subtitle mt-2">{role.charAt(0).toUpperCase() + role.slice(1)} Registration</p>
           </div>
           <form onSubmit={handleSignup}>

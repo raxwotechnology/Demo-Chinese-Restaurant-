@@ -39,15 +39,15 @@ const KitchenLogin = () => {
   return (
     <div className="immersive-login-root">
       {/* Visual Side */}
-      <div className="login-side-visual d-none d-lg-flex" style={{ background: '#451a03' }}>
+      <div className="login-side-visual d-none d-lg-flex bg-immersive-amber">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="visual-content-box"
         >
-          <div className="brand-badge-indigo mb-4" style={{ background: '#78350f' }}>OPERATIONS CENTER</div>
-          <h1 className="giant-title mb-4" style={{ fontSize: '6rem' }}>KITCHEN<br />CONTROL</h1>
+          <div className="brand-badge-amber mb-4">OPERATIONS CENTER</div>
+          <h1 className="giant-title mb-4">KITCHEN<br />CONTROL</h1>
           <p className="vision-text-modern mx-auto" style={{ maxWidth: '460px', opacity: 0.8 }}>
             Live order management and culinary operations suite.
             Streamline production, track ingredients, and maintain peak performance.
@@ -58,7 +58,7 @@ const KitchenLogin = () => {
             animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.3, 0.1] }}
             transition={{ duration: 10, repeat: Infinity }}
             className="position-absolute"
-            style={{ top: '30%', left: '20%', width: '350px', height: '350px', background: '#f59e0b', filter: 'blur(150px)' }}
+            style={{ top: '30%', left: '20%', width: '350px', height: '350px', background: 'var(--p-amber-600)', filter: 'blur(150px)' }}
           />
         </div>
       </div>
@@ -70,11 +70,11 @@ const KitchenLogin = () => {
           animate={{ opacity: 1, x: 0 }}
           className="ultra-glass-card"
         >
-          <div className="floating-icon-box mb-4" style={{ background: '#451a03' }}>
+          <div className="floating-icon-box mb-4 bg-immersive-amber">
             <Flame size={32} className="text-warning" />
           </div>
           <div className="text-center mb-5">
-            <h2 className="text-hero" style={{ fontSize: '2rem' }}>Kitchen Login</h2>
+            <h2 className="text-hero">Kitchen Login</h2>
             <p className="text-subtitle mt-2">Enter operations credentials</p>
           </div>
 
@@ -125,7 +125,7 @@ const KitchenLogin = () => {
             <button
               type="submit"
               className="btn-indigo w-100 py-4 mt-4 justify-content-center"
-              style={{ background: '#451a03', boxShadow: '0 8px 20px -6px rgba(69,26,3,0.5)' }}
+              style={{ background: 'var(--p-amber-900)', boxShadow: '0 8px 20px -6px rgba(69,26,3,0.5)' }}
               disabled={loading}
             >
               {loading ? (

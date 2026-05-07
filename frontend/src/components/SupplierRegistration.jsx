@@ -80,10 +80,10 @@ const SupplierRegistration = () => {
       {/* Platinum Header */}
       <div className="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title">Supply Chain</h1>
+          <h1 className="premium-title mb-1">Supply Chain</h1>
           <p className="premium-subtitle">Manage authorized vendors and procurement contacts</p>
         </div>
-        <button className="btn-premium btn-primary" onClick={fetchSuppliers}>
+        <button className="btn-indigo d-flex align-items-center gap-2" onClick={fetchSuppliers}>
             <FaSyncAlt /> Refresh Directory
         </button>
       </div>
@@ -91,43 +91,43 @@ const SupplierRegistration = () => {
       <div className="row g-4">
         {/* Form Column */}
         <div className="col-xl-4">
-            <div className="orient-card p-4 h-100 bg-white shadow-platinum">
+            <div className="bento-card p-4 h-100 bg-white shadow-sm">
                 <div className="d-flex align-items-center gap-3 mb-5">
-                    <div className="bg-gold-glow p-3 rounded-circle"><FaTruck size={24} className="text-warning" /></div>
+                    <div className="bg-gold-glow p-3 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}><FaTruck size={20} /></div>
                     <h3 className="mb-0 fw-800 h5 text-main">{editingId ? "Modify Vendor" : "Onboard New Vendor"}</h3>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
                     <div>
-                        <label className="orient-stat-label mb-2 d-block">Company / Entity Name</label>
+                        <label className="tiny-caps mb-2 d-block">Company / Entity Name</label>
                         <div className="search-input-wrapper">
                             <FaBuilding className="search-icon" size={14} />
                             <input type="text" className="premium-input w-100" placeholder="e.g. Royal Spices Ltd." value={formData.companyName} onChange={(e) => setFormData({...formData, companyName: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label mb-2 d-block">Primary Contact Person</label>
+                        <label className="tiny-caps mb-2 d-block">Primary Contact Person</label>
                         <div className="search-input-wrapper">
                             <FaUserAlt className="search-icon" size={14} />
                             <input type="text" className="premium-input w-100" placeholder="e.g. John Smith" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label mb-2 d-block">Phone / WhatsApp</label>
+                        <label className="tiny-caps mb-2 d-block">Phone / WhatsApp</label>
                         <div className="search-input-wrapper">
                             <FaPhoneAlt className="search-icon" size={14} />
                             <input type="text" className="premium-input w-100" placeholder="+123..." value={formData.contact} onChange={(e) => setFormData({...formData, contact: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label mb-2 d-block">Email Communications</label>
+                        <label className="tiny-caps mb-2 d-block">Email Communications</label>
                         <div className="search-input-wrapper">
                             <FaEnvelope className="search-icon" size={14} />
                             <input type="email" className="premium-input w-100" placeholder="vendor@mail.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label mb-2 d-block">Registered Business Address</label>
+                        <label className="tiny-caps mb-2 d-block">Registered Business Address</label>
                         <div className="search-input-wrapper">
                             <FaMapMarkerAlt className="search-icon" size={14} />
                             <input type="text" className="premium-input w-100" placeholder="Street, City..." value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
@@ -135,10 +135,10 @@ const SupplierRegistration = () => {
                     </div>
 
                     <div className="d-flex flex-column gap-2 mt-4">
-                        <button type="submit" className="btn-premium btn-primary py-3 rounded-4 shadow-md" disabled={loading}>
+                        <button type="submit" className="btn-indigo py-3 justify-content-center" disabled={loading}>
                             {editingId ? <><FaSave className="me-2" /> Commit Profile Update</> : <><FaPlus className="me-2" /> Finalize Registration</>}
                         </button>
-                        {editingId && <button type="button" className="btn-premium btn-ghost py-3 rounded-4" onClick={() => {setEditingId(null); setFormData({name: "", companyName: "", contact: "", email: "", address: ""})}}>Discard Changes</button>}
+                        {editingId && <button type="button" className="btn-ghost py-3" onClick={() => {setEditingId(null); setFormData({name: "", companyName: "", contact: "", email: "", address: ""})}}>Discard Changes</button>}
                     </div>
                 </form>
             </div>
@@ -146,12 +146,12 @@ const SupplierRegistration = () => {
 
         {/* List Column */}
         <div className="col-xl-8">
-            <div className="orient-card p-0 overflow-hidden bg-white shadow-platinum h-100 d-flex flex-column">
-                <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light">
+            <div className="bento-card p-0 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column">
+                <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-10">
                     <h6 className="mb-0 fw-800 text-main d-flex align-items-center gap-2">
-                        <FaBuilding className="text-primary" size={16} /> Authorized Vendor Directory
+                        <FaBuilding className="text-indigo-600" size={16} /> Authorized Vendor Directory
                     </h6>
-                    <span className="badge-premium badge-primary">{suppliers.length} Verified Sources</span>
+                    <span className="badge-premium badge-blue">{suppliers.length} Verified Sources</span>
                 </div>
                 
                 <div className="premium-table-container border-0 flex-grow-1 overflow-auto">
@@ -167,25 +167,25 @@ const SupplierRegistration = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="5" className="text-center py-5"><div className="spinner-border text-primary"></div></td></tr>
+                                <tr><td colSpan="5" className="text-center py-5"><div className="spinner-border text-indigo-600"></div></td></tr>
                             ) : suppliers.length === 0 ? (
                                 <tr><td colSpan="5" className="text-center py-5 text-muted">No active vendors found in the registry.</td></tr>
                             ) : suppliers.map(s => (
                                 <tr key={s._id}>
                                     <td>
                                         <div className="text-main fw-800">{s.companyName}</div>
-                                        <div className="tiny text-primary fw-bold text-uppercase">Certified Partner</div>
+                                        <div className="tiny-caps text-indigo-600">Certified Partner</div>
                                     </td>
                                     <td><div className="text-main small fw-500">{s.name}</div></td>
                                     <td>
                                         <div className="text-main small fw-800">{s.contact}</div>
-                                        <div className="tiny text-muted">{s.email || '--'}</div>
+                                        <div className="tiny-caps text-muted">{s.email || '--'}</div>
                                     </td>
-                                    <td><div className="tiny text-muted truncate-2">{s.address || '--'}</div></td>
+                                    <td><div className="small text-muted truncate-2">{s.address || '--'}</div></td>
                                     <td className="text-center">
                                         <div className="d-flex justify-content-center gap-2">
-                                            <button className="btn-premium btn-ghost p-2 text-primary rounded-circle" onClick={() => { setEditingId(s._id); setFormData(s); }}><FaEdit size={12} /></button>
-                                            <button className="btn-premium btn-ghost p-2 text-danger rounded-circle" onClick={() => handleDelete(s._id)}><FaTrash size={12} /></button>
+                                            <button className="btn-ghost p-2 text-indigo-600 rounded-circle" onClick={() => { setEditingId(s._id); setFormData(s); }}><FaEdit size={14} /></button>
+                                            <button className="btn-ghost p-2 text-danger rounded-circle" onClick={() => handleDelete(s._id)}><FaTrash size={14} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -196,15 +196,8 @@ const SupplierRegistration = () => {
             </div>
         </div>
       </div>
-
-      <style>{`
-        .bg-gold-glow { background: var(--warning-light); color: var(--warning); }
-        .fw-800 { font-weight: 800; }
-        .tiny { font-size: 0.7rem; }
-        .truncate-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-      `}</style>
     </div>
   );
 };
 
-export default SupplierRegistration;
+export default SupplierRegistration;
