@@ -40,96 +40,83 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="login-wrapper bg-premium">
-      <div className="login-bg-overlay"></div>
+    <div className="auth-page-luxury">
+      <div className="auth-split-left">
+        <div className="auth-card-premium" style={{ maxWidth: '480px' }}>
+          <h2 className="auth-title-premium">Security Portal</h2>
+          <p className="auth-subtitle-premium">
+            {step === 1 ? "IDENTITY VERIFICATION" : "PASSWORD RESTORATION"}
+          </p>
 
-      <div className="login-glass-card">
-        <h2 className="login-card-title">Security Access</h2>
-        <span className="login-card-subtitle">
-          {step === 1 ? "Verify Identity" : "Create New Password"}
-        </span>
-
-        {step === 1 && (
-          <form onSubmit={handleVerifyKey}>
-            <div className="login-input-group">
-              <label htmlFor="key">Reset Key (from Admin)</label>
-              <div className="login-input-wrapper">
-                <FaKey className="login-input-icon" />
+          {step === 1 && (
+            <form onSubmit={handleVerifyKey} className="d-flex flex-column gap-3">
+              <div className="auth-input-group">
+                <label>Security Reset Key</label>
                 <input
                   type="text"
-                  className="login-input-premium"
-                  id="key"
-                  placeholder="Enter your security key"
+                  className="auth-input-premium"
+                  placeholder="Enter Key"
                   value={key}
                   onChange={(e) => setKey(e.target.value)}
                   required
                   disabled={loading}
                 />
               </div>
-            </div>
-            <button
-              type="submit"
-              className="login-btn-premium btn-cashier-accent"
-              disabled={loading}
-            >
-              {loading ? "Verifying..." : <>Verify Key <FaShieldAlt /></>}
-            </button>
-          </form>
-        )}
+              <button type="submit" className="auth-btn-primary mt-2" disabled={loading}>
+                {loading ? "VERIFYING..." : "VERIFY KEY"}
+              </button>
+            </form>
+          )}
 
-        {step === 2 && (
-          <form onSubmit={handleResetPassword}>
-            <div className="login-input-group">
-              <label htmlFor="email">Email Address</label>
-              <div className="login-input-wrapper">
-                <FaEnvelope className="login-input-icon" />
+          {step === 2 && (
+            <form onSubmit={handleResetPassword} className="d-flex flex-column gap-3">
+              <div className="auth-input-group">
+                <label>Confirmed Email</label>
                 <input
                   type="email"
-                  className="login-input-premium"
-                  id="email"
-                  placeholder="Confirm your email"
+                  className="auth-input-premium"
+                  placeholder="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            <div className="login-input-group">
-              <label htmlFor="newPassword">New Password</label>
-              <div className="login-input-wrapper">
-                <FaLock className="login-input-icon" />
+              <div className="auth-input-group">
+                <label>New Security Passphrase</label>
                 <input
                   type="password"
-                  className="login-input-premium"
-                  id="newPassword"
-                  placeholder="Enter new password"
+                  className="auth-input-premium"
+                  placeholder="New Password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
                   disabled={loading}
                 />
               </div>
-            </div>
 
-            <button
-              type="submit"
-              className="login-btn-premium btn-cashier-accent"
-              disabled={loading}
-            >
-              {loading ? "Updating..." : <>Reset Password <FaArrowRight /></>}
-            </button>
-          </form>
-        )}
+              <button type="submit" className="auth-btn-primary mt-2" disabled={loading}>
+                {loading ? "UPDATING..." : "RESET PASSWORD"}
+              </button>
+            </form>
+          )}
 
-        <div className="login-footer">
-          <p>
-            <Link to="/" className="premium-link">
-              Exit to Main Portal
-            </Link>
-          </p>
+          <div className="auth-footer">
+            <Link to="/" className="auth-link-gold small">EXIT TO MAIN PORTAL</Link>
+          </div>
         </div>
+      </div>
+
+      <div className="auth-split-right">
+          <div className="position-relative z-10 text-center animate-in">
+              <div className="branding-wrapper">
+                  <h1 className="luxury-text-royal">ROYAL</h1>
+                  <div className="luxury-divider"></div>
+                  <h2 className="luxury-text-orient">RECOVERY</h2>
+                  <p className="luxury-est">SECURITY & ACCESS CONTROL</p>
+              </div>
+          </div>
       </div>
     </div>
   );

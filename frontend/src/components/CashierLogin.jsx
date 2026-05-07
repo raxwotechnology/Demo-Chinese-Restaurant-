@@ -22,13 +22,11 @@ const CashierLogin = () => {
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       const data = res.data;
-
       if (data.role !== "cashier" && data.role !== "admin") {
         setError("Unauthorized access. This portal is for Cashiers only.");
         setLoading(false);
         return;
       }
-
       login(data);
       navigate("/cashier");
     } catch (err) {
@@ -42,22 +40,21 @@ const CashierLogin = () => {
     <div className="immersive-login-root">
       {/* Visual Side */}
       <div className="login-side-visual d-none d-lg-flex" style={{ background: '#1e293b' }}>
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="visual-content-box"
         >
           <div className="brand-badge-indigo mb-4" style={{ background: '#334155' }}>TERMINAL ACCESS</div>
-          <h1 className="giant-title mb-4" style={{ fontSize: '6rem' }}>CASHIER<br/>PORTAL</h1>
+          <h1 className="giant-title mb-4" style={{ fontSize: '6rem' }}>CASHIER<br />PORTAL</h1>
           <p className="vision-text-modern mx-auto" style={{ maxWidth: '460px', opacity: 0.7 }}>
-            Precision Point of Sale terminal for Royal Orient. 
+            Precision Point of Sale terminal for Royal Orient.
             Process orders, manage transactions, and deliver excellence at the front of house.
           </p>
         </motion.div>
-        
         <div className="position-absolute top-0 start-0 w-100 h-100 pointer-events-none overflow-hidden">
-          <motion.div 
+          <motion.div
             animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
             transition={{ duration: 15, repeat: Infinity }}
             className="position-absolute"
@@ -68,15 +65,14 @@ const CashierLogin = () => {
 
       {/* Form Side */}
       <div className="login-side-form">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="ultra-glass-card"
         >
-          <div className="floating-icon-box" style={{ background: '#1e293b' }}>
+          <div className="floating-icon-box mb-4" style={{ background: '#1e293b' }}>
             <CreditCard size={32} />
           </div>
-          
           <div className="text-center mb-5">
             <h2 className="text-hero" style={{ fontSize: '2rem' }}>Cashier Login</h2>
             <p className="text-subtitle mt-2">Enter terminal credentials</p>
@@ -85,11 +81,11 @@ const CashierLogin = () => {
           <form onSubmit={handleLogin}>
             <AnimatePresence>
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="alert alert-danger border-0 rounded-4 mb-4 small fw-700 py-3 text-center"
+                  className="alert alert-danger border-0 rounded-4 mb-4 small py-3 text-center"
                 >
                   {error}
                 </motion.div>
@@ -100,9 +96,9 @@ const CashierLogin = () => {
               <label>Personnel Email</label>
               <div className="position-relative">
                 <Mail className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
-                <input 
-                  type="email" 
-                  className="input-premium ps-5" 
+                <input
+                  type="email"
+                  className="input-premium ps-5"
                   placeholder="cashier@royalorient.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -115,9 +111,9 @@ const CashierLogin = () => {
               <label>Access Pin / Password</label>
               <div className="position-relative">
                 <Lock className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
-                <input 
-                  type="password" 
-                  className="input-premium ps-5" 
+                <input
+                  type="password"
+                  className="input-premium ps-5"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -126,10 +122,10 @@ const CashierLogin = () => {
               </div>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn-indigo w-100 py-4 mt-4 justify-content-center"
-              style={{ background: '#1e293b', boxShadow: '0 8px 20px -6px rgba(30, 41, 59, 0.5)' }}
+              style={{ background: '#1e293b', boxShadow: '0 8px 20px -6px rgba(30,41,59,0.5)' }}
               disabled={loading}
             >
               {loading ? (
@@ -147,8 +143,8 @@ const CashierLogin = () => {
           </form>
 
           <div className="text-center mt-5">
-            <Link to="/" className="link-hover-indigo small fw-800">
-               BACK TO SYSTEM HUB
+            <Link to="/" className="link-hover-indigo small">
+              BACK TO SYSTEM HUB
             </Link>
           </div>
         </motion.div>

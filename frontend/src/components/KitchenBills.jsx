@@ -639,7 +639,7 @@ const KitchenBills = () => {
           color: #ffffff;
           background: linear-gradient(135deg, #2563eb, #3b82f6);
           z-index: 2;
-          box-shadow: 0 12px 20px rgba(37, 99, 235, 0.24);
+          box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
         }
 
         .kitchen-bills-page .with-prefix {
@@ -795,7 +795,7 @@ const KitchenBills = () => {
 
         .kitchen-bills-page .edit-btn {
           background: linear-gradient(135deg, #2563eb, #1d4ed8);
-          box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+          box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
         }
 
         .kitchen-bills-page .delete-btn,

@@ -31,77 +31,79 @@ const SignupForm = ({ role, title }) => {
     }
   };
 
-  return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-      <div className="card shadow-sm p-4" style={{ maxWidth: "400px", width: "100%" }}>
-        <h4 className="text-center mb-4">{title}</h4>
-        <form onSubmit={handleSignup}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">Full Name</label>
+  <div className="auth-page-luxury">
+    <div className="auth-split-left">
+      <div className="auth-card-premium" style={{ maxWidth: '480px' }}>
+        <h2 className="auth-title-premium">Staff Registry</h2>
+        <p className="auth-subtitle-premium">{role} Onboarding</p>
+
+        <form onSubmit={handleSignup} className="d-flex flex-column gap-3">
+          <div className="auth-input-group">
+            <label>Full Nomenclature</label>
             <input
               type="text"
-              className="form-control"
-              id="name"
-              placeholder="Enter full name"
+              className="auth-input-premium"
+              placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              disabled={loading} // 👈 Optional: disable input during loading
+              disabled={loading}
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email address</label>
+
+          <div className="auth-input-group">
+            <label>Corporate Email</label>
             <input
               type="email"
-              className="form-control"
-              id="email"
-              placeholder="Enter email"
+              className="auth-input-premium"
+              placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={loading}
             />
           </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
+
+          <div className="auth-input-group">
+            <label>Security Key</label>
             <input
               type="password"
-              className="form-control"
-              id="password"
-              placeholder="Enter password"
+              className="auth-input-premium"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               disabled={loading}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-success w-100"
-            disabled={loading} // 👈 Disable button while loading
-          >
-            {loading ? (
-              <>
-                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Signing up...
-              </>
-            ) : (
-              `Sign Up as ${role.charAt(0).toUpperCase() + role.slice(1)}`
-            )}
-          </button>
+
+            <button 
+              type="submit" 
+              className={`auth-btn-primary mt-3 ${role === 'admin' ? 'auth-btn-gold' : role === 'kitchen' ? 'auth-btn-slate' : ''}`} 
+              disabled={loading}
+            >
+              {loading ? "AUTHORIZING..." : `SIGN UP AS ${role.toUpperCase()}`}
+            </button>
         </form>
 
-        <hr />
-
-        <p className="text-center mb-0">
-          Already have an account?{" "}
-          <Link to={`/${role}-login`} className="text-decoration-none">
-            Login
-          </Link>
-        </p>
+        <div className="auth-footer">
+          <p className="tiny text-muted mb-2">Already authenticated?</p>
+          <Link to={`/${role}-login`} className="auth-link-gold small">SIGN IN TO STATION</Link>
+        </div>
       </div>
     </div>
-  );
+
+    <div className="auth-split-right">
+      <div className="position-relative z-10 text-center animate-in">
+        <div className="branding-wrapper">
+          <h1 className="luxury-text-royal">ROYAL</h1>
+          <div className="luxury-divider"></div>
+          <h2 className="luxury-text-orient">REGISTRY</h2>
+          <p className="luxury-est">PERSONNEL ONBOARDING PORTAL</p>
+        </div>
+      </div>
+    </div>
+  </div>
 };
 
 export default SignupForm;

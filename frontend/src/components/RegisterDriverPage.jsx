@@ -730,7 +730,7 @@ const RegisterDriverPage = () => {
 
         .driver-page .edit-btn {
           background: linear-gradient(135deg, #2563eb, #1d4ed8);
-          box-shadow: 0 10px 22px rgba(37, 99, 235, 0.2);
+          box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
         }
 
         .driver-page .delete-btn {

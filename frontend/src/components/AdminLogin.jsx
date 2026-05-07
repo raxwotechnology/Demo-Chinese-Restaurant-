@@ -22,13 +22,11 @@ const AdminLogin = () => {
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/login`, { email, password });
       const data = res.data;
-
       if (data.role !== "admin") {
         setError("Unauthorized access. This portal is for Administrators only.");
         setLoading(false);
         return;
       }
-
       login(data);
       navigate("/admin");
     } catch (err) {
@@ -42,23 +40,21 @@ const AdminLogin = () => {
     <div className="immersive-login-root">
       {/* Visual Side */}
       <div className="login-side-visual d-none d-lg-flex">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="visual-content-box"
         >
           <div className="brand-badge-indigo mb-4">EXECUTIVE PORTAL</div>
-          <h1 className="giant-title mb-4" style={{ fontSize: '6rem' }}>ROYAL<br/>ADMIN</h1>
+          <h1 className="giant-title mb-4" style={{ fontSize: '6rem' }}>ROYAL<br />ADMIN</h1>
           <p className="vision-text-modern mx-auto" style={{ maxWidth: '460px' }}>
-            Access the high-precision management suite for Royal Orient. 
+            Access the high-precision management suite for Royal Orient.
             Monitor performance, manage personnel, and optimize global operations.
           </p>
         </motion.div>
-        
-        {/* Animated background elements */}
         <div className="position-absolute top-0 start-0 w-100 h-100 pointer-events-none overflow-hidden">
-          <motion.div 
+          <motion.div
             animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
             transition={{ duration: 20, repeat: Infinity }}
             className="position-absolute"
@@ -69,15 +65,14 @@ const AdminLogin = () => {
 
       {/* Form Side */}
       <div className="login-side-form">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           className="ultra-glass-card"
         >
-          <div className="floating-icon-box">
+          <div className="floating-icon-box mb-4">
             <ShieldCheck size={32} />
           </div>
-          
           <div className="text-center mb-5">
             <h2 className="text-hero" style={{ fontSize: '2rem' }}>Secure Login</h2>
             <p className="text-subtitle mt-2">Enter executive credentials</p>
@@ -86,11 +81,11 @@ const AdminLogin = () => {
           <form onSubmit={handleLogin}>
             <AnimatePresence>
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="alert alert-danger border-0 rounded-4 mb-4 small fw-700 py-3 text-center"
+                  className="alert alert-danger border-0 rounded-4 mb-4 small py-3 text-center"
                 >
                   {error}
                 </motion.div>
@@ -101,9 +96,9 @@ const AdminLogin = () => {
               <label>Administrator Email</label>
               <div className="position-relative">
                 <Mail className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
-                <input 
-                  type="email" 
-                  className="input-premium ps-5" 
+                <input
+                  type="email"
+                  className="input-premium ps-5"
                   placeholder="admin@royalorient.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -116,9 +111,9 @@ const AdminLogin = () => {
               <label>Access Password</label>
               <div className="position-relative">
                 <Lock className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
-                <input 
-                  type="password" 
-                  className="input-premium ps-5" 
+                <input
+                  type="password"
+                  className="input-premium ps-5"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -127,8 +122,8 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn-indigo w-100 py-4 mt-4 justify-content-center"
               disabled={loading}
             >
@@ -147,8 +142,8 @@ const AdminLogin = () => {
           </form>
 
           <div className="text-center mt-5">
-            <Link to="/" className="link-hover-indigo small fw-800">
-               RETURN TO COMMAND CENTER
+            <Link to="/" className="link-hover-indigo small">
+              RETURN TO COMMAND CENTER
             </Link>
           </div>
         </motion.div>

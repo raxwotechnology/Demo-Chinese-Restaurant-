@@ -30,16 +30,11 @@ app.get("/", (req, res) => {
     res.status(200).json({ status: 'OK', system: 'Royal Orient API', version: '1.0.0' });
 });
 
-// For local development
+// Start Server
 const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server is running locally on: http://localhost:${PORT}`);
-        console.log(`📅 Started at: ${new Date().toLocaleString()}`);
-    });
-} else {
-    // This is for Vercel or other serverless platforms
-    console.log("Server initialized for Production/Serverless environment");
-}
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port: ${PORT}`);
+    console.log(`📅 Started at: ${new Date().toLocaleString()}`);
+});
 
 module.exports = app;

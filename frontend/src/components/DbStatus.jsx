@@ -538,7 +538,7 @@ const styles = `
     background: linear-gradient(145deg, #22d3ee 0%, #2563eb 52%, #1d4ed8 100%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.38),
-      0 12px 24px rgba(37, 99, 235, 0.28),
+      0 12px 24px rgba(0, 0, 0, 0.1),
       0 5px 10px rgba(15, 23, 42, 0.12);
   }
 
