@@ -161,9 +161,8 @@ const DeliveryCharges = () => {
                   </label>
                   <button
                     type="submit"
-                    className={`action-btn primary-btn ${
-                      editingId ? "warning-btn" : "success-btn"
-                    } w-100`}
+                    className={`action-btn primary-btn ${editingId ? "warning-btn" : "success-btn"
+                      } w-100`}
                   >
                     {editingId ? "Update Charge" : "Add Delivery Charge"}
                   </button>

@@ -102,7 +102,7 @@ const AdminDashboard = () => {
   );
 
   return (
-    <motion.div 
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -114,12 +114,12 @@ const AdminDashboard = () => {
           <h1 className="text-hero">Executive Dashboard</h1>
           <p className="text-subtitle">Strategic monitoring and real-time operational intelligence</p>
         </div>
-        
+
         <div className="d-flex gap-2 bg-white p-2 rounded-4 shadow-sm border align-items-center">
-          <select 
-            className="premium-select" 
+          <select
+            className="premium-select"
             style={{ border: 'none', backgroundPosition: 'right 0.5rem center', padding: '0 2rem 0 1rem', fontSize: '0.9rem' }}
-            value={filterType} 
+            value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
           >
             <option value="today">Today's Cycle</option>
@@ -134,45 +134,45 @@ const AdminDashboard = () => {
 
       {/* KPI Bento Grid */}
       <div className="dashboard-grid">
-        <motion.div variants={itemVariants} className="bento-card kpi-main">
+        <motion.div variants={itemVariants} className="bento-card bento-card-primary kpi-main">
           <div className="d-flex justify-content-between">
             <div className="stat-icon-wrapper"><TrendingUp size={24} /></div>
             <ArrowUpRight size={20} className="opacity-30" />
           </div>
           <div className="mt-4">
             <p className="tiny-caps">Net Profitability</p>
-            <h2 className="text-hero mt-1" style={{ color: 'var(--p-indigo-600)' }}>{symbol}{(summary.netProfit || 0).toLocaleString()}</h2>
-            <div className="badge-modern success mt-3">+14.2% from last cycle</div>
+            <h2 className="text-hero mt-1">{symbol}{(summary.netProfit || 0).toLocaleString()}</h2>
+            <div className="badge-modern indigo mt-3" style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: 'none' }}>+14.2% from last cycle</div>
           </div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="bento-card">
           <div className="d-flex justify-content-between">
-            <div className="stat-icon-wrapper" style={{ background: '#fef2f2', color: '#ef4444' }}><Flame size={24} /></div>
+            <div className="stat-icon-wrapper danger"><Flame size={24} /></div>
           </div>
           <div className="mt-4">
             <p className="tiny-caps">Operational Cost</p>
-            <h3 className="text-hero mt-1" style={{ fontSize: '1.75rem' }}>{symbol}{(summary.totalCost || 0).toLocaleString()}</h3>
+            <h3 className="summary-amount negative mt-1">{symbol}{(summary.totalCost || 0).toLocaleString()}</h3>
           </div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="bento-card">
           <div className="d-flex justify-content-between">
-            <div className="stat-icon-wrapper" style={{ background: '#f0fdf4', color: '#10b981' }}><Zap size={24} /></div>
+            <div className="stat-icon-wrapper success"><Zap size={24} /></div>
           </div>
           <div className="mt-4">
             <p className="tiny-caps">Gross Revenue</p>
-            <h3 className="text-hero mt-1" style={{ fontSize: '1.75rem' }}>{symbol}{(summary.totalIncome || 0).toLocaleString()}</h3>
+            <h3 className="summary-amount positive mt-1">{symbol}{(summary.totalIncome || 0).toLocaleString()}</h3>
           </div>
         </motion.div>
 
         <motion.div variants={itemVariants} className="bento-card">
           <div className="d-flex justify-content-between">
-            <div className="stat-icon-wrapper" style={{ background: '#fffbeb', color: '#f59e0b' }}><Globe size={24} /></div>
+            <div className="stat-icon-wrapper warning"><Globe size={24} /></div>
           </div>
           <div className="mt-4">
             <p className="tiny-caps">Transaction Index</p>
-            <h3 className="text-hero mt-1" style={{ fontSize: '1.75rem' }}>{summary.totalOrders || 0}</h3>
+            <h3 className="summary-amount neutral mt-1">{summary.totalOrders || 0}</h3>
           </div>
         </motion.div>
 
@@ -183,7 +183,7 @@ const AdminDashboard = () => {
             <h5 className="m-0 fw-800">Channel Velocity</h5>
           </div>
           <div style={{ height: '300px' }}>
-            <Bar 
+            <Bar
               data={{
                 labels: ["Dining Room", "Takeaway", "Delivery"],
                 datasets: [
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
             <h5 className="m-0 fw-800">Settlements</h5>
           </div>
           <div style={{ height: '220px' }}>
-            <Doughnut 
+            <Doughnut
               data={{
                 labels: ["Cash", "Card", "Bank"],
                 datasets: [{ data: [summary.paymentBreakdown?.cash || 0, summary.paymentBreakdown?.card || 0, summary.paymentBreakdown?.bank || 0], backgroundColor: ['#4f46e5', '#818cf8', '#c7d2fe'], borderWidth: 0 }]
@@ -237,7 +237,7 @@ const AdminDashboard = () => {
                     <td className="text-end">
                       <div className="d-flex justify-content-end align-items-center gap-2">
                         <div style={{ width: '100px', height: '6px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
-                           <div style={{ width: `${Math.min(100, (item.count/(summary.totalOrders || 1))*500)}%`, height: '100%', background: 'var(--p-indigo-600)' }}></div>
+                          <div style={{ width: `${Math.min(100, (item.count / (summary.totalOrders || 1)) * 500)}%`, height: '100%', background: 'var(--p-indigo-600)' }}></div>
                         </div>
                         <span className="tiny-caps">High</span>
                       </div>
