@@ -110,7 +110,7 @@ const CashierLanding = () => {
 
   const handleCheckout = () => {
     if (cart.length === 0) return toast.warn("Selection queue is empty");
-    if (!customer.phone || !customer.name) return toast.warn("Customer identification required");
+    // if (!customer.phone || !customer.name) return toast.warn("Customer identification required");
 
     setOrderData({
       ...customer,
@@ -121,9 +121,11 @@ const CashierLanding = () => {
     setShowPaymentModal(true);
   };
 
+  const [processing, setProcessing] = useState(false);
+
   const saveOrder = async (paymentData) => {
     try {
-      setLoading(true);
+      setProcessing(true);
       const token = localStorage.getItem("token");
       const config = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -151,15 +153,15 @@ const CashierLanding = () => {
 
       const res = await axios.post(`${API_BASE_URL}/api/auth/order`, payload, config);
 
+      setShowPaymentModal(false);
       setReceiptOrder(res.data);
       setCart([]);
       setCustomer({ phone: "", name: "", orderType: "takeaway", tableNo: "", deliveryType: "Customer Pickup", deliveryPlaceId: "", deliveryNote: "" });
-      setShowPaymentModal(false);
       toast.success("Transaction Authorized & Synchronized");
     } catch (err) {
       toast.error(err.response?.data?.error || "Transaction failure");
     } finally {
-      setLoading(false);
+      setProcessing(false);
     }
   };
 
@@ -420,6 +422,7 @@ const CashierLanding = () => {
           orderData={orderData}
           symbol={symbol}
           onSubmit={saveOrder}
+          processing={processing}
         />
       )}
 

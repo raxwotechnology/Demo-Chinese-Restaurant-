@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaWallet, FaHistory, FaPlus, FaSave, FaTrash, FaEdit, FaTools, FaAd, FaLaptopCode, FaDatabase, FaChevronRight } from "react-icons/fa";
+import { FaWallet, FaHistory, FaPlus, FaSave, FaTrash, FaEdit, FaTools, FaAd, FaLaptopCode, FaDatabase, FaChevronRight, FaCalendarAlt } from "react-icons/fa";
 import "../styles/PremiumUI.css";
 
 const OtherExpenses = () => {
@@ -126,14 +126,17 @@ const OtherExpenses = () => {
                     <div className="row g-3">
                         <div className="col-6">
                             <label className="stat-label mb-2 d-block">Amount ({symbol})</label>
-                            <div className="position-relative">
-                                <span className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted fw-bold">{symbol}</span>
-                                <input type="number" step="0.01" className="premium-input bg-app border-0 ps-5 fw-900 text-danger" placeholder="0.00" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
+                            <div className="search-input-wrapper">
+                                <span className="search-icon fw-bold">{symbol}</span>
+                                <input type="number" step="0.01" className="premium-input bg-app border-0 fw-900 text-danger" placeholder="0.00" value={formData.amount} onChange={(e) => setFormData({...formData, amount: e.target.value})} />
                             </div>
                         </div>
                         <div className="col-6">
                             <label className="stat-label mb-2 d-block">Effective Date</label>
-                            <input type="date" className="premium-input bg-app border-0" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
+                            <div className="search-input-wrapper">
+                                <FaCalendarAlt className="search-icon" size={14} />
+                                <input type="date" className="premium-input bg-app border-0" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} />
+                            </div>
                         </div>
                     </div>
 
@@ -142,7 +145,7 @@ const OtherExpenses = () => {
                         <textarea className="premium-input bg-app border-0" rows="3" placeholder="Explain the expenditure..." value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} />
                     </div>
 
-                    <button type="submit" className="btn-premium btn-primary py-3 rounded-4 shadow-sm w-100" disabled={loading}>
+                    <button type="submit" className="btn-premium btn-primary py-3 rounded-4 shadow-md w-100" disabled={loading}>
                         {editingId ? <FaSave className="me-2" /> : <FaPlus className="me-2" />}
                         {editingId ? "COMMIT MODIFICATION" : "REGISTER EXPENSE"}
                     </button>
@@ -204,6 +207,7 @@ const OtherExpenses = () => {
                                         <FaHistory size={32} className="mb-2" />
                                         <div className="fw-800">No operational overhead records</div>
                                     </td>
+                                end:
                                 </tr>
                             )}
                         </tbody>
@@ -216,6 +220,7 @@ const OtherExpenses = () => {
       <style>{`
         .tiny { font-size: 0.7rem; }
         .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .bg-red-glow { background: rgba(239, 68, 68, 0.1); }
       `}</style>
     </div>
   );

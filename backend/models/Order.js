@@ -8,15 +8,15 @@ const orderSchema = new mongoose.Schema({
   },
   customerName: {
     type: String,
-    required: true
+    default: "Walk-in Guest"
   },
   customerPhone: {
     type: String,
-    required: true
+    default: "0000000000"
   },
   tableNo: {
     type: String,
-    required: true
+    default: "Takeaway"
   },
   items: [
     {

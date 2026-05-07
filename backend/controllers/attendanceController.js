@@ -91,8 +91,8 @@ exports.getMonthlySummary = async (req, res) => {
 
     // Get all cashier/admin users
     const allEmployees = await User.find({
-      role: { $in: ["admin", "cashier"] 
-    }});
+      role: { $in: ["admin", "cashier"] }
+    });
 
     // Build final output
     const summary = allEmployees.map(emp => {
@@ -124,12 +124,13 @@ exports.getMonthlySummary = async (req, res) => {
     // console.log("Final Summary:", summary); // 👀 Final output
     res.json(summary);
   } catch (err) {
-    console.error("Failed to load monthly summary:", err.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Failed to load monthly summary:", err);
+    res.status(500).json({ error: "Internal server error", message: err.message });
   }
 };
 
 function parseTime(timeStr) {
+  if (!timeStr || typeof timeStr !== "string") return null;
   const match = timeStr.match(/(\d+):(\d+)\s*([APap][Mm])/i);
   if (!match) return null;
 
@@ -151,7 +152,8 @@ function parseTime(timeStr) {
 function parseLegacyTime(timeStr) {
   if (typeof timeStr === "string" && timeStr.includes(":")) {
     const d = new Date();
-    const [hourStr, minuteStr, period] = timeStr.match(/(\d+):(\d+) (AM|PM)/i)?.slice(1) || [];
+    const match = timeStr.match(/(\d+):(\d+) (AM|PM)/i);
+    const [hourStr, minuteStr, period] = match ? match.slice(1) : [];
     
     if (hourStr && minuteStr && period) {
       let hour = parseInt(hourStr);
@@ -174,83 +176,107 @@ function parseLegacyTime(timeStr) {
   return null;
 }
 
-// GET /api/auth/attendance/summary?_id=...&month=...&year=...
+// GET /api/auth/attendance/summary?month=...&year=...&_id=...
 exports.getSummary = async (req, res) => {
   const { _id, month, year } = req.query;
 
-  if (!_id || !month || !year) {
-    return res.status(400).json({ error: "Missing required fields" });
+  if (!month || !year) {
+    return res.status(400).json({ error: "Month and Year are required" });
   }
 
   try {
     const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month - 1, 31);
+    const end = new Date(year, month, 0, 23, 59, 59);
 
-    const punches = await Attendance.find({
-      employeeId: _id,
-      date: { $gte: start, $lte: end }
-    }).sort({ date: 1 });
+    let attendanceRecords = [];
+    
+    if (_id) {
+      // Individual record (if specifically requested)
+      const punches = await Attendance.find({
+        employeeId: _id,
+        date: { $gte: start, $lte: end }
+      }).populate("employeeId", "name role");
+      attendanceRecords = punches;
+    } else {
+      // Global summary for all staff (Workforce Intelligence)
+      const punches = await Attendance.find({
+        date: { $gte: start, $lte: end }
+      }).populate("employeeId", "name role");
+      attendanceRecords = punches;
+    }
 
-    const daily = [];
+    const employeeMap = {};
+    let totalHoursAll = 0;
+    let totalOtAll = 0;
+    let totalDaysAll = 0;
+    const distinctDates = new Set();
 
-    punches.forEach(entry => {
-      const entryDate = new Date(entry.date);
-      const dateKey = entryDate.toISOString().split("T")[0];
+    attendanceRecords.forEach(entry => {
+      if (!entry.employeeId || !entry.date) return;
 
-      const existing = daily.find(d => d.date === dateKey);
-      if (existing) {
-        existing.punches.push(...entry.punches);
-      } else {
-        daily.push({
-          date: dateKey,
-          punches: [...entry.punches]
-        });
+      const empId = entry.employeeId._id.toString();
+      if (!employeeMap[empId]) {
+        employeeMap[empId] = {
+          _id: empId,
+          name: entry.employeeId.name,
+          role: entry.employeeId.role,
+          totalHours: 0,
+          totalOt: 0,
+          totalDays: 0,
+          activeDates: new Set()
+        };
       }
-    });
 
-    // Calculate total working hours per day
-    daily.forEach(day => {
-      let totalMinutes = 0;
-      let dailyMinutes =0;
-      // Pair valid punch entries and calculate working time
-      for (let i = 0; i < day.punches.length; i++) {
-        const curr = day.punches[i];
-        const next = day.punches[i + 1];
+      let dailyMinutes = 0;
+      if (entry.punches && Array.isArray(entry.punches)) {
+        for (let i = 0; i < entry.punches.length - 1; i++) {
+          const curr = entry.punches[i];
+          const next = entry.punches[i + 1];
 
-        // Only calculate between valid punch types
-        if (!next) continue;
-
-        const isWorkStart = curr.type === "In" && next.type === "Break In";
-        const isWorkEnd = curr.type === "Break Out" && next.type === "Out";
-
-        if (isWorkStart || isWorkEnd) {
-          const [inHr, inMin] = curr.time.split(":").map(Number);
-          const [outHr, outMin] = next.time.split(":").map(Number);
-
-          const inTime = parseTime(curr.time);
-          const outTime = parseTime(next.time);
-
-          const inTotal = inTime.hours * 60 + inTime.minutes;
-          const outTotal = outTime.hours * 60 + outTime.minutes;
-
-          // const inTotal = inHr * 60 + inMin;
-          // const outTotal = outHr * 60 + outMin;
-
-          if (outTotal > inTotal) {
-            dailyMinutes += outTotal - inTotal;
-          } else {
-            console.warn("Invalid punch order:", curr.time, curr.type, "→", next.time, next.type);
+          if (curr && next && ((curr.type === "In" && next.type === "Break In") || (curr.type === "Break Out" && next.type === "Out"))) {
+            const inTime = parseTime(curr.time);
+            const outTime = parseTime(next.time);
+            if (inTime && outTime) {
+              const diff = (outTime.hours * 60 + outTime.minutes) - (inTime.hours * 60 + inTime.minutes);
+              if (diff > 0) dailyMinutes += diff;
+            }
           }
         }
       }
 
-      day.totalHours = (dailyMinutes / 60).toFixed(2);
+      const hours = dailyMinutes / 60;
+      const ot = Math.max(0, hours - 8);
+      
+      employeeMap[empId].totalHours += hours;
+      employeeMap[empId].totalOt += ot;
+      
+      const dateStr = entry.date.toISOString().split('T')[0];
+      if (!employeeMap[empId].activeDates.has(dateStr)) {
+        employeeMap[empId].activeDates.add(dateStr);
+        employeeMap[empId].totalDays += 1;
+        distinctDates.add(dateStr);
+      }
+
+      totalHoursAll += hours;
+      totalOtAll += ot;
     });
 
-    res.json({ daily });
+    const attendance = Object.values(employeeMap).map(emp => ({
+      ...emp,
+      activeDates: undefined // Remove Set before sending
+    }));
+
+    const stats = {
+      employees: attendance.length,
+      totalHours: totalHoursAll,
+      totalOt: totalOtAll,
+      totalDays: distinctDates.size
+    };
+
+    res.json({ attendance, stats });
   } catch (err) {
-    console.error("Failed to load punches:", err.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Failed to load attendance summary:", err);
+    res.status(500).json({ error: "Internal server error", details: err.message });
   }
 };
 

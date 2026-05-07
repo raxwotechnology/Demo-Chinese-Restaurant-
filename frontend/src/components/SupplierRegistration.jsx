@@ -83,7 +83,7 @@ const SupplierRegistration = () => {
           <h1 className="premium-title">Supply Chain</h1>
           <p className="premium-subtitle">Manage authorized vendors and procurement contacts</p>
         </div>
-        <button className="btn-premium btn-premium-primary" onClick={fetchSuppliers}>
+        <button className="btn-premium btn-primary" onClick={fetchSuppliers}>
             <FaSyncAlt /> Refresh Directory
         </button>
       </div>
@@ -91,56 +91,54 @@ const SupplierRegistration = () => {
       <div className="row g-4">
         {/* Form Column */}
         <div className="col-xl-4">
-            <div className="orient-card p-4 h-100 bg-white">
+            <div className="orient-card p-4 h-100 bg-white shadow-platinum">
                 <div className="d-flex align-items-center gap-3 mb-5">
-                    <div className="bg-gold-glow p-3 rounded-circle"><FaTruck size={24} /></div>
+                    <div className="bg-gold-glow p-3 rounded-circle"><FaTruck size={24} className="text-warning" /></div>
                     <h3 className="mb-0 fw-800 h5 text-main">{editingId ? "Modify Vendor" : "Onboard New Vendor"}</h3>
                 </div>
                 
-                <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
+                <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
                     <div>
-                        <label className="orient-stat-label">Company / Entity Name</label>
-                        <div className="position-relative">
-                            <FaBuilding className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                            <input type="text" className="premium-input ps-5 w-100" placeholder="e.g. Royal Spices Ltd." value={formData.companyName} onChange={(e) => setFormData({...formData, companyName: e.target.value})} />
+                        <label className="orient-stat-label mb-2 d-block">Company / Entity Name</label>
+                        <div className="search-input-wrapper">
+                            <FaBuilding className="search-icon" size={14} />
+                            <input type="text" className="premium-input w-100" placeholder="e.g. Royal Spices Ltd." value={formData.companyName} onChange={(e) => setFormData({...formData, companyName: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label">Primary Contact Person</label>
-                        <div className="position-relative">
-                            <FaUserAlt className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                            <input type="text" className="premium-input ps-5 w-100" placeholder="e.g. John Smith" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
-                        </div>
-                    </div>
-                    <div className="row g-3">
-                        <div className="col-md-12">
-                            <label className="orient-stat-label">Phone / WhatsApp</label>
-                            <div className="position-relative">
-                                <FaPhoneAlt className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                                <input type="text" className="premium-input ps-5 w-100" placeholder="+123..." value={formData.contact} onChange={(e) => setFormData({...formData, contact: e.target.value})} />
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <label className="orient-stat-label">Email Communications</label>
-                            <div className="position-relative">
-                                <FaEnvelope className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                                <input type="email" className="premium-input ps-5 w-100" placeholder="vendor@mail.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
-                            </div>
+                        <label className="orient-stat-label mb-2 d-block">Primary Contact Person</label>
+                        <div className="search-input-wrapper">
+                            <FaUserAlt className="search-icon" size={14} />
+                            <input type="text" className="premium-input w-100" placeholder="e.g. John Smith" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                         </div>
                     </div>
                     <div>
-                        <label className="orient-stat-label">Registered Business Address</label>
-                        <div className="position-relative">
-                            <FaMapMarkerAlt className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" size={12} />
-                            <input type="text" className="premium-input ps-5 w-100" placeholder="Street, City..." value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
+                        <label className="orient-stat-label mb-2 d-block">Phone / WhatsApp</label>
+                        <div className="search-input-wrapper">
+                            <FaPhoneAlt className="search-icon" size={14} />
+                            <input type="text" className="premium-input w-100" placeholder="+123..." value={formData.contact} onChange={(e) => setFormData({...formData, contact: e.target.value})} />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="orient-stat-label mb-2 d-block">Email Communications</label>
+                        <div className="search-input-wrapper">
+                            <FaEnvelope className="search-icon" size={14} />
+                            <input type="email" className="premium-input w-100" placeholder="vendor@mail.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="orient-stat-label mb-2 d-block">Registered Business Address</label>
+                        <div className="search-input-wrapper">
+                            <FaMapMarkerAlt className="search-icon" size={14} />
+                            <input type="text" className="premium-input w-100" placeholder="Street, City..." value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
                         </div>
                     </div>
 
-                    <div className="d-flex flex-column gap-2 mt-2">
-                        <button type="submit" className="btn-premium btn-premium-secondary py-3 rounded-4 shadow-sm" disabled={loading}>
+                    <div className="d-flex flex-column gap-2 mt-4">
+                        <button type="submit" className="btn-premium btn-primary py-3 rounded-4 shadow-md" disabled={loading}>
                             {editingId ? <><FaSave className="me-2" /> Commit Profile Update</> : <><FaPlus className="me-2" /> Finalize Registration</>}
                         </button>
-                        {editingId && <button type="button" className="btn-premium btn-premium-primary py-2 rounded-4" onClick={() => {setEditingId(null); setFormData({name: "", companyName: "", contact: "", email: "", address: ""})}}>Discard Changes</button>}
+                        {editingId && <button type="button" className="btn-premium btn-ghost py-3 rounded-4" onClick={() => {setEditingId(null); setFormData({name: "", companyName: "", contact: "", email: "", address: ""})}}>Discard Changes</button>}
                     </div>
                 </form>
             </div>
@@ -186,8 +184,8 @@ const SupplierRegistration = () => {
                                     <td><div className="tiny text-muted truncate-2">{s.address || '--'}</div></td>
                                     <td className="text-center">
                                         <div className="d-flex justify-content-center gap-2">
-                                            <button className="btn-premium btn-premium-primary p-2 text-primary" onClick={() => { setEditingId(s._id); setFormData(s); }}><FaEdit size={12} /></button>
-                                            <button className="btn-premium btn-premium-primary p-2 text-danger" onClick={() => handleDelete(s._id)}><FaTrash size={12} /></button>
+                                            <button className="btn-premium btn-ghost p-2 text-primary rounded-circle" onClick={() => { setEditingId(s._id); setFormData(s); }}><FaEdit size={12} /></button>
+                                            <button className="btn-premium btn-ghost p-2 text-danger rounded-circle" onClick={() => handleDelete(s._id)}><FaTrash size={12} /></button>
                                         </div>
                                     </td>
                                 </tr>

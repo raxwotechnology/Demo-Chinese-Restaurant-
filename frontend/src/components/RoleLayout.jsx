@@ -21,7 +21,23 @@ import {
   X,
   Bell,
   User as UserIcon,
-  Search
+  Search,
+  FileText,
+  ShoppingCart,
+  Activity,
+  Truck,
+  FileBarChart,
+  UserCog,
+  UserCheck,
+  UserPlus,
+  Car,
+  Package,
+  Receipt,
+  Banknote,
+  Settings2,
+  Key,
+  Database,
+  MessageSquare
 } from "lucide-react";
 import NotificationCenter from "./NotificationCenter";
 import "../styles/PremiumUI.css";
@@ -75,32 +91,79 @@ const RoleLayout = () => {
       case "admin":
         return (
           <>
-            <div className="sidebar-group-title">Command Center</div>
+            <div className="sidebar-group-title">Main</div>
             <NavItem to="/admin" label="Dashboard" icon={LayoutDashboard} />
-            <NavItem to="/admin/report" label="Analytics" icon={BarChart3} />
-            
+            <NavItem to="/cashier/today" label="Daily Report" icon={FileText} />
+            <NavItem to="/admin/report" label="Monthly Report" icon={BarChart3} />
+            <NavItem to="/admin/db-Status" label="Database Status" icon={Database} />
+
             <div className="sidebar-group-title">Operations</div>
-            <NavItem to="/cashier" label="Point of Sale" icon={CreditCard} />
-            <NavItem to="/kitchen" label="Live Kitchen" icon={Utensils} />
-            <NavItem to="/kitchen/menu" label="Inventory" icon={ClipboardList} />
-            
-            <div className="sidebar-group-title">Human Resources</div>
-            <NavItem to="/admin/employees" label="Staff Directory" icon={Users} />
-            <NavItem to="/admin/attendance" label="Attendance" icon={CalendarClock} />
-            
-            <div className="sidebar-group-title">System & Config</div>
-            <NavItem to="/printer-settings" label="Hardware" icon={Printer} />
-            <NavItem to="/admin/users" label="Permissions" icon={ShieldCheck} />
+            <NavItem to="/cashier" label="Order Management" icon={ShoppingCart} />
+            <NavItem to="/admin/menu" label="Manage Menu" icon={Utensils} />
+            <NavItem to="/kitchen" label="Live Orders" icon={Activity} />
+            <NavItem to="/cashier/orders" label="Order History" icon={History} />
+            <NavItem to="/cashier/takeaway-orders" label="Takeaway Orders" icon={Truck} />
+            <NavItem to="/admin/bills" label="Restaurant Bills" icon={Receipt} />
+
+            <div className="sidebar-group-title">Financials</div>
+            <NavItem to="/cashier-summery" label="Cashier Summery" icon={FileBarChart} />
+            <NavItem to="/cashier/other-income" label="Other Incomes" icon={Coins} />
+            <NavItem to="/cashier/other-expences" label="Other Expenses" icon={Wallet} />
+            <NavItem to="/admin/expenses" label="Supplier Expenses" icon={Package} />
+            <NavItem to="/admin/salaries" label="Salary Payments" icon={Banknote} />
+            <NavItem to="/admin/service-charge" label="Service / Delivery Charges" icon={Settings2} />
+
+            <div className="sidebar-group-title">People</div>
+            <NavItem to="/admin/users" label="User Management" icon={UserCog} />
+            <NavItem to="/admin/customers" label="Customers" icon={Users} />
+            <NavItem to="/admin/employees" label="Employees" icon={UserCheck} />
+            <NavItem to="/admin/attendance/add" label="Live Attendance" icon={UserPlus} />
+            <NavItem to="/admin/attendance" label="Attendance History" icon={CalendarClock} />
+
+            <div className="sidebar-group-title">Registration</div>
+            <NavItem to="/cashier/driver-register" label="Takeaway Driver" icon={Car} />
+            <NavItem to="/admin/suppliers" label="Suppliers Register" icon={Package} />
+            <NavItem to="/admin/signup-key" label="Signup Key" icon={Key} />
+
+            <div className="sidebar-group-title">Settings</div>
+            <NavItem to="/printer-settings" label="Printer Settings" icon={Printer} />
           </>
         );
       case "cashier":
         return (
           <>
-            <NavItem to="/cashier" label="POS Terminal" icon={CreditCard} />
-            <NavItem to="/kitchen" label="Kitchen Board" icon={Utensils} />
+            <div className="sidebar-group-title">Sales</div>
+            <NavItem to="/cashier" label="Order Management" icon={ShoppingCart} />
+            <NavItem to="/kitchen" label="Live Orders" icon={Activity} />
             <NavItem to="/cashier/orders" label="Order History" icon={History} />
-            <NavItem to="/cashier/other-income" label="Income" icon={Coins} />
-            <NavItem to="/cashier/other-expences" label="Expenses" icon={Wallet} />
+            <NavItem to="/cashier/takeaway-orders" label="Takeaway Orders" icon={Truck} />
+            
+            <div className="sidebar-group-title">Reporting</div>
+            <NavItem to="/cashier/today" label="Daily Report" icon={FileText} />
+            <NavItem to="/cashier-summery" label="Cashier Summery" icon={FileBarChart} />
+            
+            <div className="sidebar-group-title">Finance</div>
+            <NavItem to="/cashier/other-income" label="Other Incomes" icon={Coins} />
+            <NavItem to="/cashier/other-expences" label="Other Expenses" icon={Wallet} />
+            
+            <div className="sidebar-group-title">System</div>
+            <NavItem to="/cashier/driver-register" label="Driver Register" icon={Car} />
+            <NavItem to="/admin/kitchen-requests" label="Admin Requests" icon={MessageSquare} />
+            <NavItem to="/cashier/attendance/add" label="Live Attendance" icon={UserPlus} />
+            <NavItem to="/printer-settings" label="Printer Settings" icon={Printer} />
+          </>
+        );
+      case "kitchen":
+        return (
+          <>
+            <div className="sidebar-group-title">Kitchen Board</div>
+            <NavItem to="/kitchen" label="Live Orders" icon={Activity} />
+            <NavItem to="/kitchen/history" label="Order History" icon={History} />
+            <NavItem to="/kitchen/menu" label="Manage Menu" icon={Utensils} />
+            
+            <div className="sidebar-group-title">Communications</div>
+            <NavItem to="/kitchen/kitchen-requestsForm" label="Admin Requests" icon={MessageSquare} />
+            <NavItem to="/kitchen/attendance/add" label="Attendance" icon={UserPlus} />
           </>
         );
       default:
@@ -194,37 +257,174 @@ const RoleLayout = () => {
       </div>
 
       <style>{`
-        .sidebar-header-modern { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; padding: 0 16px; }
-        .brand-logo { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
-        .brand-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
-        .brand-tag { font-size: 0.65rem; color: var(--p-indigo-600); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-        .sidebar-scrollable { flex: 1; overflow-y: auto; padding: 0 8px; scrollbar-width: none; -ms-overflow-style: none; }
-        .sidebar-scrollable::-webkit-scrollbar { display: none; }
-        .sidebar-group-title { font-size: 0.65rem; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 1.5px; margin: 24px 0 12px 20px; }
-        .sidebar-footer-modern { padding: 16px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+        .orient-root { display: flex; min-height: 100vh; background: #f8fafc; font-family: 'Inter', sans-serif; }
+        .orient-sidebar { 
+          background: #0f172a; 
+          color: white; 
+          display: flex; 
+          flex-direction: column; 
+          height: 100vh; 
+          position: fixed; 
+          left: 0; 
+          top: 0; 
+          z-index: 1000;
+          box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+        }
+        .sidebar-header-modern { 
+          display: flex; 
+          align-items: center; 
+          gap: 16px; 
+          padding: 32px 24px; 
+          background: rgba(255,255,255,0.02);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .brand-logo { width: 42px; height: 42px; border-radius: 12px; object-fit: cover; }
+        .brand-name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; margin: 0; color: white; }
+        .brand-tag { font-size: 0.65rem; color: #6366f1; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
         
-        .icon-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 10px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
-        .icon-btn:hover { background: #f1f5f9; color: var(--p-indigo-600); }
+        .sidebar-scrollable { 
+          flex: 1; 
+          overflow-y: auto; 
+          padding: 24px 16px; 
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255,255,255,0.1) transparent;
+        }
+        .sidebar-scrollable::-webkit-scrollbar { width: 4px; }
+        .sidebar-scrollable::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         
-        .search-bar-header { display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 10px 20px; border-radius: 14px; margin-left: 20px; width: 320px; transition: all 0.3s; border: 1px solid transparent; }
-        .search-bar-header:focus-within { background: #fff; border-color: var(--p-indigo-100); box-shadow: 0 0 0 4px var(--p-indigo-50); }
-        .search-bar-header input { border: none; background: transparent; font-size: 0.85rem; font-weight: 600; outline: none; width: 100%; color: var(--text-main); }
+        .sidebar-group-title { 
+          font-size: 0.65rem; 
+          font-weight: 800; 
+          color: #475569; 
+          text-transform: uppercase; 
+          letter-spacing: 1.5px; 
+          margin: 24px 0 12px 12px; 
+          opacity: 0.8;
+        }
         
-        .user-profile-modern { display: flex; align-items: center; gap: 14px; padding: 6px 12px 6px 6px; border-radius: 50px; background: #fff; border: 1px solid var(--border-strong); cursor: pointer; transition: all 0.2s; }
-        .user-profile-modern:hover { border-color: var(--p-indigo-600); box-shadow: var(--shadow-md); }
-        .avatar-box { width: 32px; height: 32px; border-radius: 50%; background: var(--p-indigo-50); display: flex; align-items: center; justify-content: center; color: var(--p-indigo-600); }
-        .user-meta-header { display: flex; flex-direction: column; }
-        .user-name-bold { font-size: 0.85rem; font-weight: 700; color: var(--text-main); }
-        .user-role-tiny { font-size: 0.65rem; color: var(--p-indigo-600); font-weight: 700; text-transform: uppercase; }
+        .nav-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 16px;
+          border-radius: 12px;
+          color: #94a3b8;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 0.9rem;
+          transition: all 0.2s ease;
+          margin-bottom: 4px;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .nav-label { white-space: nowrap; }
+
+        .orient-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .orient-header { 
+          height: 80px; 
+          background: rgba(255,255,255,0.9); 
+          backdrop-filter: blur(10px); 
+          border-bottom: 1px solid #e2e8f0; 
+          display: flex; 
+          align-items: center; 
+          justify-content: space-between; 
+          padding: 0 40px; 
+          position: sticky; 
+          top: 0; 
+          z-index: 900; 
+        }
         
-        .profile-dropdown-modern { position: absolute; top: 90px; right: 40px; width: 240px; padding: 16px; z-index: 1001; }
-        .email-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; text-align: center; }
-        .divider-modern { height: 1px; background: var(--border-subtle); margin: 0 -16px 12px; }
-        .dropdown-action-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; border: none; background: transparent; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .dropdown-action-btn.danger { color: var(--danger); }
-        .dropdown-action-btn:hover { background: #f8fafc; color: var(--p-indigo-600); }
+        .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
+        .search-bar-header { 
+          display: flex; 
+          align-items: center; 
+          gap: 12px; 
+          background: #f1f5f9; 
+          padding: 10px 20px; 
+          border-radius: 12px; 
+          width: 320px; 
+          border: 1px solid transparent; 
+        }
+        .search-bar-header input { border: none; background: transparent; font-size: 0.85rem; outline: none; width: 100%; font-weight: 600; }
         
-        .notification-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; border: 2px solid #fff; }
+        .icon-btn { 
+          width: 40px; 
+          height: 40px; 
+          border-radius: 10px; 
+          border: none; 
+          background: transparent; 
+          color: #64748b; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          cursor: pointer; 
+          transition: 0.2s; 
+        }
+        .icon-btn:hover { background: #f1f5f9; color: #4f46e5; }
+        
+        .user-profile-modern { 
+          display: flex; 
+          align-items: center; 
+          gap: 12px; 
+          padding: 6px 16px 6px 6px; 
+          border-radius: 50px; 
+          background: white; 
+          border: 1px solid #e2e8f0; 
+          cursor: pointer; 
+        }
+        .avatar-box { width: 34px; height: 34px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; }
+        .user-name-bold { font-size: 0.85rem; font-weight: 700; color: #0f172a; }
+        .user-role-tiny { font-size: 0.65rem; color: #4f46e5; font-weight: 800; text-transform: uppercase; }
+        
+        .profile-dropdown-modern { 
+          position: absolute; 
+          top: 85px; 
+          right: 40px; 
+          width: 240px; 
+          padding: 16px; 
+          background: white; 
+          border-radius: 20px; 
+          box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
+          border: 1px solid #e2e8f0; 
+        }
+        .dropdown-action-btn { 
+          width: 100%; 
+          display: flex; 
+          align-items: center; 
+          gap: 12px; 
+          padding: 12px; 
+          border-radius: 12px; 
+          border: none; 
+          background: transparent; 
+          font-weight: 700; 
+          font-size: 0.85rem; 
+          cursor: pointer; 
+          color: #475569; 
+        }
+        .dropdown-action-btn:hover { background: #f8fafc; color: #4f46e5; }
+        .dropdown-action-btn.danger { color: #ef4444; }
+        
+        .orient-content { padding: 40px; flex: 1; }
+        .sidebar-footer-modern { padding: 24px 16px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .logout-btn-modern { 
+          width: 100%; 
+          padding: 12px; 
+          border-radius: 12px; 
+          border: 1px solid rgba(239,68,68,0.2); 
+          background: rgba(239,68,68,0.05); 
+          color: #f87171; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          gap: 10px; 
+          font-weight: 700; 
+          cursor: pointer; 
+        }
+        
+        @media (max-width: 1024px) {
+          .search-bar-header { display: none; }
+          .orient-header { padding: 0 20px; }
+        }
       `}</style>
     </div>
   );

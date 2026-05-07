@@ -61,13 +61,14 @@ const CashierSummery = () => {
           <p className="premium-subtitle">Financial audit and shift performance summary</p>
         </div>
         
-        <div className="orient-card p-2 d-flex align-items-center gap-3 bg-white border-0 shadow-sm">
-            <div className="bg-blue-glow p-2 rounded-circle"><FaCalendarAlt size={14} /></div>
+        <div className="orient-card p-0 d-flex align-items-center bg-white border-0 shadow-sm overflow-hidden" style={{ borderRadius: '14px' }}>
+            <div className="bg-blue-glow p-3 d-flex align-items-center justify-content-center h-100"><FaCalendarAlt size={14} /></div>
             <input 
                 type="date" 
-                className="premium-input border-0 bg-transparent fw-800 py-1" 
+                className="premium-input border-0 bg-transparent fw-800 py-1 ps-3" 
                 value={dateFilter} 
                 onChange={(e) => setDateFilter(e.target.value)} 
+                style={{ minHeight: 'auto', border: 'none' }}
             />
         </div>
       </div>
@@ -141,32 +142,38 @@ const CashierSummery = () => {
         </div>
 
         <div className="col-lg-4">
-            <div className="orient-card h-100 border-0 shadow-platinum bg-white d-flex flex-direction-column">
+            <div className="orient-card h-100 border-0 shadow-platinum bg-white d-flex flex-column">
                 <div className="d-flex align-items-center gap-3 mb-5">
-                    <div className="bg-gold-glow p-3 rounded-circle"><FaWallet size={24} /></div>
+                    <div className="bg-gold-glow p-3 rounded-circle"><FaWallet size={24} className="text-warning" /></div>
                     <h5 className="mb-0 fw-900 text-main">Vault Position</h5>
                 </div>
                 
                 <div className="vault-breakdown flex-grow-1">
-                    <div className="p-4 rounded-4 bg-app border mb-4">
-                        <div className="stat-label mb-2">EXPECTED CLOSING BALANCE</div>
-                        <div className="h3 fw-900 text-primary mb-0">{symbol}{summary.closingCash.toLocaleString()}</div>
+                    <div className="p-4 rounded-4 bg-app border-0 shadow-sm mb-4 text-center">
+                        <div className="stat-label mb-2 opacity-75">EXPECTED CLOSING BALANCE</div>
+                        <div className="h2 fw-900 text-primary mb-0">{symbol}{summary.closingCash.toLocaleString()}</div>
                     </div>
                     
                     <div className="d-flex flex-column gap-3">
-                        <div className="d-flex justify-content-between p-3 rounded-4 hover-lift bg-light">
-                            <span className="fw-700 small">Electronic Payments</span>
-                            <span className="fw-900">{symbol}0.00</span>
+                        <div className="vault-item">
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="bg-blue-glow p-2 rounded-circle"><FaCoins size={14} /></div>
+                                <span className="fw-700 small text-muted">Electronic Payments</span>
+                            </div>
+                            <span className="fw-900 text-main">{symbol}0.00</span>
                         </div>
-                        <div className="d-flex justify-content-between p-3 rounded-4 hover-lift bg-light">
-                            <span className="fw-700 small">Cash Liquidity</span>
-                            <span className="fw-900">{symbol}{summary.closingCash.toLocaleString()}</span>
+                        <div className="vault-item">
+                            <div className="d-flex align-items-center gap-3">
+                                <div className="bg-green-glow p-2 rounded-circle"><FaCashRegister size={14} /></div>
+                                <span className="fw-700 small text-muted">Cash Liquidity</span>
+                            </div>
+                            <span className="fw-900 text-main">{symbol}{summary.closingCash.toLocaleString()}</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="mt-5 pt-4 border-top">
-                    <button className="btn-premium btn-primary w-100 py-3 rounded-4 shadow-sm" onClick={() => toast.info("Audit Lock Initiated")}>
+                    <button className="btn-premium btn-primary w-100 py-3 rounded-4 shadow-md" onClick={() => toast.info("Audit Lock Initiated")}>
                         <FaPlus className="me-2" /> RECONCILE & LOCK SHIFT
                     </button>
                 </div>

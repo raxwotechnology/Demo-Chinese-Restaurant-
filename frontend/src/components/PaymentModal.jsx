@@ -4,7 +4,7 @@ import { CreditCard, Banknote, Landmark, X, Delete, ArrowRight, Wallet, History,
 import { toast } from "react-toastify";
 import "../styles/PremiumUI.css";
 
-const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$" }) => {
+const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$", processing = false }) => {
   const totalAmount = orderData?.totalPrice || 0;
   const [cash, setCash] = useState(totalAmount.toString());
   const [card, setCard] = useState("0");
@@ -152,12 +152,19 @@ const PaymentModal = ({ orderData, onSubmit, handleClose, symbol = "$" }) => {
                   </div>
 
                   <button
-                    className={`checkout-btn ${isSufficient ? 'authorized' : ''}`}
+                    className={`checkout-btn ${isSufficient && !processing ? 'authorized' : ''}`}
                     onClick={handleConfirm}
+                    disabled={!isSufficient || processing}
                   >
                     <div className="btn-content">
-                      <span className="fw-900">FINALIZE TRANSACTION</span>
-                      <ArrowRight size={22} />
+                      {processing ? (
+                        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="spinner-border spinner-border-sm" />
+                      ) : (
+                        <>
+                          <span className="fw-900">FINALIZE TRANSACTION</span>
+                          <ArrowRight size={22} />
+                        </>
+                      )}
                     </div>
                   </button>
                 </div>

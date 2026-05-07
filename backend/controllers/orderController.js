@@ -25,6 +25,8 @@ exports.createOrder = async (req, res) => {
     waiterId
   } = req.body;
 
+  const finalTableNo = tableNo || "Takeaway";
+
   // const randomPart = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
   // const invoiceNo = `INV-${Date.now()}-${randomPart}`;
   // const invoiceNo = `INV-${String(Math.floor(Math.random() * 1000000)).padStart(6, '0')}`;
@@ -77,23 +79,14 @@ exports.createOrder = async (req, res) => {
 
     // Validate waiterId if it's a Dine-In order
     let validatedWaiterId = null;
-    if (tableNo && tableNo !== "Takeaway") {
-      if (!waiterId) {
-        return res.status(400).json({ error: "Waiter is required for Dine-In orders" });
+    if (finalTableNo && finalTableNo !== "Takeaway") {
+      if (waiterId) {
+        const employee = await Employee.findById(waiterId);
+        if (employee && employee.role?.toLowerCase() === "waiter") {
+          validatedWaiterId = waiterId;
+          waiterName = employee.name || employee.fullName || "Unknown Waiter";
+        }
       }
-
-      const employee = await Employee.findById(waiterId); // 👈 assumes you have an Employee model
-      if (!employee) {
-        return res.status(400).json({ error: "Invalid waiter selected" });
-      }
-
-      // Adjust field name if your employee role is stored as 'position', 'jobTitle', etc.
-      if (employee.role?.toLowerCase() !== "waiter") {
-        return res.status(400).json({ error: "Selected employee is not a waiter" });
-      }
-
-      validatedWaiterId = waiterId;
-      waiterName = employee.name || employee.fullName || "Unknown Waiter"; // 👈 capture name
     }
 
     // Validate and enrich items
@@ -130,7 +123,7 @@ exports.createOrder = async (req, res) => {
     let serviceCharge = 0;
     let finalTotalPrice = subtotal;
 
-    if (tableNo && tableNo !== "Takeaway") {
+    if (finalTableNo && finalTableNo !== "Takeaway") {
       const chargeSettings = await ServiceCharge.findOne({});
       if (chargeSettings?.dineInCharge > 0 && chargeSettings.isActive) {
         serviceCharge = subtotal * (chargeSettings.dineInCharge / 100);
@@ -151,7 +144,7 @@ exports.createOrder = async (req, res) => {
     let deliveryCharge = 0;
     let deliveryPlaceName = null;
 
-    if (tableNo === "Takeaway" && deliveryType === "Delivery Service" && deliveryPlaceId) {
+    if (finalTableNo === "Takeaway" && deliveryType === "Delivery Service" && deliveryPlaceId) {
       const place = await DeliveryCharge.findById(deliveryPlaceId); // ✅ from your new model
       if (!place) {
         return res.status(400).json({ error: "Invalid delivery place selected" });
@@ -165,9 +158,9 @@ exports.createOrder = async (req, res) => {
 
     const newOrder = new Order({
       invoiceNo,
-      customerName: finalCustomerName,
-      customerPhone,
-      tableNo,
+      customerName: finalCustomerName || "Walk-in Guest",
+      customerPhone: customerPhone || "0000000000",
+      tableNo: finalTableNo,
       waiterId: validatedWaiterId,
       waiterName: waiterName,
       items: validItems,

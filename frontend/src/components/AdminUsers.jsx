@@ -17,7 +17,7 @@ const AdminUsers = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${API_BASE_URL}/api/auth/admin/users`, {
+      const res = await axios.get(`${API_BASE_URL}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data || []);
@@ -31,7 +31,7 @@ const AdminUsers = () => {
   const handleRoleChange = async (userId, newRole) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`${API_BASE_URL}/api/auth/admin/user/${userId}/role`, { role: newRole }, {
+      await axios.put(`${API_BASE_URL}/api/auth/user/${userId}/role`, { role: newRole }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Security permissions updated");
@@ -41,41 +41,56 @@ const AdminUsers = () => {
     }
   };
 
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to revoke all access for this personnel?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      // Assuming a delete endpoint exists or using deactivate
+      await axios.put(`${API_BASE_URL}/api/auth/user/${userId}/deactivate`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success("Personnel access revoked");
+      fetchUsers();
+    } catch (err) {
+      toast.error("Action failed");
+    }
+  };
+
   return (
     <div className="users-layout animate-in p-2">
       <ToastContainer theme="light" />
       
       <div className="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
         <div>
-          <h1 className="premium-title">Access Governance</h1>
-          <p className="premium-subtitle">Manage system permissions and administrative authority</p>
+          <h1 className="text-hero">Access Governance</h1>
+          <p className="text-subtitle">Manage system permissions and administrative authority</p>
         </div>
-        <button className="btn-premium btn-primary" onClick={fetchUsers}>
+        <button className="btn-modern btn-modern-primary" onClick={fetchUsers}>
             <FaSyncAlt /> Sync Access Directory
         </button>
       </div>
 
       <div className="row g-4">
         <div className="col-lg-3">
-            <div className="orient-card stat-widget h-100 border-0 shadow-platinum bg-white">
-                <div className="stat-icon bg-blue-glow"><FaShieldAlt size={22} /></div>
+            <div className="orient-card shadow-platinum bg-white h-100">
+                <div className="stat-icon-wrapper mini bg-blue-glow mb-4"><FaShieldAlt size={22} /></div>
                 <div>
-                    <div className="stat-label">Security Pool</div>
-                    <div className="stat-value">{users.length} Users</div>
-                    <div className="tiny text-muted fw-700 mt-1">Verified Personnel</div>
+                    <div className="tiny-caps">Security Pool</div>
+                    <h2 className="display-6 fw-900 mt-2">{users.length} Users</h2>
+                    <div className="badge-modern success mt-2">Verified Personnel</div>
                 </div>
             </div>
         </div>
 
         <div className="col-lg-9">
-            <div className="orient-card p-0 border-0 shadow-platinum bg-white overflow-hidden">
+            <div className="orient-card p-0 shadow-platinum bg-white overflow-hidden">
                 <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light">
                     <h6 className="mb-0 fw-800 text-main d-flex align-items-center gap-2">
-                        <FaUserShield className="text-primary" /> Authorized Personnel Directory
+                        <FaUserShield className="text-indigo" /> Authorized Personnel Directory
                     </h6>
                 </div>
                 
-                <div className="table-container border-0">
+                <div className="premium-table-container">
                     <table className="premium-table">
                         <thead>
                             <tr>
@@ -88,19 +103,19 @@ const AdminUsers = () => {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan="5" className="text-center py-5"><div className="spinner-border text-primary"></div></td></tr>
+                                <tr><td colSpan="5" className="text-center py-5"><div className="spinner-border text-indigo"></div></td></tr>
                             ) : users.map(user => (
                                 <tr key={user._id}>
                                     <td>
                                         <div className="d-flex align-items-center gap-3">
-                                            <div className="bg-app p-2 rounded-circle"><FaUserCircle className="text-primary" size={14} /></div>
+                                            <div className="bg-app p-2 rounded-circle"><FaUserCircle className="text-indigo" size={14} /></div>
                                             <div className="text-main fw-800">{user.name}</div>
                                         </div>
                                     </td>
                                     <td><div className="text-muted small fw-600">{user.email}</div></td>
                                     <td>
                                         <select 
-                                            className="premium-input py-1 px-2 small border-0 bg-app fw-800 text-primary" 
+                                            className="premium-input py-1 px-2 small border-0 bg-app fw-800 text-indigo" 
                                             value={user.role} 
                                             onChange={(e) => handleRoleChange(user._id, e.target.value)}
                                         >
@@ -110,12 +125,14 @@ const AdminUsers = () => {
                                         </select>
                                     </td>
                                     <td>
-                                        <span className={`badge ${user.isActive ? 'badge-green' : 'badge-red'}`}>
+                                        <span className={`badge-modern ${user.isActive ? 'success' : 'danger'}`}>
                                             {user.isActive ? 'Active Node' : 'Suspended'}
                                         </span>
                                     </td>
                                     <td className="text-center">
-                                        <button className="btn-premium btn-ghost p-2 rounded-circle text-danger"><FaTrash size={12} /></button>
+                                        <button className="icon-btn-round text-danger border-0 mx-auto" onClick={() => handleDelete(user._id)}>
+                                          <FaTrash size={12} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -125,8 +142,6 @@ const AdminUsers = () => {
             </div>
         </div>
       </div>
-
-
     </div>
   );
 };
