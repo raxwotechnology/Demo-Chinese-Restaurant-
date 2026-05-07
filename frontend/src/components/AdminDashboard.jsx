@@ -249,27 +249,6 @@ const AdminDashboard = () => {
           </div>
         </motion.div>
       </div>
-
-      <style>{`
-        .dashboard-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 24px;
-        }
-        .kpi-main { grid-column: span 1; }
-        .chart-span-2 { grid-column: span 3; }
-        .span-full { grid-column: span 4; }
-        .badge-modern { padding: 6px 14px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; display: inline-block; }
-        .badge-modern.success { background: #dcfce7; color: #166534; }
-        @media (max-width: 1200px) {
-          .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-          .chart-span-2, .span-full { grid-column: span 2; }
-        }
-        @media (max-width: 768px) {
-          .dashboard-grid { grid-template-columns: 1fr; }
-          .chart-span-2, .span-full, .kpi-main { grid-column: span 1; }
-        }
-      `}</style>
     </motion.div>
   );
 };

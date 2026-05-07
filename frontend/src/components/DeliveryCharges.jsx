@@ -240,8 +240,4 @@ const DeliveryCharges = () => {
 };
 
 export default DeliveryCharges;
-    </div>
-  );
-};
-
-export default DeliveryCharges;
+         
