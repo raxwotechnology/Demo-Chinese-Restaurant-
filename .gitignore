@@ -45,6 +45,17 @@ Thumbs.db
 # Git
 .git/
 
+# Environment Variables
+.env
+*.env
+backend/.env
+frontend/.env
+
+# Keys & Secrets
+backend/serviceAccountKey.json
+*.pem
+*.key
+
 # React Native
 ios/Pods/
 android/.gradle/
