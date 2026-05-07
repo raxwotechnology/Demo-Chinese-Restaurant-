@@ -3,11 +3,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MapPin, DollarSign, Plus, Edit, Trash2, Globe, RefreshCcw } from "lucide-react";
+import "../styles/PremiumUI.css";
 
 const DeliveryCharges = () => {
   const [charges, setCharges] = useState([]);
   const [form, setForm] = useState({ placeName: "", charge: "" });
   const [editingId, setEditingId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const symbol = localStorage.getItem("currencySymbol") || "$";
 
@@ -17,6 +20,7 @@ const DeliveryCharges = () => {
 
   const fetchCharges = async () => {
     try {
+      setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.get(
         `${API_BASE_URL}/api/auth/delivery-charges`,
@@ -25,6 +29,8 @@ const DeliveryCharges = () => {
       setCharges(res.data);
     } catch (err) {
       toast.error("Failed to load delivery charges");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,561 +93,153 @@ const DeliveryCharges = () => {
   };
 
   return (
-    <div className="delivery-charges-page">
-      <div className="page-orb orb-1"></div>
-      <div className="page-orb orb-2"></div>
-
-      <div className="container-fluid px-3 px-lg-4 py-4 py-lg-5">
-        <div className="content-shell">
-          <div className="hero-card mb-4">
-            <div className="hero-grid">
-              <div>
-                <span className="hero-badge">Admin Settings</span>
-                <h1 className="hero-title mt-3 mb-2">Delivery Charges</h1>
-                <p className="hero-subtitle mb-0">
-                  Manage delivery places and configure charge amounts with a clean,
-                  premium admin interface.
-                </p>
-              </div>
-
-              <div className="summary-box">
-                <div className="summary-box-label">Configured Places</div>
-                <div className="summary-box-value">{charges.length}</div>
-                <div className="summary-box-subtext">Active delivery locations</div>
-              </div>
+    <div className="delivery-charges-root animate-fade-in p-2">
+      <ToastContainer theme="dark" />
+      
+      {/* Header Area */}
+      <div className="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
+        <div>
+          <h1 className="premium-title mb-1">Logistics Matrix</h1>
+          <p className="premium-subtitle mb-0">Configure regional delivery overheads and coverage zones</p>
+        </div>
+        <div className="d-flex gap-2">
+            <button className="btn-ghost d-flex align-items-center gap-2" onClick={fetchCharges}>
+                <RefreshCcw size={16} className={loading ? "animate-spin" : ""} /> Sync
+            </button>
+            <div className="bento-card py-2 px-4 d-flex align-items-center gap-2 bg-white shadow-sm border-0">
+                <Globe className="text-indigo-600" size={18} />
+                <span className="fw-bold text-main">{charges.length} Active Zones</span>
             </div>
-          </div>
-
-          <div className="glass-card form-card mb-4 full-width-form-card">
-            <div className="card-header-row mb-4">
-              <div>
-                <h3 className="section-title mb-1">
-                  {editingId ? "Edit Delivery Charge" : "Add Delivery Charge"}
-                </h3>
-                <p className="section-subtitle mb-0">Manage delivery charges.</p>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              <div className="form-grid">
-                <div className="field-block">
-                  <label className="form-label custom-label">Delivery Place</label>
-                  <input
-                    type="text"
-                    name="placeName"
-                    value={form.placeName}
-                    onChange={handleChange}
-                    className="form-control custom-input"
-                    placeholder="e.g., Downtown, Airport, Suburb"
-                    required
-                  />
-                </div>
-
-                <div className="field-block">
-                  <label className="form-label custom-label">Charge ({symbol})</label>
-                  <div className="input-wrap">
-                    <span className="currency-pill">{symbol}</span>
-                    <input
-                      type="number"
-                      name="charge"
-                      value={form.charge}
-                      onChange={handleChange}
-                      step="0.01"
-                      min="0"
-                      className="form-control custom-input charge-input"
-                      placeholder="e.g., 5.99"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="field-block action-block">
-                  <label className="form-label custom-label d-none d-lg-block">
-                    &nbsp;
-                  </label>
-                  <button
-                    type="submit"
-                    className={`action-btn primary-btn ${editingId ? "warning-btn" : "success-btn"
-                      } w-100`}
-                  >
-                    {editingId ? "Update Charge" : "Add Delivery Charge"}
-                  </button>
-                </div>
-              </div>
-
-              {editingId && (
-                <button
-                  type="button"
-                  className="action-btn secondary-btn mt-3 w-100"
-                  onClick={() => {
-                    setForm({ placeName: "", charge: "" });
-                    setEditingId(null);
-                  }}
-                >
-                  Cancel Edit
-                </button>
-              )}
-            </form>
-          </div>
-
-          <div className="glass-card table-card full-width-table-card">
-            <div className="card-header-row mb-4">
-              <div>
-                <h3 className="section-title mb-1">
-                  Configured Delivery Places ({charges.length})
-                </h3>
-                <p className="section-subtitle mb-0">
-                  View, edit, and remove delivery charge records.
-                </p>
-              </div>
-            </div>
-
-            {charges.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-icon">🚚</div>
-                <p className="empty-text mb-0">No delivery charges configured yet.</p>
-              </div>
-            ) : (
-              <div className="table-shell">
-                <div className="table-responsive">
-                  <table className="table custom-table align-middle mb-0">
-                    <thead>
-                      <tr>
-                        <th className="ps-4">Place Name</th>
-                        <th>Charge</th>
-                        <th className="text-center pe-4">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {charges.map((dc) => (
-                        <tr key={dc._id}>
-                          <td className="place-name ps-4">{dc.placeName}</td>
-                          <td className="charge-value">
-                            {symbol}
-                            {dc.charge.toFixed(2)}
-                          </td>
-                          <td className="text-center pe-4">
-                            <div className="action-group">
-                              <button
-                                className="table-btn edit-btn"
-                                onClick={() => startEdit(dc)}
-                              >
-                                Edit
-                              </button>
-                              <button
-                                className="table-btn delete-btn"
-                                onClick={() => handleDelete(dc._id)}
-                              >
-                                Delete
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
-      <ToastContainer />
+      <div className="row g-4">
+        {/* Input Column */}
+        <div className="col-xl-4">
+            <div className="bento-card p-4 h-100 bg-white shadow-sm">
+                <div className="d-flex align-items-center gap-3 mb-5">
+                    <div className="bg-blue-glow p-3 rounded-circle d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
+                        <MapPin size={22} />
+                    </div>
+                    <div>
+                        <h3 className="mb-0 fw-800 h5 text-main">{editingId ? "Update Zone" : "New Coverage Zone"}</h3>
+                        <p className="text-muted small mb-0">Define location-specific pricing</p>
+                    </div>
+                </div>
 
-      <style>{`
-        .delivery-charges-page {
-          min-height: 100vh;
-          position: relative;
-          overflow-x: hidden;
-          overflow-y: auto;
-          padding: 0;
-          // background: linear-gradient(165deg, #f6f4fc 0%, #f1f5ff 42%, #eef8f6 100%);
-        }
+                <form onSubmit={handleSubmit} className="d-flex flex-column gap-4">
+                    <div className="input-group-premium">
+                        <label className="tiny-caps">Destination Place Name</label>
+                        <div className="position-relative">
+                            <MapPin className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
+                            <input 
+                                type="text" 
+                                name="placeName"
+                                className="input-premium ps-5" 
+                                placeholder="e.g. Downtown Core" 
+                                value={form.placeName}
+                                onChange={handleChange}
+                                required 
+                            />
+                        </div>
+                    </div>
 
-        .delivery-charges-page .page-orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(90px);
-          opacity: 0.32;
-          pointer-events: none;
-        }
+                    <div className="input-group-premium">
+                        <label className="tiny-caps">Delivery Surcharge ({symbol})</label>
+                        <div className="position-relative">
+                            <DollarSign className="position-absolute top-50 translate-middle-y ms-3 text-muted" size={18} />
+                            <input 
+                                type="number" 
+                                name="charge"
+                                className="input-premium ps-5" 
+                                placeholder="0.00" 
+                                step="0.01"
+                                min="0"
+                                value={form.charge}
+                                onChange={handleChange}
+                                required 
+                            />
+                        </div>
+                    </div>
 
-        .delivery-charges-page .orb-1 {
-          width: 280px;
-          height: 280px;
-          left: -50px;
-          top: -50px;
-          background: rgba(124, 58, 237, 0.18);
-        }
+                    <div className="d-flex flex-column gap-2 mt-2">
+                        <button type="submit" className="btn-indigo py-3 justify-content-center">
+                            {editingId ? <><Edit size={18} className="me-2" /> Commit Update</> : <><Plus size={18} className="me-2" /> Add Location</>}
+                        </button>
+                        {editingId && (
+                            <button type="button" className="btn-ghost py-3" onClick={() => { setForm({ placeName: "", charge: "" }); setEditingId(null); }}>
+                                Discard Edit
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
+        </div>
 
-        .delivery-charges-page .orb-2 {
-          width: 320px;
-          height: 320px;
-          right: -70px;
-          bottom: -70px;
-          background: rgba(34, 197, 94, 0.12);
-        }
+        {/* Matrix List Column */}
+        <div className="col-xl-8">
+            <div className="bento-card p-0 overflow-hidden bg-white shadow-sm h-100 d-flex flex-column">
+                <div className="p-4 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-10">
+                    <h6 className="mb-0 fw-800 text-main d-flex align-items-center gap-2">
+                        <MapPin className="text-indigo-600" size={16} /> Configured Rate Matrix
+                    </h6>
+                    <span className="badge-premium badge-blue">System Active</span>
+                </div>
 
-        .delivery-charges-page .content-shell {
-          max-width: 1500px;
-          width: 100%;
-          margin: 0 auto;
-          position: relative;
-          z-index: 1;
-        }
+                <div className="premium-table-container border-0 flex-grow-1 overflow-auto">
+                    <table className="premium-table">
+                        <thead>
+                            <tr>
+                                <th>Location Identity</th>
+                                <th>Operational Surcharge</th>
+                                <th className="text-center">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading ? (
+                                <tr><td colSpan="3" className="text-center py-5"><div className="spinner-border text-indigo-600"></div></td></tr>
+                            ) : charges.length === 0 ? (
+                                <tr>
+                                    <td colSpan="3" className="text-center py-5 text-muted">
+                                        <div className="mb-2"><Globe size={32} opacity={0.2} className="mx-auto" /></div>
+                                        No delivery zones defined yet.
+                                    </td>
+                                </tr>
+                            ) : charges.map((dc) => (
+                                <tr key={dc._id}>
+                                    <td>
+                                        <div className="text-main fw-800">{dc.placeName}</div>
+                                        <div className="tiny-caps text-muted">Active Coverage</div>
+                                    </td>
+                                    <td>
+                                        <div className="d-flex align-items-center gap-2">
+                                            <div className="bg-blue-glow p-1 rounded small"><DollarSign size={12} /></div>
+                                            <span className="text-main fw-bold h5 mb-0">{symbol}{dc.charge.toFixed(2)}</span>
+                                        </div>
+                                    </td>
+                                    <td className="text-center">
+                                        <div className="d-flex justify-content-center gap-2">
+                                            <button className="btn-ghost p-2 text-indigo-600 rounded-circle" onClick={() => startEdit(dc)}>
+                                                <Edit size={14} />
+                                            </button>
+                                            <button className="btn-ghost p-2 text-danger rounded-circle" onClick={() => handleDelete(dc._id)}>
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-        .delivery-charges-page .hero-card,
-        .delivery-charges-page .glass-card {
-          width: 100%;
-          border: 1px solid rgba(15, 23, 42, 0.08);
-          background: #ffffff;
-          backdrop-filter: none;
-          -webkit-backdrop-filter: none;
-          border-radius: 28px;
-          box-shadow:
-            0 18px 50px rgba(15, 23, 42, 0.08),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
-        }
-
-        .delivery-charges-page .hero-card {
-          padding: 2rem;
-        }
-
-        .delivery-charges-page .glass-card {
-          padding: 1.75rem;
-        }
-
-        .delivery-charges-page .hero-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) 360px;
-          gap: 1.5rem;
-          align-items: center;
-        }
-
-        .delivery-charges-page .hero-badge {
-          display: inline-block;
-          padding: 0.45rem 0.9rem;
-          border-radius: 999px;
-          font-size: 0.82rem;
-          font-weight: 800;
-          color: #5b21b6;
-          background: rgba(124, 58, 237, 0.12);
-          border: 1px solid rgba(124, 58, 237, 0.22);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-        }
-
-        .delivery-charges-page .hero-title {
-          color: #0f172a;
-          font-size: clamp(2rem, 3vw, 2.8rem);
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          line-height: 1.05;
-        }
-
-        .delivery-charges-page .hero-subtitle,
-        .delivery-charges-page .section-subtitle,
-        .delivery-charges-page .summary-box-subtext,
-        .delivery-charges-page .empty-text {
-          color: rgba(15, 23, 42, 0.6);
-        }
-
-        .delivery-charges-page .summary-box {
-          padding: 1.4rem;
-          border-radius: 22px;
-          background: #f8fafc;
-          border: 1px solid rgba(15, 23, 42, 0.08);
-          text-align: center;
-        }
-
-        .delivery-charges-page .summary-box-label {
-          color: #64748b;
-          font-size: 0.92rem;
-          margin-bottom: 0.4rem;
-        }
-
-        .delivery-charges-page .summary-box-value {
-          color: #0f172a;
-          font-size: 2.2rem;
-          font-weight: 800;
-          line-height: 1;
-        }
-
-        .delivery-charges-page .section-title {
-          color: #0f172a;
-          font-size: 1.28rem;
-          font-weight: 800;
-        }
-
-        .delivery-charges-page .full-width-form-card {
-          width: 100% !important;
-          max-width: 100% !important;
-          display: block;
-        }
-
-        .delivery-charges-page .form-card {
-          width: 100% !important;
-          max-width: 100% !important;
-          padding: 1.75rem;
-        }
-
-        .delivery-charges-page .form-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr) 260px;
-          gap: 1rem;
-          align-items: end;
-        }
-
-        .delivery-charges-page .field-block {
-          min-width: 0;
-        }
-
-        .delivery-charges-page .action-block {
-          display: flex;
-          align-items: end;
-        }
-
-        .delivery-charges-page .custom-label {
-          color: #0f172a;
-          font-weight: 600;
-          margin-bottom: 0.8rem;
-        }
-
-        .delivery-charges-page .custom-input {
-          height: 58px;
-          border-radius: 18px;
-          border: 1px solid rgba(15, 23, 42, 0.12);
-          background: #ffffff;
-          color: #0f172a;
-          color-scheme: light;
-          box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
-          font-size: 1rem;
-        }
-
-        .delivery-charges-page .custom-input::placeholder {
-          color: rgba(15, 23, 42, 0.42);
-        }
-
-        .delivery-charges-page .custom-input:focus {
-          background: #ffffff;
-          color: #0f172a;
-          border-color: rgba(124, 58, 237, 0.45);
-          box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12) !important;
-        }
-
-        .delivery-charges-page .input-wrap {
-          position: relative;
-        }
-
-        .delivery-charges-page .currency-pill {
-          position: absolute;
-          left: 14px;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 2;
-          width: 34px;
-          height: 34px;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 800;
-          color: #ffffff;
-          background: linear-gradient(135deg, #16a34a, #22c55e);
-          border: none;
-          box-shadow: 0 8px 16px rgba(34, 197, 94, 0.2);
-        }
-
-        .delivery-charges-page .charge-input {
-          padding-left: 58px;
-        }
-
-        .delivery-charges-page .action-btn {
-          border: none;
-          outline: none;
-          padding: 1rem 1.4rem;
-          border-radius: 18px;
-          font-size: 1rem;
-          font-weight: 800;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .delivery-charges-page .action-btn:hover,
-        .delivery-charges-page .table-btn:hover {
-          transform: translateY(-2px);
-        }
-
-        .delivery-charges-page .primary-btn {
-          color: #ffffff;
-        }
-
-        .delivery-charges-page .success-btn {
-          background: linear-gradient(135deg, #16a34a, #22c55e);
-          box-shadow: 0 12px 28px rgba(34, 197, 94, 0.22);
-        }
-
-        .delivery-charges-page .warning-btn {
-          background: linear-gradient(135deg, #f59e0b, #f97316);
-          box-shadow: 0 12px 28px rgba(245, 158, 11, 0.22);
-        }
-
-        .delivery-charges-page .secondary-btn {
-          color: #334155;
-          background: #f1f5f9;
-          border: 1px solid rgba(15, 23, 42, 0.12);
-        }
-
-        .delivery-charges-page .full-width-table-card {
-          width: 100% !important;
-          max-width: 100% !important;
-          display: block;
-          padding: 1.75rem;
-        }
-
-        .delivery-charges-page .table-card {
-          width: 100% !important;
-          max-width: 100% !important;
-          overflow: hidden;
-        }
-
-        .delivery-charges-page .table-shell {
-          width: 100%;
-          border-radius: 22px;
-          overflow: hidden;
-          background: #ffffff;
-          border: 1px solid rgba(15, 23, 42, 0.08);
-          box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
-        }
-
-        .delivery-charges-page .custom-table {
-          width: 100% !important;
-          min-width: 1200px;
-          color: #334155;
-          margin: 0;
-        }
-
-        .delivery-charges-page .custom-table thead th {
-          background: #f1f5f9;
-          color: #475569;
-          border: none;
-          border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-          padding: 1.2rem 1rem;
-          font-size: 0.96rem;
-          font-weight: 800;
-          letter-spacing: 0.01em;
-          white-space: nowrap;
-        }
-
-        .delivery-charges-page .custom-table tbody td {
-          background: #ffffff;
-          color: #334155;
-          border-top: 1px solid rgba(15, 23, 42, 0.06);
-          padding: 1.15rem 1rem;
-          vertical-align: middle;
-        }
-
-        .delivery-charges-page .custom-table tbody tr:hover td {
-          background: #f8fafc;
-        }
-
-        .delivery-charges-page .place-name {
-          font-weight: 700;
-          font-size: 1rem;
-          color: #0f172a;
-        }
-
-        .delivery-charges-page .charge-value {
-          font-weight: 800;
-          font-size: 1rem;
-          color: #15803d;
-          white-space: nowrap;
-        }
-
-        .delivery-charges-page .action-group {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 0.75rem;
-          flex-wrap: nowrap;
-        }
-
-        .delivery-charges-page .table-btn {
-          min-width: 92px;
-          border: none;
-          outline: none;
-          padding: 0.72rem 1rem;
-          border-radius: 14px;
-          font-size: 0.9rem;
-          font-weight: 700;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .delivery-charges-page .table-btn.edit-btn {
-          color: #ffffff;
-          background: linear-gradient(135deg, #f59e0b, #d97706);
-          border: none;
-          box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
-        }
-
-        .delivery-charges-page .table-btn.delete-btn {
-          color: #ffffff;
-          background: linear-gradient(135deg, #ef4444, #dc2626);
-          border: none;
-          box-shadow: 0 6px 16px rgba(239, 68, 68, 0.22);
-        }
-
-        .delivery-charges-page .empty-state {
-          min-height: 220px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-        }
-
-        .delivery-charges-page .empty-icon {
-          font-size: 3rem;
-          margin-bottom: 0.75rem;
-        }
-
-        @media (max-width: 1100px) {
-          .delivery-charges-page .hero-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .delivery-charges-page .form-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .delivery-charges-page .action-block {
-            display: block;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .delivery-charges-page .hero-card,
-          .delivery-charges-page .glass-card {
-            padding: 1.25rem;
-            border-radius: 20px;
-          }
-
-          .delivery-charges-page .full-width-form-card,
-          .delivery-charges-page .full-width-table-card,
-          .delivery-charges-page .table-card {
-            padding: 1rem;
-          }
-
-          .delivery-charges-page .custom-table {
-            min-width: 760px;
-          }
-
-          .delivery-charges-page .custom-table thead th,
-          .delivery-charges-page .custom-table tbody td {
-            padding: 0.85rem;
-          }
-        }
-      `}</style>
+export default DeliveryCharges;
     </div>
   );
 };
